@@ -1,0 +1,52 @@
+{
+  "name": "cloudflare-typescript-workers-starter",
+  "version": "1.0.0",
+  "description": "Starter kit template for using Typescript with a Cloudflare Worker",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "lint-fix": "tslint --project tsconfig.json --fix",
+    "test": "jest",
+    "build": "webpack --progress --mode production # Create minified output, runs in Cloudflare",
+    "build-dev": "webpack --progress --mode none # Creates readable output, runs in Cloudflare",
+    "build-all": "npm run lint && npm run test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/udacity/cloudflare-typescript-workers-starter.git"
+  },
+  "keywords": [
+    "typescript",
+    "cloudflare",
+    "starter",
+    "example",
+    "workers",
+    "edge",
+    "computing"
+  ],
+  "author": "Example <example@example.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/udacity/cloudflare-typescript-workers-starter/issues"
+  },
+  "homepage": "https://github.com/udacity/cloudflare-typescript-workers-starter#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.17",
+    "@udacity/types-service-worker-mock": "^1.1.0",
+    "cloudflare-worker-mock": "^1.1.0",
+    "jest": "^24.9.0",
+    "jest-fetch-mock": "^2.1.2",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "types-cloudflare-worker": "^1.1.0",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
