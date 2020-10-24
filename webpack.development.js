@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   target: 'webworker',
   entry: {
     'index': './src/index.ts',
@@ -20,4 +20,5 @@ module.exports = {
     filename: 'worker.js',
     path: path.resolve(__dirname, 'worker')
   },
-};
+  devtool: 'inline-source-map'
+}

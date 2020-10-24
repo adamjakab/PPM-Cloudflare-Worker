@@ -3,15 +3,13 @@ declare var self: CloudflareWorkerGlobalScope;
 
 export class Worker {
   public async handle(event: FetchEvent) {
-    const originResponse = fetch(event.request, {
-      cf: {
-        minify: {
-          html: true,
-        },
-      },
-    });
+    const method = event.request.method;
+    console.log('REQ METHOD: ', method);
 
-    return originResponse;
+    const resp = new Response('abcxxx', {
+      headers: { 'content-type': 'text/html;charset=UTF-8' },
+    });
+    return resp;
   }
 }
 

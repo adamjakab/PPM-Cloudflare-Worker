@@ -1,7 +1,7 @@
 {
-  "name": "cloudflare-typescript-workers-starter",
-  "version": "1.0.0",
-  "description": "Starter kit template for using Typescript with a Cloudflare Worker",
+  "name": "cloudflare-worker-tests",
+  "version": "0.0.1",
+  "description": "My first CF Worker in TS",
   "main": "src/index.ts",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
@@ -13,23 +13,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/udacity/cloudflare-typescript-workers-starter.git"
+    "url": "git+https://github.com/adamjakab/CF-Worker-Tests.git"
   },
   "keywords": [
     "typescript",
     "cloudflare",
-    "starter",
-    "example",
-    "workers",
-    "edge",
-    "computing"
+    "workers"
   ],
-  "author": "Example <example@example.com>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/udacity/cloudflare-typescript-workers-starter/issues"
-  },
-  "homepage": "https://github.com/udacity/cloudflare-typescript-workers-starter#readme",
+  "author": "Adam Jakab <adam@jakab.pro>",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.17",
