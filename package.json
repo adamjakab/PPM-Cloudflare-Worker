@@ -24,6 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "@types/lodash": "^4.14.162",
     "@types/node": "^12.12.17",
     "@udacity/types-service-worker-mock": "^1.1.0",
     "cloudflare-worker-mock": "^1.1.0",
@@ -40,5 +41,9 @@
     "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "cloudflare-worker-rest-api": "^1.0.0",
+    "lodash": "^4.17.15"
   }
 }

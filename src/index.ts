@@ -1,20 +1,16 @@
 import CloudflareWorkerGlobalScope from 'types-cloudflare-worker';
+import { RestApiWorker } from './rest-api';
+import * as NoteRouter from './router/note';
+
+// Create the worker
 declare var self: CloudflareWorkerGlobalScope;
+const worker = new RestApiWorker();
 
-export class Worker {
-  public async handle(event: FetchEvent) {
-    const method = event.request.method;
-    console.log('REQ METHOD: ', method);
+// Register the route handlers
+worker.useRouter('/notes', NoteRouter);
 
-    const resp = new Response('abcxxx', {
-      headers: { 'content-type': 'text/html;charset=UTF-8' },
-    });
-    return resp;
-  }
-}
-
+// Register the listener
 self.addEventListener('fetch', (event: Event) => {
-  const worker = new Worker();
   const fetchEvent = event as FetchEvent;
   fetchEvent.respondWith(worker.handle(fetchEvent));
 });
