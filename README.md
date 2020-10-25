@@ -6,3 +6,5 @@ Based on this [template project][gen-template].
 
 ## What Now?
 Nothing...
+
+https://github.com/fongandrew/typed-routes

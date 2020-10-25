@@ -1,8 +1,25 @@
+import { RouteElementLayout } from '../interface/route_element';
+
 export class RestApiRequest {
-  public request: Request;
+  protected request: Request;
+
+  /** @var {{message, id}} */
+  protected validRoute: RouteElementLayout | undefined;
 
   constructor(request: Request) {
     this.request = request;
+    this.validRoute = undefined;
+    this.elaborateRequest();
+  }
+
+  public setValidRoute(route: RouteElementLayout) {
+    // tslint:disable: no-console
+    console.log('Setting valid route for request:', route);
+    this.validRoute = route;
+  }
+
+  public getValidRoute() {
+    return this.validRoute;
   }
 
   public async body() {
@@ -13,10 +30,14 @@ export class RestApiRequest {
     }
   }
 
+  public getUrl = () => {
+    return this.request.url;
+  };
+
   public getPath = () => {
     return (
       '/' +
-      this.request.url
+      this.getUrl()
         .split('/')
         .slice(3)
         .join('/')
@@ -24,11 +45,22 @@ export class RestApiRequest {
     );
   };
 
-  public getUrl = () => {
-    return this.request.url;
+  /**
+   * @returns {{}}
+   */
+  public getParams = () => {
+    let answer: any = {};
+    if (this.validRoute) {
+      answer = this.validRoute.dynamicRoute.match(this.getPath());
+    }
+    return answer;
   };
 
   public getMethod = () => {
     return this.request.method;
   };
+
+  private elaborateRequest() {
+    // do something like register path / params
+  }
 }

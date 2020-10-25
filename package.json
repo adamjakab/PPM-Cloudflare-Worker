@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "cloudflare-worker-rest-api": "^1.0.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "typed-routes": "^0.1.1"
   }
 }
