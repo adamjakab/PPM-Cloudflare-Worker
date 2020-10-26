@@ -18,13 +18,13 @@
     "prettier": [
       true,
       {
-        "singleQuote": true,
+        "singleQuote": false,
         "trailingComma": "all"
       }
     ],
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "interface-name": false,
     "variable-name": [

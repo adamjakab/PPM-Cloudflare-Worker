@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "experimentalDecorators": true,
     /* Basic Options */
     /* https://developers.cloudflare.com/workers/reference/ */
     /* Cloudflare Workers use the V8 JavaScript engine from Google Chrome. The
@@ -41,7 +42,7 @@
     /* Enable strict checking of function types. */
     "strictBindCallApply": true,
     /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
     /* Enable strict checking of property initialization in classes. */
     "noImplicitThis": true,
     /* Raise error on 'this' expressions with an implied 'any' type. */

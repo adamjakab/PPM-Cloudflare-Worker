@@ -1,4 +1,4 @@
-import { RestApiRequest } from './request';
+import { RestApiRequest } from "./request";
 
 export class RestApiResponse {
   public request: RestApiRequest;
@@ -13,8 +13,8 @@ export class RestApiResponse {
     return new Response(JSON.stringify(data), {
       status,
       headers: {
-        'content-type': 'application/json',
-        'ppm-sequence': this.sequence.toString(),
+        "content-type": "application/json",
+        "ppm-sequence": this.sequence.toString(),
       },
     });
   }

@@ -7,8 +7,8 @@
     "lint": "tslint --project tsconfig.json",
     "lint-fix": "tslint --project tsconfig.json --fix",
     "test": "jest",
-    "build": "webpack --progress --mode production # Create minified output, runs in Cloudflare",
-    "build-dev": "webpack --progress --mode none # Creates readable output, runs in Cloudflare",
+    "build": "webpack --config webpack.config.js --progress # Create minified output",
+    "build-dev": "webpack --config webpack.development.js --display-modules # Creates readable output",
     "build-all": "npm run lint && npm run test && npm run build"
   },
   "repository": {
@@ -43,8 +43,10 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "@types/url-parse": "^1.4.3",
     "cloudflare-worker-rest-api": "^1.0.0",
     "lodash": "^4.17.15",
-    "typed-routes": "^0.1.1"
+    "typed-routes": "^0.1.1",
+    "url-parse": "^1.4.7"
   }
 }

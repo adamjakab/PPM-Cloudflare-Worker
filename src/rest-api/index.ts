@@ -1,13 +1,13 @@
-import * as _ from 'lodash';
-import { RestApiRequest } from './request';
-import { RestApiResponse } from './response';
-import { RouteElementLayout } from '../interface/route_element';
-import { createRoute as RouteChecker } from 'typed-routes';
+import * as _ from "lodash";
+import { RestApiRequest } from "./request";
+import { RestApiResponse } from "./response";
+import { RouteElementLayout } from "../interface/route_element";
+import { createRoute as RouteChecker } from "typed-routes";
 
 // tslint:disable: no-console
 export class RestApiWorker {
   private routes: any;
-  private validMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+  private validMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 
   constructor() {
     this.routes = [];
@@ -25,22 +25,22 @@ export class RestApiWorker {
       return await route.callback(request, response);
     }
 
-    return response.send({ status: 0, message: 'Shit hit the fan!' }, 404);
+    return response.send({ status: 0, message: "Shit hit the fan!" }, 404);
   }
 
   public register(path: string, method: string, callback: any) {
     if (!this.validMethods.includes(method)) {
       // tslint:disable-next-line: no-console
-      console.error('Cannot register invalid method: ' + method + '!');
+      console.error("Cannot register invalid method: " + method + "!");
       return;
     }
 
     // console.log('______PATH: ' + path);
     let dynamicRoute = RouteChecker();
-    const pathParts = path.split('/');
+    const pathParts = path.split("/");
     _.each(pathParts, (pathPart: string) => {
       if (!_.isEmpty(pathPart)) {
-        if (pathPart.startsWith(':')) {
+        if (pathPart.startsWith(":")) {
           // ":id" => "id"
           dynamicRoute = dynamicRoute.param(pathPart.substring(1));
         } else {
@@ -62,7 +62,7 @@ export class RestApiWorker {
   public useRouter(path: string, router: any) {
     _.each(router.getRoutes(), (route: any) => {
       this.register(
-        path + (route.path === '/' ? '' : route.path),
+        path + (route.path === "/" ? "" : route.path),
         route.method,
         route.callback,
       );
@@ -75,7 +75,7 @@ export class RestApiWorker {
 
   private findRouteForRequest(request: RestApiRequest) {
     console.log(
-      'Finding route for request: ',
+      "Finding route for request: ",
       request.getMethod(),
       request.getPath(),
     );

@@ -1,4 +1,5 @@
-import { RouteElementLayout } from '../interface/route_element';
+import { RouteElementLayout } from "../interface/route_element";
+// import URLParse from "url-parse";
 
 export class RestApiRequest {
   protected request: Request;
@@ -14,7 +15,7 @@ export class RestApiRequest {
 
   public setValidRoute(route: RouteElementLayout) {
     // tslint:disable: no-console
-    console.log('Setting valid route for request:', route);
+    console.log("Setting valid route for request:", route);
     this.validRoute = route;
   }
 
@@ -36,12 +37,12 @@ export class RestApiRequest {
 
   public getPath = () => {
     return (
-      '/' +
+      "/" +
       this.getUrl()
-        .split('/')
+        .split("/")
         .slice(3)
-        .join('/')
-        .split('?')[0]
+        .join("/")
+        .split("?")[0]
     );
   };
 
@@ -62,5 +63,25 @@ export class RestApiRequest {
 
   private elaborateRequest() {
     // do something like register path / params
+    // const url = new URLParse(this.getUrl());
+    // console.log("Parsed URL: " + JSON.stringify(url));
   }
+  /*
+  query() {
+        try {
+            let query = {}
+            let queryString = this.request.url.split('?')[1]
+
+            queryString.split('&').forEach(el => {
+                const temp = el.split('=')
+                if (temp.length === 2) {
+                    query[temp[0]] = temp[1]
+                }
+            })
+            return query
+        } catch (error) {
+            return {}
+        }
+    }
+  */
 }
