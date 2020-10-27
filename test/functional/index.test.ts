@@ -16,7 +16,7 @@ describe("worker", () => {
     // Clear all module imports.
     jest.resetModules();
     // Import and init the Worker.
-    jest.requireActual("../src/index");
+    jest.requireActual("../../src/index");
   });
 
   it("should add listeners", async () => {

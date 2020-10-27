@@ -11,7 +11,7 @@ export class RestApiResponse {
   public send(data: object, status = 200) {
     this.sequence++;
     return new Response(JSON.stringify(data), {
-      status,
+      status: status,
       headers: {
         "content-type": "application/json",
         "ppm-sequence": this.sequence.toString(),

@@ -15,7 +15,7 @@ class NoteController extends Controller {
     const msg = {
       message_1: "[getOne] You asked for: " + req.getPath(),
       params: req.getParams(),
-      id,
+      id: id,
     };
 
     return res.send(msg);

@@ -51,10 +51,10 @@ export class RestApiWorker {
     // console.log('>PATH(TS): ' + dynamicRoute.toString());
 
     const routeElement: RouteElementLayout = {
-      path,
-      dynamicRoute,
-      method,
-      callback,
+      path: path,
+      dynamicRoute: dynamicRoute,
+      method: method,
+      callback: callback,
     };
     this.routes.push(routeElement);
   }

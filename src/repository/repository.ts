@@ -1,15 +1,29 @@
-// import * as _ from "lodash";
+import * as _ from "lodash";
+import { Entity } from "../entity/entity";
 
 export class Repository {
-  protected items = [];
+  private _items: Entity[] = [];
+  private _maxid = 0;
 
   public getAll() {
-    return this.items;
+    return this._items;
   }
 
-  public add(entity: object) {
-    // @ts-ignore
-    this.items.push(entity);
-    console.log("Entity added: ", entity);
+  public count() {
+    return this._items.length;
+  }
+
+  public get(id: number) {
+    return _.find(this._items, { id: id });
+  }
+
+  public add(entity: Entity) {
+    if (_.isUndefined(entity.id)) {
+      entity.id = this._maxid;
+    }
+    if (entity.id >= this._maxid) {
+      this._maxid = entity.id + 1;
+    }
+    this._items.push(entity);
   }
 }
