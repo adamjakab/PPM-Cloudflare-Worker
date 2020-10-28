@@ -1,5 +1,6 @@
 export class Entity {
-  public id: number;
+  public idType: string = "uuidv4";
+  public id: number | string;
   public dateCreated: Date;
   public dateModified: Date;
   public deleted: boolean;

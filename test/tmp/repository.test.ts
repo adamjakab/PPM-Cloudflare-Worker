@@ -42,28 +42,27 @@ describe("Repo", () => {
     expect(repo.count()).toEqual(1);
   });
 
+  it("should create uuidv4 id automatically", () => {
+    const repo = new Repository();
+    const d = { name: "jack" };
+    const entity = new Entity(d);
+    repo.add(entity);
+    expect(entity.id).toBeDefined();
+    expect(_.isString(entity.id)).toBeTruthy();
+  });
+
   it("should return the correct entity", () => {
     const repo = new Repository();
     const d = { id: 1, name: "jack" };
     const entity = new Entity(d);
     repo.add(entity);
-    const entity2 = repo.get(1);
+    const entity2 = repo.getByIndex(0);
     expect(entity2).toBeInstanceOf(Entity);
     expect(entity2).toEqual(entity);
     if (!_.isUndefined(entity2)) {
-      expect(entity2.id).toEqual(1);
-      expect(entity2.getProperty("id")).toEqual(1);
+      expect(entity2.id).toEqual(entity.id);
     }
   });
 
-  it("should create id automatically", () => {
-    const repo = new Repository();
-    repo.add(new Entity({ name: "jack" }));
-    repo.add(new Entity({ id: 99, name: "tony" }));
-    repo.add(new Entity({ name: "pippo" }));
-    const entity = repo.get(100);
-    if (!_.isUndefined(entity)) {
-      expect(entity.getProperty("id")).toEqual(100);
-    }
-  });
+
 });
