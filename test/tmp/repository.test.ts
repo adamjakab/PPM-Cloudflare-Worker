@@ -1,12 +1,3 @@
-/*
- * Using WebWorker library included with TypeScript
- * tsc --lib es5,webworker # or anything es5+
- *
- * https://github.com/Microsoft/TypeScript/issues/14877#issuecomment-340279293
- */
-// import { CloudflareWorkerGlobalScope } from "types-cloudflare-worker";
-// declare var self: CloudflareWorkerGlobalScope;
-// import makeCloudflareWorkerEnv from "cloudflare-worker-mock";
 import * as _ from "lodash";
 import { Entity } from "../../src/entity/entity";
 import { Repository } from "../../src/repository/repository";
