@@ -1,13 +1,13 @@
 import * as _ from "lodash";
 import { Repository } from "./repository";
 import { Note } from "../entity/note";
-import { getUuidV4 } from "../utils/utils";
+import { v4 as generateUUIDv4 } from "uuid";
 
 const defaultData = [
-  { id: getUuidV4(), name: "Ficus", date_created: "2020-08-15" },
-  { id: getUuidV4(), name: "Fityisz", type: "video" },
-  { id: getUuidV4(), name: "Kecske", type: "audio" },
-  { id: getUuidV4(), name: "Kigyo", text: "Adi bacsi is back!" },
+  { id: generateUUIDv4(), name: "Ficus", date_created: "2020-08-15" },
+  { id: generateUUIDv4(), name: "Fityisz", type: "video" },
+  { id: generateUUIDv4(), name: "Kecske", type: "audio" },
+  { id: generateUUIDv4(), name: "Kigyo", text: "Adi bacsi is back!" },
 ];
 
 class NoteRepository extends Repository {

@@ -7,7 +7,7 @@
     "lint": "tslint --project tsconfig.json",
     "lint-fix": "tslint --project tsconfig.json --fix",
     "test": "jest",
-    "test-tmp": "jest --config=jest.tmp.js",
+    "test-unit": "jest --config=jest.unit.js",
     "build": "webpack --config webpack.config.js --progress # Create minified output",
     "build-dev": "webpack --config webpack.development.js --display-modules # Creates readable output",
     "build-all": "npm run lint && npm run test && npm run build"

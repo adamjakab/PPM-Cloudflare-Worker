@@ -1,9 +1,4 @@
 import * as _ from "lodash";
-import { v4 as generateUUIDv4 } from "uuid";
-
-export function getUuidV4() {
-  return generateUUIDv4();
-}
 
 export function getRandomString(length: number = 8) {
   let s = "";
