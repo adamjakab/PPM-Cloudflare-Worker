@@ -1,17 +1,46 @@
-export class Entity {
-  public idType: string = "uuidv4";
-  public id: number | string;
-  public dateCreated: Date;
-  public dateModified: Date;
-  public deleted: boolean;
+import * as _ from "lodash";
 
-  constructor(data: any) {
+export class Entity {
+  private readonly _idType: string;
+  private _id: number | string;
+  private _dateCreated: Date;
+  private _dateModified: Date;
+
+  constructor(data: any, idType: string = "uuidv4") {
+    this._idType = idType;
     this.id = data.id;
-    this.deleted = false;
+    this.dateCreated = data.dateCreated;
+    this.dateModified = data.dateModified;
   }
 
-  /*
-  public getProperty<K extends any>(propertyName: K) {
-    return this[propertyName];
-  }*/
+  public get idType(): string {
+    return this._idType;
+  }
+
+  public get id(): number | string {
+    return this._id;
+  }
+
+  public set id(value: number | string) {
+    if (!_.isUndefined(this._id)) {
+      throw new Error("Entity id cannot be changed!");
+    }
+    this._id = value;
+  }
+
+  public get dateCreated(): Date {
+    return this._dateCreated;
+  }
+
+  public set dateCreated(value: Date) {
+    this._dateCreated = _.isDate(value) ? value : new Date();
+  }
+
+  public get dateModified(): Date {
+    return this._dateModified;
+  }
+
+  public set dateModified(value: Date) {
+    this._dateModified = _.isDate(value) ? value : new Date();
+  }
 }

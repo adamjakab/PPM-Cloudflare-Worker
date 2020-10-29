@@ -13,12 +13,24 @@ export class Repository {
     return this._items.length;
   }
 
-  public get(id: number) {
+  public get(id: number | string) {
     return _.find(this._items, { id: id });
   }
 
   public getByIndex(index: number) {
     return this._items[index];
+  }
+
+  public delete(id: number | string) {
+    let i;
+    let e;
+    for (i = 0; i < this.count(); i++) {
+      e = this.getByIndex(i);
+      if (e.id === id) {
+        break;
+      }
+    }
+    return _.pullAt(this._items, i);
   }
 
   public add(entity: Entity) {
