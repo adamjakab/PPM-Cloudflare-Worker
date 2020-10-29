@@ -10,7 +10,8 @@ export class Entity {
     this.deleted = false;
   }
 
+  /*
   public getProperty<K extends any>(propertyName: K) {
     return this[propertyName];
-  }
+  }*/
 }
