@@ -27,6 +27,8 @@
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.162",
     "@types/node": "^12.12.17",
+    "@types/url-parse": "^1.4.3",
+    "@types/uuid": "^8.3.0",
     "@udacity/types-service-worker-mock": "^1.1.0",
     "cloudflare-worker-mock": "^1.1.0",
     "jest": "^24.9.0",
@@ -44,12 +46,10 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@types/url-parse": "^1.4.3",
     "cloudflare-worker-rest-api": "^1.0.0",
     "lodash": "^4.17.15",
     "typed-routes": "^0.1.1",
     "url-parse": "^1.4.7",
-    "uuid": "^3.3.3",
-    "uuidv4": "^6.2.4"
+    "uuid": "^8.3.1"
   }
 }

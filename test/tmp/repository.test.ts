@@ -54,6 +54,4 @@ describe("Repo", () => {
       expect(entity2.id).toEqual(entity.id);
     }
   });
-
-
 });
