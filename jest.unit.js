@@ -6,5 +6,5 @@ module.exports = {
   setupFiles: [
     "./test/setupJest.ts"
   ],
-  testMatch: ['**/unit/*.test.ts']
+  testMatch: ['**/test/unit/**/*.test.ts']
 };

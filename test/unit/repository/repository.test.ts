@@ -5,9 +5,9 @@ import {
   validate as uuidValidate,
   version as uuidVersion,
 } from "uuid";
-import { getRandomString } from "../../src/utils/utils";
-import { Entity } from "../../src/entity/entity";
-import { Repository } from "../../src/repository/repository";
+import { getRandomString } from "../../../src/utils/utils";
+import { Entity } from "../../../src/entity/entity";
+import { Repository } from "../../../src/repository/repository";
 
 describe("Repository", () => {
   it("should be empty after creation", () => {
@@ -46,6 +46,22 @@ describe("Repository", () => {
     expect(_.isString(entity.id)).toBeTruthy();
     expect(uuidValidate(entity.id as string)).toBeTruthy();
     expect(uuidVersion(entity.id as string)).toEqual(4);
+  });
+
+  it("should create id(numeric) automatically", () => {
+    const repo = new Repository();
+    const d = { name: getRandomString() };
+    const entity = new Entity(d, "numeric");
+    repo.add(entity);
+    expect(entity.id).toBeDefined();
+    expect(_.isNumber(entity.id)).toBeTruthy();
+    expect(entity.id).toEqual(0);
+    //
+    const entity2 = new Entity(d, "numeric");
+    repo.add(entity2);
+    expect(entity2.id).toBeDefined();
+    expect(_.isNumber(entity2.id)).toBeTruthy();
+    expect(entity2.id).toEqual(1);
   });
 
   it("should return the correct entity by index", () => {

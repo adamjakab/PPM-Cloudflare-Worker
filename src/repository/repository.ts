@@ -46,7 +46,9 @@ export class Repository {
     } else if (entity.idType === "numeric") {
       if (_.isUndefined(entity.id) || !_.isNumber(entity.id)) {
         const maxElement = _.maxBy(this._items, "id");
-        entity.id = _.isUndefined(maxElement) ? 0 : maxElement.id;
+        entity.id = _.isUndefined(maxElement)
+          ? 0
+          : (maxElement.id as number) + 1;
       }
     }
   }

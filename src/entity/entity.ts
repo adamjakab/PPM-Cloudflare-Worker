@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import { validate as uuidValidate } from "uuid";
 
 export class Entity {
   private readonly _idType: string;
@@ -7,6 +8,9 @@ export class Entity {
   private _dateModified: Date;
 
   constructor(data: any, idType: string = "uuidv4") {
+    if (!_.includes(["uuidv4", "numeric"], idType)) {
+      throw new Error("Id type(" + idType + ") not allowed!");
+    }
     this._idType = idType;
     this.id = data.id;
     this.dateCreated = data.dateCreated;
@@ -24,6 +28,15 @@ export class Entity {
   public set id(value: number | string) {
     if (!_.isUndefined(this._id)) {
       throw new Error("Entity id cannot be changed!");
+    }
+    if (!_.isUndefined(value)) {
+      //// expect(uuidVersion(entity.id as string)).toEqual(4);
+      if (this._idType === "uuidv4" && !uuidValidate(value as string)) {
+        throw new Error("Entity id must be a valid uuidv4!");
+      }
+      if (this._idType === "numeric" && !_.isNumber(value)) {
+        throw new Error("Entity id must be numeric!");
+      }
     }
     this._id = value;
   }
