@@ -5,6 +5,7 @@ jobs:
       tag: '15.0'
     steps:
       - checkout
+      - node/install
       - node/install-packages
       - run:
           command: npm run-script test-unit
