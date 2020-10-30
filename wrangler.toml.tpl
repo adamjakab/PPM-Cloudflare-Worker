@@ -1,4 +1,4 @@
-name = "cfwt-dev"
+name = "ppm-worker-dev"
 type = "webpack"
 account_id = ""
 zone_id = ""

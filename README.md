@@ -1,10 +1,13 @@
-# Cloudflare Worker Tests in Typescript
+Cloudflare PPM Worker
+========================
 
-Based on this [template project][gen-template].
+What Now?
+---------
+ABC
 
-[gen-template]: https://github.com/udacity/cloudflare-typescript-worker-template/generate
+Useful Links
+------------
 
-## What Now?
-Nothing...
+- https://github.com/fongandrew/typed-routes
 
-https://github.com/fongandrew/typed-routes
+
