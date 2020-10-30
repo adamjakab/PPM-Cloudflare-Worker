@@ -4,4 +4,3 @@ dist/
 worker/
 
 wrangler.toml
-/package-lock.json

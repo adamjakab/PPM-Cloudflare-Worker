@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - node/install
-      - node/install-packages
+      # - node/install-packages
       - run:
           command: npm run-script test-unit
 version: 2.1
@@ -16,4 +16,3 @@ workflows:
   test_ppm_worker:
     jobs:
       - test_with_npm
-
