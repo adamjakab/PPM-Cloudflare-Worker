@@ -1,7 +1,9 @@
 {
-  "name": "cloudflare-worker-tests",
+  "name": "cloudflare-ppm-worker",
   "version": "0.0.1",
-  "description": "My first CF Worker in TS",
+  "description": "Paranoia Password Manager Cloudflare Worker app.",
+  "author": "Adam Jakab <adam@jakab.pro>",
+  "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
@@ -14,15 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adamjakab/CF-Worker-Tests.git"
+    "url": "git+https://github.com/adamjakab/PPM-Cloudflare-Worker.git"
   },
   "keywords": [
     "typescript",
     "cloudflare",
-    "workers"
+    "worker",
+    "Paranoia Password Manager"
   ],
-  "author": "Adam Jakab <adam@jakab.pro>",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.9.1",
     "@types/lodash": "^4.14.163",
