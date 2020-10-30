@@ -1,8 +1,18 @@
+jobs:
+  test_with_npm:
+    executor:
+      name: node/default
+      tag: '15.0'
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run-script test-unit
 version: 2.1
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@4.1.0
 workflows:
-  node-tests:
+  test_ppm_worker:
     jobs:
-      - node/test
+      - test_with_npm
 
