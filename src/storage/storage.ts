@@ -5,4 +5,5 @@ export interface StorageInterface {
   fetchAll(): any;
   fetchOneById(id: string): any;
   store(element: {}): boolean;
+  reset(defaultData: []): void;
 }

@@ -1,18 +1,17 @@
-import * as _ from 'lodash';
+import * as _ from "lodash";
 import { Entity } from "./entity";
 
 export class Note extends Entity {
   private _name: string;
   private _type: string;
   private _text: string;
-  private _isSecret: boolean;
 
   constructor(data: any) {
     super(data);
     this.name = data.name;
     this.type = data.type;
     this.text = data.text;
-    this.isSecret = data.isSecret;
+    this.isInSync = true;
   }
 
   public save(): void {
@@ -25,6 +24,7 @@ export class Note extends Entity {
 
   set name(value: string) {
     this._name = value;
+    this._entityChanged();
   }
 
   get type(): string {
@@ -33,6 +33,7 @@ export class Note extends Entity {
 
   set type(value: string) {
     this._type = value;
+    this._entityChanged();
   }
 
   get text(): string {
@@ -41,13 +42,6 @@ export class Note extends Entity {
 
   set text(value: string) {
     this._text = value;
-  }
-
-  get isSecret(): boolean {
-    return this._isSecret;
-  }
-
-  set isSecret(value: boolean) {
-    this._isSecret = value;
+    this._entityChanged();
   }
 }

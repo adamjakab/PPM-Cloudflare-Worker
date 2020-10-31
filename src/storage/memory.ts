@@ -6,11 +6,11 @@ import { Storage, StorageInterface } from "./storage";
  */
 export class Memory extends Storage implements StorageInterface {
   public readonly name: string = "memory";
-  private readonly _data: object[];
+  private _data: object[];
 
   constructor(defaultData: [] = []) {
     super();
-    this._data = defaultData;
+    this.reset(defaultData);
   }
 
   public fetchAll(): any {
@@ -29,5 +29,13 @@ export class Memory extends Storage implements StorageInterface {
       exEl = element;
     }
     return true;
+  }
+
+  /**
+   *
+   * @param {[]} defaultData
+   */
+  public reset(defaultData: [] = []) {
+    this._data = defaultData;
   }
 }

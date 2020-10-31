@@ -29,14 +29,14 @@ describe("Entity", () => {
 
   it("should have the assigned id (uuidv4)", () => {
     const id = generateUUIDv4();
-    const entity = new Entity({id:id});
+    const entity = new Entity({ id: id });
     expect(entity.id).toBeDefined();
     expect(entity.id).toEqual(id);
   });
 
   it("should have the assigned id (numeric)", () => {
     const id = 123;
-    const entity = new Entity({id:id}, "numeric");
+    const entity = new Entity({ id: id }, "numeric");
     expect(entity.id).toBeDefined();
     expect(entity.id).toEqual(id);
   });
@@ -44,7 +44,7 @@ describe("Entity", () => {
   it("should not be possible to change id", () => {
     const entity = new Entity({});
     entity.id = generateUUIDv4();
-    expect( () => {
+    expect(() => {
       entity.id = generateUUIDv4();
     }).toThrow(/cannot be changed/);
   });
@@ -55,8 +55,8 @@ describe("Entity", () => {
     expect(entity.dateCreated).toBeDefined();
     expect(entity.dateCreated).toBeInstanceOf(Date);
     // Manual
-    let newDate = new Date("2020-10-15 12:35:11");
-    entity = new Entity({dateCreated:newDate});
+    const newDate = new Date("2020-10-15 12:35:11");
+    entity = new Entity({ dateCreated: newDate });
     expect(entity.dateCreated).toBeDefined();
     expect(entity.dateCreated).toBeInstanceOf(Date);
     expect(entity.dateCreated).toEqual(newDate);
@@ -68,11 +68,15 @@ describe("Entity", () => {
     expect(entity.dateModified).toBeDefined();
     expect(entity.dateModified).toBeInstanceOf(Date);
     // Manual
-    let newDate = new Date("2020-10-15 12:35:11");
-    entity = new Entity({dateModified:newDate});
+    const newDate = new Date("2020-10-15 12:35:11");
+    entity = new Entity({ dateModified: newDate });
     expect(entity.dateModified).toBeDefined();
     expect(entity.dateModified).toBeInstanceOf(Date);
     expect(entity.dateModified).toEqual(newDate);
   });
 
+  it("should be in sync after creation", () => {
+    const entity = new Entity({});
+    expect(entity.isInSync).toBeTruthy();
+  });
 });

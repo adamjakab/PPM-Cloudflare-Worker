@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Entity } from "../entity/entity";
+// import { Entity } from "../entity/entity";
 import { Note } from "../entity/note";
 import EntityManager from "./entity-manager";
 import { Repository } from "./repository";
@@ -10,12 +10,13 @@ class NoteRepository extends Repository {
     this.syncIn();
   }
 
-  public add(entity: Entity) {
-    super.add(entity);
-    entity.setRepository(this);
+  public add(note: Note) {
+    super.add(note);
+    note.setRepository(this);
   }
 
   public syncIn(): void {
+    super.reset();
     const data = EntityManager.fetchAll();
     let note;
     _.each(data, d => {

@@ -16,8 +16,9 @@ export class Entity {
     }
     this._idType = idType;
     this.id = data.id;
-    this.dateCreated = data.dateCreated;
-    this.dateModified = data.dateModified;
+    this.changeDateCreated(data.dateCreated);
+    this.changeDateModified(data.dateModified);
+    this.isInSync = true;
   }
 
   public save(): void {
@@ -75,17 +76,27 @@ export class Entity {
     return this._dateCreated;
   }
 
-  public set dateCreated(value: Date) {
-    const date = _.isDate(value) ? value : new Date(value);
-    this._dateCreated = !isNaN(date.valueOf()) ? date : new Date();
-  }
-
   public get dateModified(): Date {
     return this._dateModified;
   }
 
-  public set dateModified(value: Date) {
-    const date = _.isDate(value) ? value : new Date(value);
-    this._dateModified = !isNaN(date.valueOf()) ? date : new Date();
+  // @todo: Better look into something more serious: https://github.com/sindresorhus/on-change
+  protected _entityChanged() {
+    this.isInSync = false;
+    this._dateModified = new Date();
+  }
+
+  private changeDateCreated(value: Date) {
+    if (_.isUndefined(this._dateCreated)) {
+      const date = _.isDate(value) ? value : new Date(value);
+      this._dateCreated = !isNaN(date.valueOf()) ? date : new Date();
+    }
+  }
+
+  private changeDateModified(value: Date) {
+    if (_.isUndefined(this._dateModified)) {
+      const date = _.isDate(value) ? value : new Date(value);
+      this._dateModified = !isNaN(date.valueOf()) ? date : new Date();
+    }
   }
 }
