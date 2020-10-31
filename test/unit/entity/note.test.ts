@@ -39,6 +39,7 @@ describe("Note(Entity)", () => {
     expect(note.isInSync).toBeTruthy();
   });
 
+  //@todo: too fast - fails on circleci because dates do not differ
   it("should be out of sync after change", () => {
     const note = new Note({ name: "note-1" });
     expect(note.isInSync).toBeTruthy();
