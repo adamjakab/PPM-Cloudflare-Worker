@@ -1,9 +1,14 @@
 import * as _ from "lodash";
 import { v4 as generateUUIDv4, validate as uuidValidate } from "uuid";
+import EntityManager from "../repository/entity-manager";
 import { Entity } from "../entity/entity";
 
 export class Repository {
-  private _items: Entity[] = [];
+  private _items: Entity[];
+
+  constructor() {
+    this.reset();
+  }
 
   public getAll() {
     return this._items;
@@ -21,6 +26,11 @@ export class Repository {
     return this._items[index];
   }
 
+  public persist(entity: Entity) {
+    EntityManager.persist(entity);
+  }
+
+  // or by entity
   public delete(id: number | string) {
     let i;
     let e;
@@ -36,6 +46,16 @@ export class Repository {
   public add(entity: Entity) {
     this.checkEntityId(entity);
     this._items.push(entity);
+  }
+
+  public reset() {
+    this._items = [];
+  }
+
+  public syncOut(): void {
+    _.each(this._items, (item: Entity) => {
+      this.persist(item);
+    });
   }
 
   private checkEntityId(entity: Entity) {

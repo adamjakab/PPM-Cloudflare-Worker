@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Entity } from "./entity";
 
 export class Note extends Entity {
@@ -8,10 +9,14 @@ export class Note extends Entity {
 
   constructor(data: any) {
     super(data);
-    this.type = data.type;
     this.name = data.name;
+    this.type = data.type;
     this.text = data.text;
     this.isSecret = data.isSecret;
+  }
+
+  public save(): void {
+    super.save();
   }
 
   get name(): string {

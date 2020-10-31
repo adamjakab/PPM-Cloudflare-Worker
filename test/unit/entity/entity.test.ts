@@ -5,43 +5,43 @@ import { Entity } from "../../../src/entity/entity";
 // import {Repository} from '../../../src/repository/repository';
 
 describe("Entity", () => {
-  it("it should have idType 'uuidv4' by default", () => {
+  it("should have idType 'uuidv4' by default", () => {
     const entity = new Entity({});
     expect(entity.idType).toEqual("uuidv4");
   });
 
-  it("it should have idType 'numeric' when requested", () => {
+  it("should have idType 'numeric' when requested", () => {
     const entity = new Entity({}, "numeric");
     expect(entity.idType).toEqual("numeric");
   });
 
-  it("it should throw an error on unknown idType", () => {
+  it("should throw an error on unknown idType", () => {
     expect(() => {
       // @ts-ignore
       const entity = new Entity({}, "scalar");
     }).toThrow(/not allowed/);
   });
 
-  it("it should not have an id if not assigned", () => {
+  it("should not have an id if not assigned", () => {
     const entity = new Entity({});
     expect(entity.id).toBeUndefined();
   });
 
-  it("it should have the assigned id (uuidv4)", () => {
+  it("should have the assigned id (uuidv4)", () => {
     const id = generateUUIDv4();
     const entity = new Entity({id:id});
     expect(entity.id).toBeDefined();
     expect(entity.id).toEqual(id);
   });
 
-  it("it should have the assigned id (numeric)", () => {
+  it("should have the assigned id (numeric)", () => {
     const id = 123;
     const entity = new Entity({id:id}, "numeric");
     expect(entity.id).toBeDefined();
     expect(entity.id).toEqual(id);
   });
 
-  it("it should not be possible to change id", () => {
+  it("should not be possible to change id", () => {
     const entity = new Entity({});
     entity.id = generateUUIDv4();
     expect( () => {
@@ -49,7 +49,7 @@ describe("Entity", () => {
     }).toThrow(/cannot be changed/);
   });
 
-  it("it should have a creation date", () => {
+  it("should have a creation date", () => {
     // Auto
     let entity = new Entity({});
     expect(entity.dateCreated).toBeDefined();
@@ -62,7 +62,7 @@ describe("Entity", () => {
     expect(entity.dateCreated).toEqual(newDate);
   });
 
-  it("it should be created with modification dates", () => {
+  it("should be created with modification dates", () => {
     // Auto
     let entity = new Entity({});
     expect(entity.dateModified).toBeDefined();

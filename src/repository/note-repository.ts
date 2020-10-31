@@ -1,26 +1,28 @@
 import * as _ from "lodash";
-import { Repository } from "./repository";
+import { Entity } from "../entity/entity";
 import { Note } from "../entity/note";
-import { v4 as generateUUIDv4 } from "uuid";
-
-const defaultData = [
-  { id: generateUUIDv4(), name: "Ficus", date_created: "2020-08-15" },
-  { id: generateUUIDv4(), name: "Fityisz", type: "video" },
-  { id: generateUUIDv4(), name: "Kecske", type: "audio" },
-  { id: generateUUIDv4(), name: "Kigyo", text: "Adi bacsi is back!" },
-];
+import EntityManager from "./entity-manager";
+import { Repository } from "./repository";
 
 class NoteRepository extends Repository {
   constructor() {
     super();
-    _.each(defaultData, data => {
-      const note = new Note(data);
-      this.add(note);
-    });
+    this.syncIn();
   }
 
-  public getOne() {
-    return new Note({});
+  public add(entity: Entity) {
+    super.add(entity);
+    entity.setRepository(this);
+  }
+
+  public syncIn(): void {
+    const data = EntityManager.fetchAll();
+    let note;
+    _.each(data, d => {
+      note = new Note(d);
+      note.setRepository(this);
+      this.add(note);
+    });
   }
 }
 
