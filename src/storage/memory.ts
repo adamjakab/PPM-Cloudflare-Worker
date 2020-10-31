@@ -1,6 +1,9 @@
 import * as _ from "lodash";
 import { Storage, StorageInterface } from "./storage";
 
+/**
+ * In-memory storage (mainly for testing)
+ */
 export class Memory extends Storage implements StorageInterface {
   public readonly name: string = "memory";
   private readonly _data: object[];
