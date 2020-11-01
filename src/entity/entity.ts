@@ -25,7 +25,7 @@ export class Entity {
     if (!this.isInRepository()) {
       throw new Error("Not in repository!");
     }
-    this.getRepository().persist(this);
+    this._repository.persist(this);
   }
 
   public get idType(): string {

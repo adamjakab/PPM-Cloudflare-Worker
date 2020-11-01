@@ -4,6 +4,7 @@ import EntityManager from "../repository/entity-manager";
 import { Entity } from "../entity/entity";
 
 export class Repository {
+  protected _storageTableName: string;
   private _items: Entity[];
 
   constructor() {
@@ -18,6 +19,10 @@ export class Repository {
     return this._items.length;
   }
 
+  get storageTableName(): string {
+    return this._storageTableName;
+  }
+
   public get(id: number | string) {
     return _.find(this._items, { id: id });
   }
@@ -27,7 +32,7 @@ export class Repository {
   }
 
   public persist(entity: Entity) {
-    EntityManager.persist(entity);
+    EntityManager.persist(this._storageTableName, entity);
   }
 
   // or by entity
@@ -52,7 +57,7 @@ export class Repository {
     this._items = [];
   }
 
-  public syncOut(): void {
+  public syncOut(table: string): void {
     _.each(this._items, (item: Entity) => {
       this.persist(item);
     });

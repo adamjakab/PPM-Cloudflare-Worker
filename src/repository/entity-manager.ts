@@ -18,14 +18,14 @@ class EntityManager {
     return this._storage;
   }
 
-  public fetchAll() {
-    return this._storage.fetchAll();
+  public async fetchAll(table: string) {
+    return await this._storage.fetchAll(table);
   }
 
-  public persist(entity: Entity) {
+  public persist(table: string, entity: Entity) {
     // tslint:disable-next-line:no-console
     // console.log("EM Presisting: " + entity);
-    this._storage.store(entity);
+    this._storage.store(table, entity);
   }
 
   public setupStorageDriver(driver: StorageInterface) {

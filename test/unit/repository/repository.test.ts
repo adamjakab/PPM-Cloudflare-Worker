@@ -5,7 +5,7 @@ import {
   validate as uuidValidate,
   version as uuidVersion,
 } from "uuid";
-import { getRandomString } from "../../../src/utils/utils";
+import { getRandomString } from "../../../src/util/utils";
 import { Entity } from "../../../src/entity/entity";
 import { Repository } from "../../../src/repository/repository";
 

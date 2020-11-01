@@ -1,5 +1,10 @@
 import * as _ from "lodash";
 
+export function delay(ms: number)
+{
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function getRandomString(length: number = 8) {
   let s = "";
   const randomChar = () => {
