@@ -147,4 +147,23 @@ describe("Memory(Storage)", () => {
     expect(storedData.name).toEqual(newData.name);
     expect(storedData.xtra).toEqual(newData.xtra);
   });
+
+  it("[delete] should throw an error on unknown table name", async () => {
+    expect.assertions(1);
+    const ms = new Memory();
+    try {
+      await ms.delete("notes", 1);
+    } catch (e) {
+      expect(e.toString()).toMatch("Unknown storage table");
+    }
+  });
+
+  it("should delete an existing element", async () => {
+    const elementData = { id: generateUUIDv4(), name: "OLD" };
+    const ms = new Memory({ notes: [elementData] });
+    const resp = await ms.delete("notes", elementData.id);
+    expect(resp).toBeTruthy();
+    const notes = await ms.fetchAll("notes");
+    expect(_.size(notes)).toEqual(0);
+  });
 });
