@@ -1,9 +1,11 @@
 /* tslint:disable:no-console */
 import * as _ from "lodash";
-import { Note } from "../../../src/entity/note";
+
 import EntityManager from "../../../src/repository/entity-manager";
 import NoteRepository from "../../../src/repository/note-repository";
 import { v4 as generateUUIDv4 } from "uuid";
+// import { Note } from "../../../src/entity/note";
+// import { InstanceCreator } from "../../../src/util/instance-creator";
 
 const defaultData = {
   notes: [
@@ -17,19 +19,25 @@ const defaultData = {
 describe("NoteRepository", () => {
   beforeEach(async () => {
     EntityManager.storage.reset(defaultData);
-    await NoteRepository.syncIn();
   });
 
-  it("should have default data", () => {
-    expect(NoteRepository.count()).toEqual(_.size(defaultData.notes));
+  it("should have a storage table name", () => {
+    expect(NoteRepository.storageTableName).not.toBeUndefined();
+    expect(NoteRepository.storageTableName).toEqual("notes");
   });
 
-  it("should add new entity", () => {
-    const newData = { id: generateUUIDv4(), name: "New Note" };
-    const note = new Note(newData);
-    NoteRepository.add(note);
-    expect(NoteRepository).toEqual(note.getRepository());
-    expect(NoteRepository.count()).toEqual(_.size(defaultData.notes) + 1);
-    expect(note).toEqual(NoteRepository.get(newData.id));
+  it("should load all data: getAll()", async () => {
+    const notes = await NoteRepository.getAll();
+    expect(_.size(notes)).toEqual(_.size(defaultData.notes));
+    console.log(notes);
   });
+
+  /*
+  it("should create a dynamic class instance", () => {
+    const creator = new InstanceCreator(Note);
+    const instance: Note = creator.getNewInstance({ id: generateUUIDv4() });
+    console.log(instance);
+  });
+  */
+
 });

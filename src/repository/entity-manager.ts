@@ -22,10 +22,16 @@ class EntityManager {
     return await this._storage.fetchAll(table);
   }
 
-  public persist(table: string, entity: Entity) {
-    // tslint:disable-next-line:no-console
-    // console.log("EM Presisting: " + entity);
-    this._storage.store(table, entity);
+  public async fetchOne(table: string, id: number | string) {
+    return await this._storage.fetchOne(table, id);
+  }
+
+  public async store(table: string, entity: Entity) {
+    return await this._storage.store(table, entity);
+  }
+
+  public async delete(table: string, id: number | string) {
+    return await this._storage.delete(table, id);
   }
 
   public setupStorageDriver(driver: StorageInterface) {

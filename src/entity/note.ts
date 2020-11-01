@@ -7,6 +7,7 @@ export class Note extends Entity {
   private _text: string;
 
   constructor(data: any) {
+    data = _.isObject(data) ? data : {};
     super(data);
     this.name = data.name;
     this.type = data.type;

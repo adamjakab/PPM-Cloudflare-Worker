@@ -1,36 +1,23 @@
 import * as _ from "lodash";
-// import { Entity } from "../entity/entity";
 import { Note } from "../entity/note";
-import EntityManager from "./entity-manager";
 import { Repository } from "./repository";
 
+/**
+ * Note Repository
+ */
 class NoteRepository extends Repository {
+  /**
+   * Constructor.
+   * @todo: the "entityClass" parameter passed to super should be done with decorators
+   * @todo: also "storageTableName" should be done with decorators
+   * like: @Repository("entityClass"="Note", "storageTableName"="notes")
+   */
   constructor() {
-    super();
+    super(Note);
     this._storageTableName = "notes";
-    /*
-    this.syncIn().then(() => {
-      console.log("NoteRepository is synced!")
-    });
-    */
-  }
-
-  public add(note: Note) {
-    super.add(note);
-    note.setRepository(this);
-  }
-
-  public async syncIn() {
-    super.reset();
-    const data = await EntityManager.fetchAll(this._storageTableName);
-    let note;
-    _.each(data, d => {
-      note = new Note(d);
-      note.setRepository(this);
-      this.add(note);
-    });
   }
 }
 
 // Export a single instance
+// @todo: at this point probably the exporting of a single instance is not needed
 export = new NoteRepository();

@@ -11,6 +11,7 @@ export class Entity {
   private _dateModified: Date;
 
   constructor(data: any, idType: string = "uuidv4") {
+    data = _.isObject(data) ? data : {};
     if (!_.includes(["uuidv4", "numeric"], idType)) {
       throw new Error("Id type(" + idType + ") not allowed!");
     }

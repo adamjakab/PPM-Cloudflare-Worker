@@ -11,14 +11,16 @@ import { Repository } from "../../../src/repository/repository";
 
 describe("Repository", () => {
   it("should be empty after creation", () => {
-    const repo = new Repository();
+    //@todo: find a way to supply storageTableName to Repository
+    //@todo: or mock Entity Manager
+    const repo = new Repository(Entity);
     const elist = repo.getAll();
     expect(_.isArray(elist)).toBeTruthy();
     expect(_.isEmpty(elist)).toBeTruthy();
   });
 
   it("should not be empty after add", () => {
-    const repo = new Repository();
+    const repo = new Repository(Entity);
     const d = { name: getRandomString() };
     const entity = new Entity(d);
     repo.add(entity);
