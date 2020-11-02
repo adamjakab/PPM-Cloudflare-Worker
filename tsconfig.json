@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "experimentalDecorators": true,
+    "experimentalDecorators": true,
     /* Basic Options */
     /* https://developers.cloudflare.com/workers/reference/ */
     /* Cloudflare Workers use the V8 JavaScript engine from Google Chrome. The

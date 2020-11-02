@@ -1,12 +1,14 @@
 import * as _ from "lodash";
 import { Entity } from "./entity";
+import { Entity as EnhancedEntity } from "../decorator/Entity";
 
+@EnhancedEntity("notes")
 export class Note extends Entity {
   private _name: string;
   private _type: string;
   private _text: string;
 
-  constructor(data: any) {
+  constructor(data?: any) {
     data = _.isObject(data) ? data : {};
     super(data);
     this.name = data.name;
