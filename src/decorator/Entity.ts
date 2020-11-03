@@ -1,26 +1,20 @@
 /* tslint:disable:no-console */
-
-/**
- * Options for the Entity decorator.
- */
-export interface EntityOptions {
-  /**
-   * Table name.
-   * If not specified then naming strategy will generate table name from entity name.
-   */
-  tableName?: string;
-}
-
 /**
  * Decorator for class: Entity
+ * Invoke with:
+ *    @Entity(tableName)
  */
 export function Entity(
   tableName: string,
-  options?: EntityOptions,
+  idType: string = "uuidv4",
 ): ClassDecorator {
   return target => {
-    console.log("CD[Entity](target): ", target);
-    console.log("CD[Entity](tableName): ", tableName);
-    console.log("CD[Entity](options): ", options);
+    // console.log("CD[Entity](target): ", target);
+    // console.log("CD[Entity](tableName): ", tableName);
+    target.prototype._idType = idType;
+    target.prototype.___decorationMetadata___ = {
+      tableName: tableName,
+      idType: idType
+    };
   };
 }

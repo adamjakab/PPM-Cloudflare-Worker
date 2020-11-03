@@ -47,6 +47,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "cloudflare-worker-rest-api": "^1.0.0",
     "lodash": "^4.17.15",
     "on-change": "^2.2.0",

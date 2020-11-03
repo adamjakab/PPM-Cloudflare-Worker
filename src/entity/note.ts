@@ -2,7 +2,8 @@ import * as _ from "lodash";
 import { Entity } from "./entity";
 import { Entity as EnhancedEntity } from "../decorator/Entity";
 
-@EnhancedEntity("notes")
+
+@EnhancedEntity("notesss")
 export class Note extends Entity {
   private _name: string;
   private _type: string;

@@ -3,6 +3,9 @@ import { validate as uuidValidate } from "uuid";
 import { Repository } from "../repository/repository";
 
 export class Entity {
+  /**
+   * Set by the decorator either automaticall to "uuidv4" or manually on the @Entity() decorator
+   */
   private readonly _idType: string;
   private _repository: Repository;
   private _isInSync: boolean;
@@ -10,12 +13,11 @@ export class Entity {
   private _dateCreated: Date;
   private _dateModified: Date;
 
-  constructor(data: any, idType: string = "uuidv4") {
+  constructor(data: any) {
     data = _.isObject(data) ? data : {};
-    if (!_.includes(["uuidv4", "numeric"], idType)) {
-      throw new Error("Id type(" + idType + ") not allowed!");
+    if (!_.includes(["uuidv4", "numeric"], this._idType)) {
+      throw new Error("Id type(" + this._idType + ") not allowed!");
     }
-    this._idType = idType;
     this.id = data.id;
     this.changeDateCreated(data.dateCreated);
     this.changeDateModified(data.dateModified);

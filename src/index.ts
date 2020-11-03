@@ -1,3 +1,5 @@
+/*
+@todo: this should go to App file
 import CloudflareWorkerGlobalScope from "types-cloudflare-worker";
 import EntityManager from "./repository/entity-manager";
 import { RestApiWorker } from "./rest-api";
@@ -22,3 +24,17 @@ self.addEventListener("fetch", (event: Event) => {
   const fetchEvent = event as FetchEvent;
   fetchEvent.respondWith(worker.handle(fetchEvent));
 });
+*/
+import { Platform } from "./util/platform";
+import { MetadataStorage } from "./metadata/metadata-storage";
+
+/**
+ * Gets metadata args storage.
+ */
+export function getMetadataStorage(): MetadataStorage {
+  const globalScope = Platform.getGlobalVariable();
+  if (!globalScope.metadataStorage) {
+    globalScope.metadataStorage = new MetadataStorage();
+  }
+  return globalScope.metadataStorage;
+}
