@@ -2,7 +2,7 @@
 import * as _ from "lodash";
 
 import EntityManager from "../../../src/repository/entity-manager";
-import NoteRepository from "../../../src/repository/note-repository";
+import { NoteRepository } from "../../../src/repository/note-repository";
 import { v4 as generateUUIDv4 } from "uuid";
 // import { Note } from "../../../src/entity/note";
 // import { InstanceCreator } from "../../../src/util/instance-creator";
@@ -22,15 +22,11 @@ describe("NoteRepository", () => {
   });
 
   it("should have a storage table name", () => {
-    expect(NoteRepository.storageTableName).not.toBeUndefined();
-    expect(NoteRepository.storageTableName).toEqual("notes");
+    const repo = new NoteRepository();
+    expect(repo.storageTableName).not.toBeUndefined();
+    expect(repo.storageTableName).toEqual("notes");
   });
 
-  it("should load all data: getAll()", async () => {
-    const notes = await NoteRepository.getAll();
-    expect(_.size(notes)).toEqual(_.size(defaultData.notes));
-    console.log(notes);
-  });
 
   /*
   it("should create a dynamic class instance", () => {

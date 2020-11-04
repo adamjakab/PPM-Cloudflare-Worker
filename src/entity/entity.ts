@@ -1,10 +1,13 @@
 import * as _ from "lodash";
 import { validate as uuidValidate } from "uuid";
+import { getMetadataStorage } from "../";
 import { Repository } from "../repository/repository";
+import { Platform } from "../util/platform";
 
 export class Entity {
   /**
-   * Set by the decorator either automaticall to "uuidv4" or manually on the @Entity() decorator
+   * The type of id this entity can have (an will generate when needed)
+   * Set by the decorator either automatically to "uuidv4" or manually on the @Entity() decorator
    */
   private readonly _idType: string;
   private _repository: Repository;
@@ -14,21 +17,26 @@ export class Entity {
   private _dateModified: Date;
 
   constructor(data: any) {
-    data = _.isObject(data) ? data : {};
-    if (!_.includes(["uuidv4", "numeric"], this._idType)) {
-      throw new Error("Id type(" + this._idType + ") not allowed!");
+    if (this.constructor.name === "Entity") {
+      throw new Error("Entity class cannot be instantiated without being extended!");
     }
+    this._repository = getMetadataStorage().getRepositoryForEntityClass(this.constructor);
+    //
+    const emd = _.get(getMetadataStorage().entityMetadata, this.constructor.name);
+    this._idType = _.get(emd, "idType");
+    if (!_.includes(["uuidv4", "numeric"], this._idType)) {
+      throw new Error("Id type('" + this._idType + "') not allowed!");
+    }
+    //
+    data = _.isObject(data) ? data : {};
     this.id = data.id;
     this.changeDateCreated(data.dateCreated);
     this.changeDateModified(data.dateModified);
     this.isInSync = true;
   }
 
-  public save(): void {
-    if (!this.isInRepository()) {
-      throw new Error("Not in repository!");
-    }
-    this._repository.persist(this);
+  public async save() {
+    return await this.getRepository().persist(this);
   }
 
   public get idType(): string {
@@ -36,6 +44,9 @@ export class Entity {
   }
 
   public getRepository(): Repository {
+    if (!this.isInRepository()) {
+      throw new Error("Not in repository!");
+    }
     return this._repository;
   }
 

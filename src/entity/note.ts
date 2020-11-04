@@ -2,8 +2,7 @@ import * as _ from "lodash";
 import { Entity } from "./entity";
 import { Entity as EnhancedEntity } from "../decorator/Entity";
 
-
-@EnhancedEntity("notesss")
+@EnhancedEntity("notes")
 export class Note extends Entity {
   private _name: string;
   private _type: string;
@@ -16,10 +15,6 @@ export class Note extends Entity {
     this.type = data.type;
     this.text = data.text;
     this.isInSync = true;
-  }
-
-  public save(): void {
-    super.save();
   }
 
   get name(): string {

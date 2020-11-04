@@ -20,11 +20,7 @@ export class Platform {
     console.log(...args);
   }
 
-  public static warn(message: string) {
-    Platform.log(chalk.yellow(message));
-  }
-
-  public static logInfo(prefix: string, info: any) {
-    Platform.log(chalk.gray.underline(prefix), info);
+  public static warn(...args: any[]) {
+    Platform.log(chalk.yellow("WARNING: "), ...args);
   }
 }

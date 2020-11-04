@@ -2,23 +2,30 @@
 import * as _ from "lodash";
 import { v4 as generateUUIDv4 } from "uuid";
 import { Entity } from "../../../src/entity/entity";
-// import {Repository} from '../../../src/repository/repository';
+import { Repository } from "../../../src/repository/repository";
 
 describe("Entity", () => {
+  it("should not be possible to instantiate", () => {
+    expect(() => {
+      const entity = new Entity({});
+    }).toThrow(/Entity class cannot be instantiated/);
+  });
+
+  /*
   it("should have idType 'uuidv4' by default", () => {
     const entity = new Entity({});
     expect(entity.idType).toEqual("uuidv4");
   });
 
   it("should have idType 'numeric' when requested", () => {
-    const entity = new Entity({}, "numeric");
+    const entity = new Entity({});
     expect(entity.idType).toEqual("numeric");
   });
 
   it("should throw an error on unknown idType", () => {
     expect(() => {
       // @ts-ignore
-      const entity = new Entity({}, "scalar");
+      const entity = new Entity({});
     }).toThrow(/not allowed/);
   });
 
@@ -36,7 +43,7 @@ describe("Entity", () => {
 
   it("should have the assigned id (numeric)", () => {
     const id = 123;
-    const entity = new Entity({ id: id }, "numeric");
+    const entity = new Entity({ id: id });
     expect(entity.id).toBeDefined();
     expect(entity.id).toEqual(id);
   });
@@ -79,4 +86,5 @@ describe("Entity", () => {
     const entity = new Entity({});
     expect(entity.isInSync).toBeTruthy();
   });
+   */
 });

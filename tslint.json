@@ -19,13 +19,14 @@
       "never"
     ],
     "ordered-imports": false,
+    /*
     "prettier": [
       true,
       {
         "singleQuote": false,
         "trailingComma": "all"
       }
-    ],
+    ],*/
     "quotemark": [
       true,
       "double"
