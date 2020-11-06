@@ -20,13 +20,12 @@ export class Entity {
     if (this.constructor.name === "Entity") {
       throw new Error("Entity class cannot be instantiated without being extended!");
     }
-    this._repository = getMetadataStorage().getRepositoryForEntityClass(this.constructor);
-    //
-    const emd = _.get(getMetadataStorage().entityMetadata, this.constructor.name);
-    this._idType = _.get(emd, "idType");
+
+    this._idType = this.getMetadataElement("idType");
     if (!_.includes(["uuidv4", "numeric"], this._idType)) {
       throw new Error("Id type('" + this._idType + "') not allowed!");
     }
+
     //
     data = _.isObject(data) ? data : {};
     this.id = data.id;
@@ -44,19 +43,14 @@ export class Entity {
   }
 
   public getRepository(): Repository {
-    if (!this.isInRepository()) {
-      throw new Error("Not in repository!");
-    }
-    return this._repository;
+    return getMetadataStorage().getRepositoryForEntityClass(this.constructor.name)
   }
 
-  public setRepository(value: Repository) {
-    this._repository = value;
-  }
-
+  /*
   public isInRepository(): boolean {
     return !_.isUndefined(this._repository);
   }
+  */
 
   get isInSync(): boolean {
     return this._isInSync;
@@ -92,6 +86,10 @@ export class Entity {
 
   public get dateModified(): Date {
     return this._dateModified;
+  }
+
+  public getMetadataElement(name:string) {
+    return getMetadataStorage().getMetadataElementFor("entity", this.constructor.name, name);
   }
 
   // @todo: Better look into something more serious: https://github.com/sindresorhus/on-change

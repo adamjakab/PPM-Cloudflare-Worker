@@ -1,3 +1,4 @@
+/* tslint:disable:no-console */
 /**
  * A very weak attempt to create class instances dynamically
  */
@@ -12,8 +13,8 @@ export class InstanceCreator<T> {
     try {
       return new this.klass(...args);
     } catch (e) {
-      // tslint:disable-next-line:no-console
       console.error("Error creating dynamic class instance!", e);
+      console.error("KLASS: ", this.klass);
     }
   }
 }

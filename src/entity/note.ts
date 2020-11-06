@@ -1,8 +1,9 @@
 import * as _ from "lodash";
+import { NoteRepository } from "../repository/note-repository";
 import { Entity } from "./entity";
 import { Entity as EnhancedEntity } from "../decorator/Entity";
 
-@EnhancedEntity("notes")
+@EnhancedEntity("notes", NoteRepository)
 export class Note extends Entity {
   private _name: string;
   private _type: string;

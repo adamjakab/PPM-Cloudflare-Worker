@@ -20,6 +20,8 @@ export class Repository {
     if (this.constructor.name === "Repository") {
       throw new Error("Repository class cannot be instantiated without being extended!");
     }
+
+    /*
     const rmd = _.get(getMetadataStorage().repositoryMetadata, this.constructor.name);
     Platform.log("TCN", Repository.name);
     this._entityClass = _.get(rmd, "entityClass");
@@ -27,6 +29,7 @@ export class Repository {
     const emd = _.get(getMetadataStorage().entityMetadata, this._entityClass.name);
     // Platform.log("EMD", emd);
     this._storageTableName = _.get(emd, "tableName");
+    */
   }
 
   get storageTableName(): string {
@@ -48,7 +51,8 @@ export class Repository {
   }
 
   public async persist(entity: Entity) {
-    return await EntityManager.store(this._storageTableName, entity);
+    const storageTableName = entity.getMetadataElement("tableName")
+    return await EntityManager.store(storageTableName, entity);
   }
 
   public async remove(entity: Entity) {

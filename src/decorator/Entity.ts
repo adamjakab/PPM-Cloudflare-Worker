@@ -9,6 +9,7 @@ import { Platform } from "../util/platform";
  */
 export function Entity(
   tableName: string,
+  repository: any,
   idType: string = "uuidv4",
 ): ClassDecorator {
   return target => {
@@ -16,9 +17,10 @@ export function Entity(
     // Platform.log("CD[Entity](tableName): ", tableName);
     const metadata = {
       tableName: tableName,
+      repository: repository,
       idType: idType,
       _class: target,
     };
-    _.set(getMetadataStorage().entityMetadata, target.name, metadata);
+    getMetadataStorage().setMetadataFor("entity", target.name, metadata);
   };
 }

@@ -11,21 +11,18 @@ describe("Test", () => {
     expect(true).toBeTruthy();
   });
 
-  it("should have metadata", () => {
-    Platform.log("Repo Metadata: ", getMetadataStorage().repositoryMetadata);
-    Platform.log("Entity Metadata: ", getMetadataStorage().entityMetadata);
-  });
-
+  /*
   it("Repo test", () => {
     const repo = new NoteRepository();
     Platform.log("Repo: ", repo);
   });
+   */
 
   it("Entity test", async () => {
     const note = new Note();
     note.name = "Palo";
     Platform.log("Note: ", note);
-    // await note.save();
+    await note.save();
   });
 
 
