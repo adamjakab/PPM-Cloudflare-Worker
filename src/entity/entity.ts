@@ -1,5 +1,6 @@
 import * as _ from "lodash";
 import { validate as uuidValidate } from "uuid";
+import { v4 as generateUUIDv4 } from "uuid";
 import { getMetadataStorage } from "../";
 import { Repository } from "../repository/repository";
 import { Platform } from "../util/platform";
@@ -10,7 +11,6 @@ export class Entity {
    * Set by the decorator either automatically to "uuidv4" or manually on the @Entity() decorator
    */
   private readonly _idType: string;
-  private _repository: Repository;
   private _isInSync: boolean;
   private _id: number | string;
   private _dateCreated: Date;
@@ -26,12 +26,7 @@ export class Entity {
       throw new Error("Id type('" + this._idType + "') not allowed!");
     }
 
-    //
-    data = _.isObject(data) ? data : {};
-    this.id = data.id;
-    this.changeDateCreated(data.dateCreated);
-    this.changeDateModified(data.dateModified);
-    this.isInSync = true;
+    this.setDefaultEntityData();
   }
 
   public async save() {
@@ -69,7 +64,7 @@ export class Entity {
       throw new Error("Entity id cannot be changed!");
     }
     if (!_.isUndefined(value)) {
-      //// expect(uuidVersion(entity.id as string)).toEqual(4);
+      // @todo: add v4 check:  expect(uuidVersion(entity.id as string)).toEqual(4);
       if (this._idType === "uuidv4" && !uuidValidate(value as string)) {
         throw new Error("Entity id must be a valid uuidv4!");
       }
@@ -77,6 +72,7 @@ export class Entity {
         throw new Error("Entity id must be numeric!");
       }
     }
+
     this._id = value;
   }
 
@@ -92,10 +88,17 @@ export class Entity {
     return getMetadataStorage().getMetadataElementFor("entity", this.constructor.name, name);
   }
 
-  // @todo: Better look into something more serious: https://github.com/sindresorhus/on-change
+  // @todo: Better to look into something more structured: https://github.com/sindresorhus/on-change
   protected _entityChanged() {
     this.isInSync = false;
     this._dateModified = new Date();
+  }
+
+  protected mapDataOnEntity(data: any) {
+    this.id = data.id;
+    this.checkEntityId();
+    this.changeDateCreated(data.dateCreated);
+    this.changeDateModified(data.dateModified);
   }
 
   private changeDateCreated(value: Date) {
@@ -111,4 +114,27 @@ export class Entity {
       this._dateModified = !isNaN(date.valueOf()) ? date : new Date();
     }
   }
+
+  private setDefaultEntityData() {
+    // this.id; It will be left undefined
+    this.changeDateCreated(new Date());
+    this.changeDateModified(new Date());
+    this.isInSync = false;
+  }
+
+  private checkEntityId() {
+    if (this.idType === "uuidv4") {
+      if (_.isUndefined(this.id) || !uuidValidate(this.id.toString())) {
+        this.id = generateUUIDv4();
+      }
+    } else if (this.idType === "numeric") {
+      if (_.isUndefined(this.id) || !_.isNumber(this.id)) {
+        const repo = this.getRepository();
+        throw Error("Not Implemented!")
+        // const maxId = repo.getMaxId();
+        // this.id = maxId;
+      }
+    }
+  }
+
 }

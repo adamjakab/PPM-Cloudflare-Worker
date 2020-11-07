@@ -58,19 +58,4 @@ export class Repository {
   public async remove(entity: Entity) {
     return await EntityManager.delete(this._storageTableName, entity.id);
   }
-
-  /*private checkEntityId(entity: Entity) {
-    if (entity.idType === "uuidv4") {
-      if (_.isUndefined(entity.id) || !uuidValidate(entity.id.toString())) {
-        entity.id = generateUUIDv4();
-      }
-    } else if (entity.idType === "numeric") {
-      if (_.isUndefined(entity.id) || !_.isNumber(entity.id)) {
-        const maxElement = _.maxBy(this._items, "id");
-        entity.id = _.isUndefined(maxElement)
-          ? 0
-          : (maxElement.id as number) + 1;
-      }
-    }
-  }*/
 }

@@ -12,10 +12,7 @@ export class Note extends Entity {
   constructor(data?: any) {
     data = _.isObject(data) ? data : {};
     super(data);
-    this.name = data.name;
-    this.type = data.type;
-    this.text = data.text;
-    this.isInSync = true;
+    this.mapDataOnEntity(data);
   }
 
   get name(): string {
@@ -43,5 +40,14 @@ export class Note extends Entity {
   set text(value: string) {
     this._text = value;
     this._entityChanged();
+  }
+
+  protected mapDataOnEntity(data: any) {
+    data = _.isObject(data) ? data : {};
+    super.mapDataOnEntity(data);
+    this.name = data.name;
+    this.type = data.type;
+    this.text = data.text;
+    // this.isInSync = true;  // why?
   }
 }

@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import { Platform } from "../util/platform";
 import { Storage, StorageInterface } from "./storage";
 
 /**
@@ -56,7 +57,8 @@ export class Memory extends Storage implements StorageInterface {
         reject(new Error("Unknown storage table: " + table));
       }
       */
-      if (!_.has(element, "id")) {
+      Platform.log("Saving entity: ", element.id);
+      if (!_.get(element, "id")) {
         reject(new Error("Element does not have an id!"));
       }
       const tbl = _.get(this._data, table, []);
