@@ -12,7 +12,7 @@ const defaultData = {
     { id: generateUUIDv4(), name: "Ficus", dateCreated: "2020-08-15" },
     { id: generateUUIDv4(), name: "Fityisz", type: "video", text: "hi!" },
     { id: generateUUIDv4(), name: "Kecske", type: "audio" },
-    { id: generateUUIDv4(), name: "Kigyo", text: "Adi bacsi is back!" },
+    { id: generateUUIDv4(), name: "Kigyo", text: "Adi is back!" },
   ],
 };
 
@@ -23,8 +23,11 @@ describe("NoteRepository", () => {
 
   it("should have a storage table name", () => {
     const repo = new NoteRepository();
+
     expect(repo.storageTableName).not.toBeUndefined();
     expect(repo.storageTableName).toEqual("notes");
+
+    //@todo: we are missing repository metadata and therefore link to the entity - entity holds the name of the table
   });
 
 

@@ -52,15 +52,11 @@ export class Memory extends Storage implements StorageInterface {
    */
   public async store(table: string, element: any): Promise<number> {
     return new Promise<number>((resolve, reject) => {
-      /*
-      if (!_.has(this._data, table)) {
-        reject(new Error("Unknown storage table: " + table));
-      }
-      */
-      Platform.log("Saving entity: ", element.id);
       if (!_.get(element, "id")) {
         reject(new Error("Element does not have an id!"));
       }
+      Platform.log("Saving entity: ", element.id);
+
       const tbl = _.get(this._data, table, []);
       const exEl = _.find(tbl, { id: element.id });
       if (_.isUndefined(exEl)) {

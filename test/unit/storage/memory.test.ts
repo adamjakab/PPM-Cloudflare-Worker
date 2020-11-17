@@ -104,7 +104,7 @@ describe("Memory(Storage)", () => {
     try {
       await ms.store("notes", {});
     } catch (e) {
-      expect(e.toString()).toMatch("Unknown storage table");
+      expect(e.toString()).toMatch("Element does not have an id!");
     }
   });
 

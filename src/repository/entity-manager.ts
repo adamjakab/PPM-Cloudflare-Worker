@@ -26,6 +26,12 @@ class EntityManager {
     return await this._storage.fetchOne(table, id);
   }
 
+  /**
+   * @todo: Should convert Entity of object !!!
+   * @todo: storage should NOT know about entities
+   * @param table
+   * @param entity
+   */
   public async store(table: string, entity: Entity) {
     return await this._storage.store(table, entity);
   }

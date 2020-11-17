@@ -30,25 +30,4 @@ describe("Note(Entity)", () => {
     });
   });
 
-  it("should be in sync after creation", () => {
-    const data = {
-      name: "note-1",
-      type: "memo",
-      text: "Remember to brush your teeth.",
-    };
-    const note = new Note(data);
-    expect(note.isInSync).toBeTruthy();
-  });
-
-  // delay added - otherwise test fails on circleci because dates do not differ (too fast)
-  it("should be out of sync after change", async () => {
-    const note = new Note({ name: "note-1" });
-    expect(note.isInSync).toBeTruthy();
-    const modificationDateBefore = note.dateModified;
-    await delay(50);
-    note.name = "note-2";
-    const modificationDateAfter = note.dateModified;
-    expect(note.isInSync).toBeFalsy();
-    expect(modificationDateAfter).not.toEqual(modificationDateBefore);
-  });
 });
