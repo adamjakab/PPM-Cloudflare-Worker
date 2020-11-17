@@ -1,5 +1,4 @@
 /* tslint:disable:no-console */
-import chalk from "chalk";
 
 /**
  * Platform
@@ -21,6 +20,6 @@ export class Platform {
   }
 
   public static warn(...args: any[]) {
-    Platform.log(chalk.yellow("WARNING: "), ...args);
+    Platform.log("WARNING: ", ...args);
   }
 }

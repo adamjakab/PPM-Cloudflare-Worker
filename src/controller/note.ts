@@ -1,11 +1,13 @@
+import { Note } from "../entity/note";
 import { Controller } from "./controller";
 import { RestApiRequest } from "../rest-api/request";
 import { RestApiResponse } from "../rest-api/response";
-import NoteRepository from "../repository/note-repository";
+import { NoteRepository } from "../repository/note-repository";
 
 class NoteController extends Controller {
   public list(req: RestApiRequest, res: RestApiResponse) {
-    const notes = NoteRepository.getAll();
+    const repo = new NoteRepository();
+    const notes = repo.getAll();
     return res.send(notes);
   }
 
