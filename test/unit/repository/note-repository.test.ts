@@ -1,5 +1,6 @@
 /* tslint:disable:no-console */
 import * as _ from "lodash";
+import { Note } from "../../../src/entity/note";
 
 import EntityManager from "../../../src/repository/entity-manager";
 import { NoteRepository } from "../../../src/repository/note-repository";
@@ -19,24 +20,13 @@ const defaultData = {
 describe("NoteRepository", () => {
   beforeEach(async () => {
     EntityManager.storage.reset(defaultData);
+    EntityManager.registerEntities([Note]);
   });
 
   it("should have a storage table name", () => {
     const repo = new NoteRepository();
-
     expect(repo.storageTableName).not.toBeUndefined();
     expect(repo.storageTableName).toEqual("notes");
-
-    //@todo: we are missing repository metadata and therefore link to the entity - entity holds the name of the table
   });
-
-
-  /*
-  it("should create a dynamic class instance", () => {
-    const creator = new InstanceCreator(Note);
-    const instance: Note = creator.getNewInstance({ id: generateUUIDv4() });
-    console.log(instance);
-  });
-  */
 
 });

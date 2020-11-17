@@ -23,6 +23,23 @@ export class MetadataStorage {
     return repoInstance;
   };
 
+
+  public getEntityMetadataElementForRepository(klass:any, element:string) {
+    const entityMetadata = _.find(this._metadata.entity, {repository: klass});
+
+    if (_.isUndefined(entityMetadata)) {
+      throw new Error("Unable to find entity metadata for repository class: " + klass);
+    }
+
+    if (!_.has(entityMetadata, element)) {
+      throw new Error("Unable to find metadata element: " + element);
+    }
+
+    return _.get(entityMetadata, element);
+  };
+
+
+
   public getMetadataElementFor(type: metadataTypes, name:string, element:string) {
     let md : any = this.getMetadataFor(type, name);
 

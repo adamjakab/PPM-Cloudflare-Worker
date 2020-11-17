@@ -21,12 +21,11 @@ export class Repository {
       throw new Error("Repository class cannot be instantiated without being extended!");
     }
 
-    Platform.log("CONSTRUCTOR: ", this.constructor.name);
-
-    //const rmd = getMetadataStorage().getMetadataFor("repository", this.constructor.name);
-    //Platform.log("REPO METADATA: ", rmd);
+    this._storageTableName = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, "tableName");
+    // Platform.log("REPO(" + this.constructor.name + ") has storage table: " + this._storageTableName);
 
     /*
+    Platform.log("CONSTRUCTOR: ", this.constructor);
     const rmd = _.get(getMetadataStorage().repositoryMetadata, this.constructor.name);
     Platform.log("TCN", Repository.name);
     this._entityClass = _.get(rmd, "entityClass");

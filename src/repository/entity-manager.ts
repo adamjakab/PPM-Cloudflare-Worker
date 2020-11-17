@@ -2,11 +2,15 @@ import * as _ from "lodash";
 import { Entity } from "../entity/entity";
 import { Memory } from "../storage/memory";
 import { StorageInterface } from "../storage/storage";
+import { InstanceCreator } from "../util/instance-creator";
+import { Platform } from "../util/platform";
 
 class EntityManager {
   private _storage: StorageInterface;
+  private _knownEntities: object[];
 
   constructor(driver: StorageInterface) {
+    this._knownEntities = [];
     this.setupStorageDriver(driver);
   }
 
@@ -38,6 +42,26 @@ class EntityManager {
 
   public async delete(table: string, id: number | string) {
     return await this._storage.delete(table, id);
+  }
+
+  /**
+   * This will trigger the instance creation of the specified entity which in turn will make sure that the
+   * metadata (triggered by the entity decorator) is created and available for each entity
+   *
+   * @param entity
+   */
+  public registerEntity(entity: Entity) {
+    if (!_.includes(this._knownEntities, entity)) {
+      this._knownEntities.push(entity);
+      const ic = new InstanceCreator(entity);
+      const e = ic.getNewInstance({});
+    }
+  }
+
+  public registerEntities(entities: any[]) {
+    _.each(entities, (entity: Entity) => {
+      this.registerEntity(entity);
+    });
   }
 
   public setupStorageDriver(driver: StorageInterface) {

@@ -55,7 +55,7 @@ export class Memory extends Storage implements StorageInterface {
       if (!_.get(element, "id")) {
         reject(new Error("Element does not have an id!"));
       }
-      Platform.log("Saving entity: ", element.id);
+      // Platform.log("Saving entity: ", element.id);
 
       const tbl = _.get(this._data, table, []);
       const exEl = _.find(tbl, { id: element.id });

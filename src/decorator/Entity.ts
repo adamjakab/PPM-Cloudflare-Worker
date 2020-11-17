@@ -5,7 +5,7 @@ import { Platform } from "../util/platform";
 /**
  * Decorator for class: Entity
  * Invoke with:
- *    @Entity(tableName)
+ *    @Entity(tableName, repository)
  */
 export function Entity(
   tableName: string,

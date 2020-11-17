@@ -16,14 +16,14 @@ describe("Test", () => {
     const repo = new NoteRepository();
     Platform.log("Repo: ", repo);
   });
-   */
+
 
   it("Entity test", async () => {
     const note = new Note();
-    note.name = "Palo";
-    Platform.log("Note: ", note);
+    note.name = "My secret note";
+    // Platform.log("Note: ", note);
     await note.save();
   });
-
+*/
 
 });
