@@ -1,33 +1,33 @@
-import * as _ from "lodash";
-import { Entity } from "../entity/entity";
-import { Memory } from "../storage/memory";
-import { StorageInterface } from "../storage/storage";
-import { InstanceCreator } from "../util/instance-creator";
-import { Platform } from "../util/platform";
+import * as _ from 'lodash'
+import { Entity } from '../entity/entity'
+import { Memory } from '../storage/memory'
+import { StorageInterface } from '../storage/storage'
+import { InstanceCreator } from '../util/instance-creator'
+import { Platform } from '../util/platform'
 
 class EntityManager {
   private _storage: StorageInterface;
   private _knownEntities: object[];
 
-  constructor(driver: StorageInterface) {
-    this._knownEntities = [];
-    this.setupStorageDriver(driver);
+  constructor (driver: StorageInterface) {
+    this._knownEntities = []
+    this.setupStorageDriver(driver)
   }
 
-  get driver(): string {
-    return this._storage.name;
+  get driver (): string {
+    return this._storage.name
   }
 
-  get storage(): StorageInterface {
-    return this._storage;
+  get storage (): StorageInterface {
+    return this._storage
   }
 
-  public async fetchAll(table: string) {
-    return await this._storage.fetchAll(table);
+  public async fetchAll (table: string) {
+    return await this._storage.fetchAll(table)
   }
 
-  public async fetchOne(table: string, id: number | string) {
-    return await this._storage.fetchOne(table, id);
+  public async fetchOne (table: string, id: number | string) {
+    return await this._storage.fetchOne(table, id)
   }
 
   /**
@@ -36,12 +36,12 @@ class EntityManager {
    * @param table
    * @param entity
    */
-  public async store(table: string, entity: Entity) {
-    return await this._storage.store(table, entity);
+  public async store (table: string, entity: Entity) {
+    return await this._storage.store(table, entity)
   }
 
-  public async delete(table: string, id: number | string) {
-    return await this._storage.delete(table, id);
+  public async delete (table: string, id: number | string) {
+    return await this._storage.delete(table, id)
   }
 
   /**
@@ -50,22 +50,22 @@ class EntityManager {
    *
    * @param entity
    */
-  public registerEntity(entity: Entity) {
+  public registerEntity (entity: Entity) {
     if (!_.includes(this._knownEntities, entity)) {
-      this._knownEntities.push(entity);
-      const ic = new InstanceCreator(entity);
-      const e = ic.getNewInstance({});
+      this._knownEntities.push(entity)
+      const ic = new InstanceCreator(entity)
+      const e = ic.getNewInstance({})
     }
   }
 
-  public registerEntities(entities: any[]) {
+  public registerEntities (entities: any[]) {
     _.each(entities, (entity: Entity) => {
-      this.registerEntity(entity);
-    });
+      this.registerEntity(entity)
+    })
   }
 
-  public setupStorageDriver(driver: StorageInterface) {
-    this._storage = driver;
+  public setupStorageDriver (driver: StorageInterface) {
+    this._storage = driver
   }
 }
 

@@ -1,26 +1,26 @@
-import { Note } from "../entity/note";
-import { Controller } from "./controller";
-import { RestApiRequest } from "../rest-api/request";
-import { RestApiResponse } from "../rest-api/response";
-import { NoteRepository } from "../repository/note-repository";
+import { Note } from '../entity/note'
+import { Controller } from './controller'
+import { RestApiRequest } from '../rest-api/request'
+import { RestApiResponse } from '../rest-api/response'
+import { NoteRepository } from '../repository/note-repository'
 
 class NoteController extends Controller {
-  public list(req: RestApiRequest, res: RestApiResponse) {
-    const repo = new NoteRepository();
-    const notes = repo.getAll();
-    return res.send(notes);
+  public list (req: RestApiRequest, res: RestApiResponse) {
+    const repo = new NoteRepository()
+    const notes = repo.getAll()
+    return res.send(notes)
   }
 
-  public getOne(req: RestApiRequest, res: RestApiResponse) {
-    const { id } = req.getParams();
+  public getOne (req: RestApiRequest, res: RestApiResponse) {
+    const { id } = req.getParams()
 
     const msg = {
-      message_1: "[getOne] You asked for: " + req.getPath(),
+      message_1: '[getOne] You asked for: ' + req.getPath(),
       params: req.getParams(),
-      id: id,
-    };
+      id: id
+    }
 
-    return res.send(msg);
+    return res.send(msg)
   }
 
   /*

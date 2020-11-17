@@ -1,6 +1,6 @@
-import * as _ from "lodash";
-import { getMetadataStorage } from "../";
-import { Platform } from "../util/platform";
+import * as _ from 'lodash'
+import { getMetadataStorage } from '../'
+import { Platform } from '../util/platform'
 
 /**
  * Decorator for class: Repository
@@ -9,9 +9,9 @@ import { Platform } from "../util/platform";
  *
  *  @deprecated
  */
-export function Repository(entity?: any): ClassDecorator {
+export function Repository (entity?: any): ClassDecorator {
   return target => {
-    throw new Error("Deprecated! Repository decorator should not be used.");
+    throw new Error('Deprecated! Repository decorator should not be used.')
     // Platform.log("CD[Repository](target.name): ", target.name);
     /*
     const metadata = {
@@ -20,5 +20,5 @@ export function Repository(entity?: any): ClassDecorator {
     };
     getMetadataStorage().setMetadataFor("repository", target.name, metadata);
     */
-  };
+  }
 }

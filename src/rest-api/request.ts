@@ -1,4 +1,4 @@
-import { RouteElementLayout } from "../interface/route_element";
+import { RouteElementLayout } from '../interface/route_element'
 // import URLParse from "url-parse";
 
 export class RestApiRequest {
@@ -7,61 +7,61 @@ export class RestApiRequest {
   /** @var {{message, id}} */
   protected validRoute: RouteElementLayout | undefined;
 
-  constructor(request: Request) {
-    this.request = request;
-    this.validRoute = undefined;
-    this.elaborateRequest();
+  constructor (request: Request) {
+    this.request = request
+    this.validRoute = undefined
+    this.elaborateRequest()
   }
 
-  public setValidRoute(route: RouteElementLayout) {
+  public setValidRoute (route: RouteElementLayout) {
     // tslint:disable: no-console
-    console.log("Setting valid route for request:", route);
-    this.validRoute = route;
+    console.log('Setting valid route for request:', route)
+    this.validRoute = route
   }
 
-  public getValidRoute() {
-    return this.validRoute;
+  public getValidRoute () {
+    return this.validRoute
   }
 
-  public async body() {
+  public async body () {
     try {
-      return await this.request.json();
+      return await this.request.json()
     } catch (error) {
-      return {}; // cases when body is null, but still json in content header
+      return {} // cases when body is null, but still json in content header
     }
   }
 
   public getUrl = () => {
-    return this.request.url;
+    return this.request.url
   };
 
   public getPath = () => {
     return (
-      "/" +
+      '/' +
       this.getUrl()
-        .split("/")
+        .split('/')
         .slice(3)
-        .join("/")
-        .split("?")[0]
-    );
+        .join('/')
+        .split('?')[0]
+    )
   };
 
   /**
    * @returns {{}}
    */
   public getParams = () => {
-    let answer: any = {};
+    let answer: any = {}
     if (this.validRoute) {
-      answer = this.validRoute.dynamicRoute.match(this.getPath());
+      answer = this.validRoute.dynamicRoute.match(this.getPath())
     }
-    return answer;
+    return answer
   };
 
   public getMethod = () => {
-    return this.request.method;
+    return this.request.method
   };
 
-  private elaborateRequest() {
+  private elaborateRequest () {
     // do something like register path / params
     // const url = new URLParse(this.getUrl());
     // console.log("Parsed URL: " + JSON.stringify(url));

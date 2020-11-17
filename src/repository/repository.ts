@@ -1,11 +1,11 @@
 /* tslint:disable:no-console */
-import * as _ from "lodash";
-import { getMetadataStorage } from "../";
+import * as _ from 'lodash'
+import { getMetadataStorage } from '../'
 // import { v4 as generateUUIDv4, validate as uuidValidate } from "uuid";
-import { InstanceCreator } from "../util/instance-creator";
-import EntityManager from "../repository/entity-manager";
-import { Entity } from "../entity/entity";
-import { Platform } from "../util/platform";
+import { InstanceCreator } from '../util/instance-creator'
+import EntityManager from '../repository/entity-manager'
+import { Entity } from '../entity/entity'
+import { Platform } from '../util/platform'
 
 export class Repository {
   protected _storageTableName: string;
@@ -16,12 +16,12 @@ export class Repository {
   protected _entityClass: any;
   protected _entityCreator: any;
 
-  constructor() {
-    if (this.constructor.name === "Repository") {
-      throw new Error("Repository class cannot be instantiated without being extended!");
+  constructor () {
+    if (this.constructor.name === 'Repository') {
+      throw new Error('Repository class cannot be instantiated without being extended!')
     }
 
-    this._storageTableName = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, "tableName");
+    this._storageTableName = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, 'tableName')
     // Platform.log("REPO(" + this.constructor.name + ") has storage table: " + this._storageTableName);
 
     /*
@@ -36,30 +36,30 @@ export class Repository {
     */
   }
 
-  get storageTableName(): string {
-    return this._storageTableName;
+  get storageTableName (): string {
+    return this._storageTableName
   }
 
-  public async getAll() {
-    const storageData = await EntityManager.fetchAll(this._storageTableName);
-    const entities: any[] = [];
+  public async getAll () {
+    const storageData = await EntityManager.fetchAll(this._storageTableName)
+    const entities: any[] = []
     _.each(storageData, sd => {
-      const entity = this._entityCreator.getNewInstance(sd);
-      entities.push(entity);
-    });
-    return entities;
+      const entity = this._entityCreator.getNewInstance(sd)
+      entities.push(entity)
+    })
+    return entities
   }
 
-  public async get(id: number | string) {
-    return await EntityManager.fetchOne(this._storageTableName, id);
+  public async get (id: number | string) {
+    return await EntityManager.fetchOne(this._storageTableName, id)
   }
 
-  public async persist(entity: Entity) {
-    const storageTableName = entity.getMetadataElement("tableName")
-    return await EntityManager.store(storageTableName, entity);
+  public async persist (entity: Entity) {
+    const storageTableName = entity.getMetadataElement('tableName')
+    return await EntityManager.store(storageTableName, entity)
   }
 
-  public async remove(entity: Entity) {
-    return await EntityManager.delete(this._storageTableName, entity.id);
+  public async remove (entity: Entity) {
+    return await EntityManager.delete(this._storageTableName, entity.id)
   }
 }

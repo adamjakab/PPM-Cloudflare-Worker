@@ -1,5 +1,5 @@
 // import { Note } from "../entity/note";
-import { Repository } from "./repository";
+import { Repository } from './repository'
 // import { Repository as EnhancedRepository } from "../decorator/Repository";
 
 /**

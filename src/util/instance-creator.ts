@@ -3,18 +3,18 @@
  * A very weak attempt to create class instances dynamically
  */
 export class InstanceCreator<T> {
-  private readonly klass: any;
+  private readonly Klass: any;
 
-  constructor(klass: any) {
-    this.klass = klass;
+  constructor (klass: any) {
+    this.Klass = klass
   }
 
-  public getNewInstance(...args: any[]) {
+  public getNewInstance (...args: any[]) {
     try {
-      return new this.klass(...args);
+      return new this.Klass(...args)
     } catch (e) {
-      console.error("Error creating dynamic class instance!", e);
-      console.error("KLASS: ", this.klass);
+      console.error('Error creating dynamic class instance!', e)
+      console.error('Klass: ', this.Klass)
     }
   }
 }

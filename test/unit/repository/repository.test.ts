@@ -1,20 +1,20 @@
 /* tslint:disable:no-console */
-import * as _ from "lodash";
+import * as _ from 'lodash'
 import {
   v4 as generateUUIDv4,
   validate as uuidValidate,
-  version as uuidVersion,
-} from "uuid";
-import { getRandomString } from "../../../src/util/utils";
-import { Entity } from "../../../src/entity/entity";
-import { Repository } from "../../../src/repository/repository";
+  version as uuidVersion
+} from 'uuid'
+import { getRandomString } from '../../../src/util/utils'
+import { Entity } from '../../../src/entity/entity'
+import { Repository } from '../../../src/repository/repository'
 
-describe("Repository", () => {
-  it("should not be possible to instantiate", () => {
+describe('Repository', () => {
+  it('should not be possible to instantiate', () => {
     expect(() => {
-      const repo = new Repository();
-    }).toThrow(/Repository class cannot be instantiated/);
-  });
+      const repo = new Repository()
+    }).toThrow(/Repository class cannot be instantiated/)
+  })
 
   /*
   it("should not be empty after add", () => {
@@ -115,4 +115,4 @@ describe("Repository", () => {
     expect(entityList[1]).toEqual(e3);
   });
    */
-});
+})

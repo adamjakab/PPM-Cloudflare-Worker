@@ -1,15 +1,15 @@
 /* tslint:disable:no-console */
-import * as _ from "lodash";
-import { v4 as generateUUIDv4 } from "uuid";
-import { Entity } from "../../../src/entity/entity";
-import { Repository } from "../../../src/repository/repository";
+import * as _ from 'lodash'
+import { v4 as generateUUIDv4 } from 'uuid'
+import { Entity } from '../../../src/entity/entity'
+import { Repository } from '../../../src/repository/repository'
 
-describe("Entity", () => {
-  it("should not be possible to instantiate", () => {
+describe('Entity', () => {
+  it('should not be possible to instantiate', () => {
     expect(() => {
-      const entity = new Entity({});
-    }).toThrow(/Entity class cannot be instantiated/);
-  });
+      const entity = new Entity({})
+    }).toThrow(/Entity class cannot be instantiated/)
+  })
 
   /*
   it("should have idType 'uuidv4' by default", () => {
@@ -87,4 +87,4 @@ describe("Entity", () => {
     expect(entity.isInSync).toBeTruthy();
   });
    */
-});
+})
