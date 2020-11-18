@@ -1,6 +1,6 @@
 /* tslint:disable:no-console */
 import * as _ from 'lodash'
-import { getMetadataStorage } from '../'
+import { getMetadataStorage } from '../global'
 // import { v4 as generateUUIDv4, validate as uuidValidate } from "uuid";
 import { InstanceCreator } from '../util/instance-creator'
 import EntityManager from '../repository/entity-manager'

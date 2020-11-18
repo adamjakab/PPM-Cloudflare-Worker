@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import { validate as uuidValidate, v4 as generateUUIDv4 } from 'uuid'
 
-import { getMetadataStorage } from '../'
+import { getMetadataStorage } from '../global'
 import { Repository } from '../repository/repository'
 import { Platform } from '../util/platform'
 

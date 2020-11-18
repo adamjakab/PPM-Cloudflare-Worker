@@ -1,26 +1,26 @@
-const path = require("path");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path')
 
 module.exports = {
-  mode: "development",
-  target: "webworker",
-  entry: {
-    index: "./src/index.ts"
+  context: __dirname,
+  mode: 'development',
+  target: 'webworker',
+  entry: './src/index.ts',
+  resolve: {
+    extensions: ['.ts']
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: [/node_modules/, /test/]
       }
     ]
   },
-  resolve: {
-    extensions: [".ts", ".js"]
-  },
   output: {
-    filename: "worker.js",
-    path: path.resolve(__dirname, "dist")
+    filename: 'worker.js',
+    path: path.resolve(__dirname, 'dist')
   },
-  devtool: "inline-source-map"
-};
+  devtool: 'inline-source-map'
+}
