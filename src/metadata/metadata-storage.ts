@@ -5,8 +5,8 @@ import { Platform } from '../util/platform'
 type metadataTypes = 'entity' | 'repository';
 
 export class MetadataStorage {
-  private repositoryInstances: any = {};
-  private _metadata: any = {};
+  private repositoryInstances: any = {}
+  private _metadata: any = {}
 
   public getRepositoryForEntityClass = (entityClassName: string) => {
     let repoInstance
@@ -21,9 +21,9 @@ export class MetadataStorage {
     }
 
     return repoInstance
-  };
+  }
 
-  public getEntityMetadataElementForRepository (klass:any, element:string) {
+  public getEntityMetadataElementForRepository (klass: any, element: string) {
     const entityMetadata = _.find(this._metadata.entity, { repository: klass })
 
     if (_.isUndefined(entityMetadata)) {
@@ -37,8 +37,8 @@ export class MetadataStorage {
     return _.get(entityMetadata, element)
   }
 
-  public getMetadataElementFor (type: metadataTypes, name:string, element:string) {
-    let md : any = this.getMetadataFor(type, name)
+  public getMetadataElementFor (type: metadataTypes, name: string, element: string) {
+    let md: any = this.getMetadataFor(type, name)
 
     if (!_.has(md, element)) {
       throw new Error('Unable to find metadata element: ' + element)
@@ -48,8 +48,8 @@ export class MetadataStorage {
     return md
   }
 
-  public getMetadataFor (type: metadataTypes, name:string) {
-    let md : {} = this._metadata
+  public getMetadataFor (type: metadataTypes, name: string) {
+    let md: any = this._metadata
 
     if (!_.has(md, type)) {
       throw new Error('Unable to find metadata type: ' + type)
@@ -64,8 +64,8 @@ export class MetadataStorage {
     return md
   }
 
-  public setMetadataFor (type: metadataTypes, name:string, metadata: {}) {
-    let md : {} = this._metadata
+  public setMetadataFor (type: metadataTypes, name: string, metadata: any) {
+    let md: any = this._metadata
 
     if (!_.has(md, type)) {
       if (!_.includes(['entity', 'repository'], type)) {

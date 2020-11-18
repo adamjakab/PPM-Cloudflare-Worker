@@ -6,5 +6,5 @@ export interface StorageInterface {
   fetchOne(table: string, id: number | string): Promise<any>;
   store(table: string, element: any): Promise<number>;
   delete(table: string, id: number | string): Promise<boolean>;
-  reset(defaultData: {}): void;
+  reset(defaultData: Record<string, any>): void;
 }

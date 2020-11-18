@@ -10,7 +10,7 @@ import { Platform } from '../util/platform'
 export function Entity (
   tableName: string,
   repository: any,
-  idType: string = 'uuidv4'
+  idType = 'uuidv4'
 ): ClassDecorator {
   return target => {
     // Platform.log("CD[Entity](target): ", target);

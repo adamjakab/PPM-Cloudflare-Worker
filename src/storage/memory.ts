@@ -7,9 +7,9 @@ import { Storage, StorageInterface } from './storage'
  */
 export class Memory extends Storage implements StorageInterface {
   public readonly name: string = 'memory';
-  private _data: {};
+  private _data: Record<string, any>;
 
-  constructor (defaultData: {} = {}) {
+  constructor (defaultData: Record<string, any> = {}) {
     super()
     this.reset(defaultData)
   }
@@ -94,7 +94,7 @@ export class Memory extends Storage implements StorageInterface {
    * Reset memory storage
    * @param defaultData
    */
-  public reset (defaultData: {} = {}): void {
+  public reset (defaultData: Record<string, any> = {}): void {
     this._data = defaultData
   }
 }

@@ -6,8 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "eslint --fix-dry-run",
-    "lint-fix": "eslint --fix",
+    "lint": "eslint '{src,test}/**/*.{js,ts,tsx}'",
     "test": "jest",
     "test-unit": "jest --config=jest.unit.js",
     "build": "webpack --config webpack.config.js --progress # Create minified output",

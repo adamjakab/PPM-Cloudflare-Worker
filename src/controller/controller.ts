@@ -2,27 +2,27 @@ import { RestApiRequest } from '../rest-api/request'
 import { RestApiResponse } from '../rest-api/response'
 
 export class Controller {
-  public list (req: RestApiRequest, res: RestApiResponse) {
+  public list (req: RestApiRequest, res: RestApiResponse): Response {
     const reply = '[list] You asked for: ' + req.getPath()
     return res.send({ message: reply })
   }
 
-  public getOne (req: RestApiRequest, res: RestApiResponse) {
+  public getOne (req: RestApiRequest, res: RestApiResponse): Response {
     const reply = '[getOne] You asked for: ' + req.getPath()
     return res.send({ message: reply })
   }
 
-  public create (req: RestApiRequest, res: RestApiResponse) {
+  public create (req: RestApiRequest, res: RestApiResponse): Response {
     const reply = '[create] You asked for: ' + req.getPath()
     return res.send({ message: reply })
   }
 
-  public update (req: RestApiRequest, res: RestApiResponse) {
+  public update (req: RestApiRequest, res: RestApiResponse): Response {
     const reply = '[update] You asked for: ' + req.getPath()
     return res.send({ message: reply })
   }
 
-  public delete (req: RestApiRequest, res: RestApiResponse) {
+  public delete (req: RestApiRequest, res: RestApiResponse): Response {
     const reply = '[delete] You asked for: ' + req.getPath()
     return res.send({ message: reply })
   }

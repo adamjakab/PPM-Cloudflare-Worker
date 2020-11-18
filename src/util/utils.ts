@@ -4,7 +4,7 @@ export function delay (ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export function getRandomString (length: number = 8) {
+export function getRandomString (length = 8) {
   let s = ''
   const randomChar = () => {
     const n = Math.floor(Math.random() * 62)

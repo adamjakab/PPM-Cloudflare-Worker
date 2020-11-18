@@ -7,7 +7,7 @@ import { Platform } from '../util/platform'
 
 class EntityManager {
   private _storage: StorageInterface;
-  private _knownEntities: object[];
+  private _knownEntities: Record<string, any>[];
 
   constructor (driver: StorageInterface) {
     this._knownEntities = []
