@@ -26,6 +26,7 @@
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.8",
+    "@types/url-parse": "^1.4.3",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
@@ -41,13 +42,14 @@
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
     "types-cloudflare-worker": "^1.2.0",
-    "typescript": "^4.0.5",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^4.2.0"
+    "typescript": "^4.0.5"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "cloudflare-worker-rest-api": "^1.0.0",
+    "lodash": "^4.17.15",
+    "on-change": "^2.2.0",
     "typed-routes": "^0.1.1",
+    "url-parse": "^1.4.7",
     "uuid": "^8.3.1"
   }
 }
