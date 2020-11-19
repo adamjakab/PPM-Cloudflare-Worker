@@ -42,6 +42,14 @@ export class Note extends Entity {
     this._entityChanged()
   }
 
+  public getEntityData () {
+    return _.extend(super.getEntityData(), {
+      name: this.name,
+      type: this.type,
+      text: this.text
+    })
+  }
+
   protected mapDataOnEntity (data: any) {
     data = _.isObject(data) ? data : {}
     super.mapDataOnEntity(data)

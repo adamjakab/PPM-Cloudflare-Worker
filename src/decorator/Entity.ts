@@ -16,6 +16,7 @@ export function Entity (
     // Platform.log("CD[Entity](target): ", target);
     // Platform.log("CD[Entity](tableName): ", tableName);
     const metadata = {
+      entityName: target.name,
       tableName: tableName,
       repository: repository,
       idType: idType,

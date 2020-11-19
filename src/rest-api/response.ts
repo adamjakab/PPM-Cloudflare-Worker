@@ -1,3 +1,4 @@
+import { Platform } from '../util/platform'
 import { RestApiRequest } from './request'
 
 export class RestApiResponse {
@@ -10,6 +11,7 @@ export class RestApiResponse {
 
   public send (data: any, status = 200) {
     this.sequence++
+    Platform.log('Sending Data: ', data)
     return new Response(JSON.stringify(data), {
       status: status,
       headers: {

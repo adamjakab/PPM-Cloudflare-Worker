@@ -1,3 +1,4 @@
-// import './app/workerApp'
-
-console.log('HI!')
+/**
+ * Import the main app
+ */
+import './app/workerApp'

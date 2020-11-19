@@ -13,6 +13,11 @@ export class RestApiWorker {
     this.routes = []
   }
 
+  /**
+   * The main method that handles the incoming request
+   *
+   * @param event
+   */
   public async handle (event: FetchEvent) {
     const request = new RestApiRequest(event.request)
     const response = new RestApiResponse(request)

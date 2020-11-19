@@ -84,6 +84,14 @@ export class Entity {
     return this._dateModified
   }
 
+  public getEntityData () {
+    return {
+      id: this.id,
+      dateCreated: this.dateCreated,
+      dateModified: this.dateModified
+    }
+  }
+
   public getMetadataElement (name:string) {
     return getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
   }

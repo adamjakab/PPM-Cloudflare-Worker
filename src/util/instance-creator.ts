@@ -1,4 +1,6 @@
 /* tslint:disable:no-console */
+import { Platform } from './platform'
+
 /**
  * A very weak attempt to create class instances dynamically
  */
@@ -10,11 +12,6 @@ export class InstanceCreator<T> {
   }
 
   public getNewInstance (...args: any[]) {
-    try {
-      return new this.Klass(...args)
-    } catch (e) {
-      console.error('Error creating dynamic class instance!', e)
-      console.error('Klass: ', this.Klass)
-    }
+    return new this.Klass(...args)
   }
 }

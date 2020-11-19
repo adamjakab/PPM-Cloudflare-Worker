@@ -1,7 +1,6 @@
 /* tslint:disable:no-console */
 import * as _ from 'lodash'
 import { getMetadataStorage } from '../global'
-// import { v4 as generateUUIDv4, validate as uuidValidate } from "uuid";
 import { InstanceCreator } from '../util/instance-creator'
 import EntityManager from '../repository/entity-manager'
 import { Entity } from '../entity/entity'
@@ -11,9 +10,8 @@ export class Repository {
   protected _storageTableName: string;
 
   /**
-   * Set by the decorator based on the class the repo is decorated with @EnhancedRepository(Note)
+   * Instance creator for the entity class this repository is responsible for
    */
-  protected _entityClass: any;
   protected _entityCreator: any;
 
   constructor () {
@@ -24,16 +22,8 @@ export class Repository {
     this._storageTableName = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, 'tableName')
     // Platform.log("REPO(" + this.constructor.name + ") has storage table: " + this._storageTableName);
 
-    /*
-    Platform.log("CONSTRUCTOR: ", this.constructor);
-    const rmd = _.get(getMetadataStorage().repositoryMetadata, this.constructor.name);
-    Platform.log("TCN", Repository.name);
-    this._entityClass = _.get(rmd, "entityClass");
-    this._entityCreator = new InstanceCreator(this._entityClass);
-    const emd = _.get(getMetadataStorage().entityMetadata, this._entityClass.name);
-    // Platform.log("EMD", emd);
-    this._storageTableName = _.get(emd, "tableName");
-    */
+    const entityClass = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, '_class')
+    this._entityCreator = new InstanceCreator(entityClass)
   }
 
   get storageTableName (): string {
@@ -45,6 +35,7 @@ export class Repository {
     const entities: any[] = []
     _.each(storageData, sd => {
       const entity = this._entityCreator.getNewInstance(sd)
+      Platform.log('E: ', entity)
       entities.push(entity)
     })
     return entities

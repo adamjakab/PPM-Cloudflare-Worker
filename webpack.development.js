@@ -2,12 +2,13 @@
 const path = require('path')
 
 module.exports = {
-  context: __dirname,
   mode: 'development',
   target: 'webworker',
-  entry: './src/index.ts',
+  entry: {
+    index: './src/index.ts'
+  },
   resolve: {
-    extensions: ['.ts']
+    extensions: ['.ts', '.js']
   },
   module: {
     rules: [

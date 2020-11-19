@@ -6,6 +6,14 @@ import { InstanceCreator } from '../util/instance-creator'
 import { Platform } from '../util/platform'
 
 class EntityManager {
+  /**
+   * About using a fake uuid
+   * UUID v4 generation requires random rng call wich will throw this error if called during startup:
+   * "Error: Some functionality, such as asynchronous I/O, timeouts, and generating random values,
+   * can only be performed while handling a request."
+   */
+  private _fake_uuid_v4 = '00000000-0000-4000-8000-000000000000'
+
   private _storage: StorageInterface;
   private _knownEntities: Record<string, any>[];
 
@@ -54,7 +62,7 @@ class EntityManager {
     if (!_.includes(this._knownEntities, entity)) {
       this._knownEntities.push(entity)
       const ic = new InstanceCreator(entity)
-      const e = ic.getNewInstance({})
+      const e = ic.getNewInstance({id: this._fake_uuid_v4})
     }
   }
 
