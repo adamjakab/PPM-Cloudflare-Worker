@@ -32,12 +32,13 @@ export class Repository {
 
   public async getAll () {
     const storageData = await EntityManager.fetchAll(this._storageTableName)
+
     const entities: any[] = []
     _.each(storageData, sd => {
       const entity = this._entityCreator.getNewInstance(sd)
-      Platform.log('E: ', entity)
       entities.push(entity)
     })
+
     return entities
   }
 

@@ -7,4 +7,5 @@ export interface StorageInterface {
   store(table: string, element: any): Promise<number>;
   delete(table: string, id: number | string): Promise<boolean>;
   reset(defaultData: Record<string, any>): void;
+  resetTestData(): void;
 }

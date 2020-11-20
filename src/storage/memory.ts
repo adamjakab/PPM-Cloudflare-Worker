@@ -3,6 +3,18 @@ import { Platform } from '../util/platform'
 import { Storage, StorageInterface } from './storage'
 
 /**
+ * @todo: this will need to go
+ */
+const testData = {
+  notes: [
+    { id: '00000000-0000-4000-8000-000000000001', name: 'Note-1', type: 'text', text: '001' },
+    { id: '00000000-0000-4000-8000-000000000002', name: 'Note-2', type: 'video', text: '002' },
+    { id: '00000000-0000-4000-8000-000000000003', name: 'Note-3', type: 'audio', text: '003' },
+    { id: '00000000-0000-4000-8000-000000000004', name: 'Note-4', type: 'secret', text: '004' }
+  ]
+}
+
+/**
  * In-memory storage (mainly for testing)
  */
 export class Memory extends Storage implements StorageInterface {
@@ -96,5 +108,9 @@ export class Memory extends Storage implements StorageInterface {
    */
   public reset (defaultData: Record<string, any> = {}): void {
     this._data = defaultData
+  }
+
+  public resetTestData (): void {
+    this._data = testData
   }
 }

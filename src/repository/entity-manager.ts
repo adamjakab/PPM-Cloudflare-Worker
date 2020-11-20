@@ -12,7 +12,7 @@ class EntityManager {
    * "Error: Some functionality, such as asynchronous I/O, timeouts, and generating random values,
    * can only be performed while handling a request."
    */
-  private _fake_uuid_v4 = '00000000-0000-4000-8000-000000000000'
+  private fakeUuidV4 = '00000000-0000-4000-8000-000000000000'
 
   private _storage: StorageInterface;
   private _knownEntities: Record<string, any>[];
@@ -62,7 +62,7 @@ class EntityManager {
     if (!_.includes(this._knownEntities, entity)) {
       this._knownEntities.push(entity)
       const ic = new InstanceCreator(entity)
-      const e = ic.getNewInstance({id: this._fake_uuid_v4})
+      const e = ic.getNewInstance({ id: this.fakeUuidV4 })
     }
   }
 

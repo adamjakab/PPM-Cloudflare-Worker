@@ -10,7 +10,6 @@ export class Note extends Entity {
   private _text: string;
 
   constructor (data?: any) {
-    data = _.isObject(data) ? data : {}
     super(data)
     this.mapDataOnEntity(data)
   }
@@ -48,6 +47,10 @@ export class Note extends Entity {
       type: this.type,
       text: this.text
     })
+  }
+
+  public toJson () {
+    return JSON.stringify(this.getEntityData())
   }
 
   protected mapDataOnEntity (data: any) {

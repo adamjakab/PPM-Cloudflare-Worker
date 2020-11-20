@@ -16,13 +16,7 @@ class NoteController extends Controller {
   public async list (req: RestApiRequest, res: RestApiResponse) {
     const repo = new NoteRepository()
     const notes = await repo.getAll()
-    const notesData: any[] = []
-    _.each(notes, (note: any) => {
-      notesData.push(note.getEntityData())
-      // notesData.push({ id: 'aaa' })
-    })
-
-    return res.send(notesData)
+    return res.send(notes)
   }
 
   public async getOne (req: RestApiRequest, res: RestApiResponse) {
