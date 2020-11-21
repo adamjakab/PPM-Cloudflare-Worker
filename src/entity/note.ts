@@ -19,8 +19,10 @@ export class Note extends Entity {
   }
 
   set name (value: string) {
-    this._name = value
-    this._entityChanged()
+    if (value) {
+      this._name = value
+      this._entityChanged()
+    }
   }
 
   get type (): string {
@@ -28,8 +30,10 @@ export class Note extends Entity {
   }
 
   set type (value: string) {
-    this._type = value
-    this._entityChanged()
+    if (value) {
+      this._type = value
+      this._entityChanged()
+    }
   }
 
   get text (): string {
@@ -37,8 +41,10 @@ export class Note extends Entity {
   }
 
   set text (value: string) {
-    this._text = value
-    this._entityChanged()
+    if (value) {
+      this._text = value
+      this._entityChanged()
+    }
   }
 
   public getEntityData () {
@@ -53,12 +59,18 @@ export class Note extends Entity {
     return JSON.stringify(this.getEntityData())
   }
 
+  /**
+   * Map data from an object to the entity
+   * @param data    The data object
+   * @param reset   True is the entity is being constructed / False if entity is being updated
+   */
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    super.mapDataOnEntity(data, reset)
+    // the below assignments will trigger _entityChanged which will change the dateModified field
     this.name = data.name
     this.type = data.type
     this.text = data.text
-    // this.isInSync = true;  // why?
+    // this is why this must come after
+    super.mapDataOnEntity(data, reset)
   }
 }

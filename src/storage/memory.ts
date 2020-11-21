@@ -3,23 +3,27 @@ import { Platform } from '../util/platform'
 import { Storage, StorageInterface } from './storage'
 
 /**
- * @todo: this will need to go
+ * @todo: this will need to go away
  */
 const testData = {
-  notes: [
-    { id: '00000000-0000-4000-8000-000000000001', name: 'Note-1', type: 'text', text: '001' },
-    { id: '00000000-0000-4000-8000-000000000002', name: 'Note-2', type: 'video', text: '002' },
-    { id: '00000000-0000-4000-8000-000000000003', name: 'Note-3', type: 'audio', text: '003' },
-    { id: '00000000-0000-4000-8000-000000000004', name: 'Note-4', type: 'secret', text: '004' }
-  ]
+  notes: {
+    '00000000-0000-4000-8000-000000000001': {
+      id: '00000000-0000-4000-8000-000000000001',
+      dateCreated: '2020-11-21T20:27:15.000Z',
+      dateModified: '2020-11-21T20:55:33.000Z',
+      name: 'Note-1',
+      type: 'text',
+      text: '001'
+    }
+  }
 }
 
 /**
  * In-memory storage (mainly for testing)
  */
 export class Memory extends Storage implements StorageInterface {
-  public readonly name: string = 'memory';
-  private _data: Record<string, any>;
+  public readonly name: string = 'memory'
+  private _data: Record<string, any>
 
   constructor (defaultData: Record<string, any> = {}) {
     super()
@@ -36,7 +40,7 @@ export class Memory extends Storage implements StorageInterface {
       if (!_.has(this._data, table)) {
         reject(new Error('Unknown storage table: ' + table))
       }
-      resolve(_.get(this._data, table, []))
+      resolve(_.values(_.get(this._data, table, {})))
     })
   }
 
@@ -52,7 +56,7 @@ export class Memory extends Storage implements StorageInterface {
         reject(new Error('Unknown storage table: ' + table))
       }
       const tbl = _.get(this._data, table, [])
-      resolve(_.find(tbl, { id: id }))
+      resolve(_.get(tbl, id))
     })
   }
 
@@ -68,15 +72,15 @@ export class Memory extends Storage implements StorageInterface {
         reject(new Error('Element does not have an id!'))
       }
       // Platform.log("Saving entity: ", element.id);
-
       const tbl = _.get(this._data, table, [])
-      const exEl = _.find(tbl, { id: element.id })
-      if (_.isUndefined(exEl)) {
-        tbl.push(element)
+      if (!_.has(tbl, element.id)) {
+        _.set(tbl, element.id, element)
       } else {
-        // @todo: this does not store the element!!!
-        _.extend(exEl, element)
+        const updatedEl = _.extend(_.get(tbl, element.id), element)
+        Platform.log('UPDATED EL: ', updatedEl)
+        _.set(tbl, element.id, updatedEl)
       }
+
       resolve(element.id)
     })
   }

@@ -87,8 +87,8 @@ export class Entity {
   public getEntityData () {
     return {
       id: this.id,
-      dateCreated: this.dateCreated,
-      dateModified: this.dateModified
+      dateCreated: this.dateCreated.toISOString(),
+      dateModified: this.dateModified.toISOString()
     }
   }
 
@@ -104,6 +104,7 @@ export class Entity {
 
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
+    Platform.log('Mapping data on entity[reset:' + reset + ']: ', data)
     if (reset) {
       this.id = data.id
       this.checkEntityId()
@@ -113,17 +114,13 @@ export class Entity {
   }
 
   private changeDateCreated (value: Date) {
-    if (_.isUndefined(this._dateCreated)) {
-      const date = _.isDate(value) ? value : new Date(value)
-      this._dateCreated = !isNaN(date.valueOf()) ? date : new Date()
-    }
+    const date = _.isDate(value) ? value : new Date(value)
+    this._dateCreated = !isNaN(date.valueOf()) ? date : new Date()
   }
 
   private changeDateModified (value: Date) {
-    if (_.isUndefined(this._dateModified)) {
-      const date = _.isDate(value) ? value : new Date(value)
-      this._dateModified = !isNaN(date.valueOf()) ? date : new Date()
-    }
+    const date = _.isDate(value) ? value : new Date(value)
+    this._dateModified = !isNaN(date.valueOf()) ? date : new Date()
   }
 
   private setDefaultEntityData () {

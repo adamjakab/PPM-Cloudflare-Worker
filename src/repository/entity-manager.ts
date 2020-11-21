@@ -39,12 +39,10 @@ class EntityManager {
   }
 
   /**
-   * @todo: Should convert Entity of object !!!
-   * @todo: storage should NOT know about entities
    * @param table
    * @param entity
    */
-  public async store (table: string, entity: Entity) {
+  public async store (table: string, entity: any) {
     return await this._storage.store(table, entity)
   }
 

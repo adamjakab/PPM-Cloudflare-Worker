@@ -44,7 +44,7 @@ export class Repository {
 
   public async get (id: number | string) {
     const data = await EntityManager.fetchOne(this._storageTableName, id)
-    return this._entityCreator.getNewInstance(data)
+    return data ? this._entityCreator.getNewInstance(data) : undefined
   }
 
   /**
@@ -54,7 +54,7 @@ export class Repository {
    */
   public async persist (entity: Entity) {
     const storageTableName = entity.getMetadataElement('tableName')
-    return await EntityManager.store(storageTableName, entity)
+    return await EntityManager.store(storageTableName, entity.getEntityData())
   }
 
   public async remove (entity: Entity) {
