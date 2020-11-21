@@ -102,10 +102,13 @@ export class Entity {
     this._dateModified = new Date()
   }
 
-  protected mapDataOnEntity (data: any) {
-    this.id = data.id
-    this.checkEntityId()
-    this.changeDateCreated(data.dateCreated)
+  public mapDataOnEntity (data: any, reset = false) {
+    data = _.isObject(data) ? data : {}
+    if (reset) {
+      this.id = data.id
+      this.checkEntityId()
+      this.changeDateCreated(data.dateCreated)
+    }
     this.changeDateModified(data.dateModified)
   }
 

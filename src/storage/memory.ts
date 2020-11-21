@@ -74,6 +74,7 @@ export class Memory extends Storage implements StorageInterface {
       if (_.isUndefined(exEl)) {
         tbl.push(element)
       } else {
+        // @todo: this does not store the element!!!
         _.extend(exEl, element)
       }
       resolve(element.id)

@@ -11,7 +11,7 @@ export class Note extends Entity {
 
   constructor (data?: any) {
     super(data)
-    this.mapDataOnEntity(data)
+    this.mapDataOnEntity(data, true)
   }
 
   get name (): string {
@@ -53,9 +53,9 @@ export class Note extends Entity {
     return JSON.stringify(this.getEntityData())
   }
 
-  protected mapDataOnEntity (data: any) {
+  public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    super.mapDataOnEntity(data)
+    super.mapDataOnEntity(data, reset)
     this.name = data.name
     this.type = data.type
     this.text = data.text

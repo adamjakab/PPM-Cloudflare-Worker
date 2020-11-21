@@ -43,9 +43,15 @@ export class Repository {
   }
 
   public async get (id: number | string) {
-    return await EntityManager.fetchOne(this._storageTableName, id)
+    const data = await EntityManager.fetchOne(this._storageTableName, id)
+    return this._entityCreator.getNewInstance(data)
   }
 
+  /**
+   * Persists the entity in the store and returns the id of the element
+   *
+   * @param entity
+   */
   public async persist (entity: Entity) {
     const storageTableName = entity.getMetadataElement('tableName')
     return await EntityManager.store(storageTableName, entity)

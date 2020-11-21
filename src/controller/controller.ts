@@ -3,27 +3,57 @@ import { RestApiResponse } from '../rest-api/response'
 
 export class Controller {
   public async list (req: RestApiRequest, res: RestApiResponse) {
-    const reply = '[list] You asked for: ' + req.getPath()
-    return res.send({ message: reply })
+    return res.send({
+      message: '[list] You asked to list all elements.',
+      url: req.getUrl(),
+      path: req.getPath(),
+      params: req.getParams(),
+      method: req.getMethod(),
+      body: await req.getBody()
+    })
   }
 
   public async getOne (req: RestApiRequest, res: RestApiResponse) {
-    const reply = '[getOne] You asked for: ' + req.getPath()
-    return res.send({ message: reply })
+    return res.send({
+      message: '[getOne] You asked to get one element.',
+      url: req.getUrl(),
+      path: req.getPath(),
+      params: req.getParams(),
+      method: req.getMethod(),
+      body: await req.getBody()
+    })
   }
 
   public async create (req: RestApiRequest, res: RestApiResponse) {
-    const reply = '[create] You asked for: ' + req.getPath()
-    return res.send({ message: reply })
+    return res.send({
+      message: '[create] You asked to create an element.',
+      url: req.getUrl(),
+      path: req.getPath(),
+      params: req.getParams(),
+      method: req.getMethod(),
+      body: await req.getBody()
+    })
   }
 
   public async update (req: RestApiRequest, res: RestApiResponse) {
-    const reply = '[update] You asked for: ' + req.getPath()
-    return res.send({ message: reply })
+    return res.send({
+      message: '[update] You asked to update an element.',
+      url: req.getUrl(),
+      path: req.getPath(),
+      params: req.getParams(),
+      method: req.getMethod(),
+      body: await req.getBody()
+    })
   }
 
   public async delete (req: RestApiRequest, res: RestApiResponse) {
-    const reply = '[delete] You asked for: ' + req.getPath()
-    return res.send({ message: reply })
+    return res.send({
+      message: '[delete] You asked to delete an element.',
+      url: req.getUrl(),
+      path: req.getPath(),
+      params: req.getParams(),
+      method: req.getMethod(),
+      body: await req.getBody()
+    })
   }
 }

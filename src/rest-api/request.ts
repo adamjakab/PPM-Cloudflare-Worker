@@ -23,11 +23,11 @@ export class RestApiRequest {
     return this.validRoute
   }
 
-  public async body () {
+  public async getBody () {
     try {
       return await this.request.json()
     } catch (error) {
-      return {} // cases when body is null, but still json in content header
+      return {}
     }
   }
 
