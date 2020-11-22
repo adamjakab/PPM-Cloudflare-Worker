@@ -1,4 +1,4 @@
-// import * as _ from 'lodash'
+// import * as _ from './lodash'
 
 export function delay (ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))

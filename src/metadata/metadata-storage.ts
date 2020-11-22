@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { InstanceCreator } from '../util/instance-creator'
 import { Platform } from '../util/platform'
 

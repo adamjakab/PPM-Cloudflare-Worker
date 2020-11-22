@@ -1,6 +1,6 @@
 import { Platform } from '../util/platform'
 import { RestApiRequest } from './request'
-import _ from 'lodash'
+import * as _ from '../util/lodash'
 
 export class RestApiResponse {
   public request: RestApiRequest

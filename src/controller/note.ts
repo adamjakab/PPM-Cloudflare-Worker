@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { Entity } from '../entity/entity'
 import { Note } from '../entity/note'
 import { Controller } from './controller'

@@ -1,5 +1,5 @@
 /* tslint:disable:no-console */
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { getMetadataStorage } from '../global'
 import { InstanceCreator } from '../util/instance-creator'
 import EntityManager from '../repository/entity-manager'

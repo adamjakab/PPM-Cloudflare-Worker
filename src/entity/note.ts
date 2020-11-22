@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { NoteRepository } from '../repository/note-repository'
 import { Entity } from './entity'
 import { Entity as EnhancedEntity } from '../decorator/Entity'

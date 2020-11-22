@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { Entity } from '../entity/entity'
 import { Memory } from '../storage/memory'
 import { StorageInterface } from '../storage/storage'

@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { getMetadataStorage } from '../global'
 import { Platform } from '../util/platform'
 

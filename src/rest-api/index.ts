@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from '../util/lodash'
 import { RestApiRequest } from './request'
 import { RestApiResponse } from './response'
 import { RouteElementLayout } from '../interface/route_element'
