@@ -46,7 +46,6 @@ export class RestApiResponse {
       }
       data = [data]
     }
-
     return {
       body: this.stringifyArray(data),
       headers: {

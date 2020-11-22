@@ -4,6 +4,15 @@ import { v4 as generateUUIDv4 } from 'uuid'
 import { Memory } from '../../../src/storage/memory'
 // import { Entity } from "../../../src/entity/entity";
 
+const defaultDataCreator = (elements: any[]) => {
+  const answer = {}
+  _.each(elements, element => {
+    const id = generateUUIDv4()
+    _.set(answer, id, _.extend({ id: id }, element))
+  })
+  return answer
+}
+
 describe('Memory(Storage)', () => {
   it('should have name: memory', () => {
     const ms = new Memory()
@@ -70,19 +79,20 @@ describe('Memory(Storage)', () => {
 
   it('should fetch a single element by id', async () => {
     const defaultData = {
-      notes: [
-        { id: generateUUIDv4(), name: 'A' },
-        { id: generateUUIDv4(), name: 'B' },
-        { id: generateUUIDv4(), name: 'C' }
-      ]
+      notes: defaultDataCreator(
+        [
+          { name: 'A' },
+          { name: 'B' },
+          { name: 'C' }
+        ])
     }
     const ms = new Memory(defaultData)
-    let note = await ms.fetchOne('notes', defaultData.notes[0].id)
-    expect(note).toEqual(defaultData.notes[0])
-    note = await ms.fetchOne('notes', defaultData.notes[1].id)
-    expect(note).toEqual(defaultData.notes[1])
-    note = await ms.fetchOne('notes', defaultData.notes[2].id)
-    expect(note).toEqual(defaultData.notes[2])
+    let note = await ms.fetchOne('notes', _.keys(defaultData.notes)[0])
+    expect(note).toEqual(_.values(defaultData.notes)[0])
+    note = await ms.fetchOne('notes', _.keys(defaultData.notes)[1])
+    expect(note).toEqual(_.values(defaultData.notes)[1])
+    note = await ms.fetchOne('notes', _.keys(defaultData.notes)[2])
+    expect(note).toEqual(_.values(defaultData.notes)[2])
   })
 
   it('should return undefined on nonexistent id', async () => {
@@ -135,14 +145,20 @@ describe('Memory(Storage)', () => {
   })
 
   it('should update existing element', async () => {
-    const elementData = { id: generateUUIDv4(), name: 'OLD' }
-    const ms = new Memory({ notes: [elementData] })
+    const defaultData = {
+      notes: defaultDataCreator(
+        [
+          { name: 'OLD' }
+        ])
+    }
+    const ms = new Memory(defaultData)
+    const elementData: any = _.values(defaultData.notes)[0]
     const newData = { id: elementData.id, name: 'NEW', xtra: 'Cool!' }
     const newId = await ms.store('notes', newData)
     expect(newId).toEqual(newData.id)
     const notes = await ms.fetchAll('notes')
     expect(_.size(notes)).toEqual(1)
-    const storedData: any = _.first(notes) as any
+    const storedData: any = _.values(notes)[0]
     expect(storedData.id).toEqual(newData.id)
     expect(storedData.name).toEqual(newData.name)
     expect(storedData.xtra).toEqual(newData.xtra)
@@ -159,8 +175,14 @@ describe('Memory(Storage)', () => {
   })
 
   it('should delete an existing element', async () => {
-    const elementData = { id: generateUUIDv4(), name: 'OLD' }
-    const ms = new Memory({ notes: [elementData] })
+    const defaultData = {
+      notes: defaultDataCreator(
+        [
+          { name: 'OLD' }
+        ])
+    }
+    const ms = new Memory(defaultData)
+    const elementData: any = _.values(defaultData.notes)[0]
     const resp = await ms.delete('notes', elementData.id)
     expect(resp).toBeTruthy()
     const notes = await ms.fetchAll('notes')

@@ -77,7 +77,7 @@ export class Memory extends Storage implements StorageInterface {
         _.set(tbl, element.id, element)
       } else {
         const updatedEl = _.extend(_.get(tbl, element.id), element)
-        Platform.log('UPDATED EL: ', updatedEl)
+        // Platform.log('UPDATED EL: ', updatedEl)
         _.set(tbl, element.id, updatedEl)
       }
 
@@ -97,9 +97,8 @@ export class Memory extends Storage implements StorageInterface {
         reject(new Error('Unknown storage table: ' + table))
       }
       const tbl: [] = _.get(this._data, table, [])
-      const elIndex = _.findIndex(tbl, { id: id } as any)
-      if (!_.isUndefined(elIndex)) {
-        tbl.splice(elIndex, 1)
+      if (_.has(tbl, id)) {
+        _.unset(tbl, id)
         resolve(true)
       } else {
         resolve(false)

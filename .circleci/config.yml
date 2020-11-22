@@ -5,10 +5,9 @@ jobs:
       tag: '15.0'
     steps:
       - checkout
-      # - node/install
       - node/install-packages
       - run:
-          command: npm run-script test-unit
+          command: npm run test-unit
 version: 2.1
 orbs:
   node: circleci/node@4.1.0

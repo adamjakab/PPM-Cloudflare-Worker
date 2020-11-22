@@ -104,7 +104,7 @@ export class Entity {
 
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    Platform.log('Mapping data on entity[reset:' + reset + ']: ', data)
+    // Platform.log('Mapping data on entity[reset:' + reset + ']: ', data)
     if (reset) {
       this.id = data.id
       this.checkEntityId()

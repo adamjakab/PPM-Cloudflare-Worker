@@ -57,6 +57,11 @@ export class Repository {
     return await EntityManager.store(storageTableName, entity.getEntityData())
   }
 
+  /**
+   * Deletes the entity from the store and returns true if successful / false if failed
+   *
+   * @param entity
+   */
   public async remove (entity: Entity) {
     return await EntityManager.delete(this._storageTableName, entity.id)
   }
