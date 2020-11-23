@@ -1,6 +1,4 @@
-// import * as _ from 'lodash'
 import * as _ from '../util/lodash'
-import { Platform } from '../util/platform'
 import { Storage, StorageInterface } from './storage'
 
 /**

@@ -3,11 +3,14 @@ import EntityManager from '../repository/entity-manager'
 import { RestApiWorker } from '../rest-api'
 import * as NoteRouter from '../router/note'
 import { Memory } from '../storage/memory'
+import { KVStore } from '../storage/KVStore'
 import { Note } from '../entity/note'
 
 // Set the storage for the Entity Manager
-EntityManager.setupStorageDriver(new Memory())
-EntityManager.storage.resetTestData()
+// EntityManager.setupStorageDriver(new Memory())
+// EntityManager.storage.resetTestData()
+
+EntityManager.setupStorageDriver(new KVStore())
 EntityManager.registerEntities([Note])
 
 // Create the REST API worker
