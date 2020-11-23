@@ -1,13 +1,16 @@
 import * as _ from '../util/lodash'
+import { Platform } from '../util/platform'
 import { RestApiRequest } from './request'
 import { RestApiResponse } from './response'
 import { RouteElementLayout } from '../interface/route_element'
 import { createRoute as RouteChecker } from 'typed-routes'
+// import { CloudflareWorkerKV } from 'types-cloudflare-worker'
+// import { getPPMConfigKV } from '../global'
 
 // tslint:disable: no-console
 export class RestApiWorker {
-  private routes: any;
-  private validMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+  private routes: any
+  private validMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 
   constructor () {
     this.routes = []
@@ -21,6 +24,20 @@ export class RestApiWorker {
   public async handle (event: FetchEvent) {
     const request = new RestApiRequest(event.request)
     const response = new RestApiResponse(request)
+
+    /*
+    const PPMConfigKV = getPPMConfigKV()
+    // const storageName = await PPMConfigKV.get('storageName')
+    // Platform.log('StorageName: ', storageName)
+    const dataKeyName = 'KVTestKey'
+    let KVTestData: any = await PPMConfigKV.get(dataKeyName, 'json')
+    if (_.isNull(KVTestData)) {
+      KVTestData = { counter: 0, type: 'note', identificator: 'jakab.pro' }
+    }
+    KVTestData.counter++
+    await PPMConfigKV.put(dataKeyName, JSON.stringify(KVTestData))
+    Platform.log('KVTestData counter: ', KVTestData.counter)
+     */
 
     this.findRouteForRequest(request)
     const route = request.getValidRoute()

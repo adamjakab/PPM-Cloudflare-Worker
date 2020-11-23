@@ -13,6 +13,7 @@ import includes from 'lodash/includes'
 import isArray from 'lodash/isArray'
 import isDate from 'lodash/isDate'
 import isEmpty from 'lodash/isEmpty'
+import isNull from 'lodash/isNull'
 import isFunction from 'lodash/isFunction'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
@@ -27,6 +28,6 @@ import values from 'lodash/values'
 // exports
 export {
   keys, values, has, get, set, unset, extend,
-  isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined,
+  isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
   join, map, find, includes, each
 }
