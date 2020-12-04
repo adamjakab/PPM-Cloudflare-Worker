@@ -4,7 +4,7 @@ module.exports = {
   automock: false,
   verbose: true,
   setupFiles: [
-    "./test/setupJest.ts"
+    './jest.setup.ts'
   ],
-  testMatch: ['**/test/unit/**/*.test.ts']
-};
+  testMatch: ['**/*.test.ts']
+}

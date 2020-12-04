@@ -88,4 +88,4 @@ class NoteController extends Controller {
 }
 
 // Singleton export
-export = new NoteController();
+export = new NoteController()

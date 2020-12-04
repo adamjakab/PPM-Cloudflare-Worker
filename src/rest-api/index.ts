@@ -3,7 +3,7 @@ import { Platform } from '../util/platform'
 import { RestApiRequest } from './request'
 import { RestApiResponse } from './response'
 import { RouteElementLayout } from '../interface/route_element'
-import { createRoute as RouteChecker } from 'typed-routes'
+import { createRoute as createTypedRoute } from 'typed-routes'
 
 // tslint:disable: no-console
 export class RestApiWorker {
@@ -41,20 +41,24 @@ export class RestApiWorker {
       return
     }
 
-    // console.log('______PATH: ' + path);
-    let dynamicRoute = RouteChecker()
-    const pathParts = path.split('/')
-    _.each(pathParts, (pathPart: string) => {
-      if (!_.isEmpty(pathPart)) {
-        if (pathPart.startsWith(':')) {
-          // ":id" => "id"
-          dynamicRoute = dynamicRoute.param(pathPart.substring(1))
-        } else {
-          dynamicRoute = dynamicRoute.extend(pathPart)
+    // console.log('PATH: ' + path);
+    let dynamicRoute = createTypedRoute()
+    if (path === '/') {
+      dynamicRoute = dynamicRoute.extend('')
+    } else {
+      const pathParts = path.split('/')
+      _.each(pathParts, (pathPart: string) => {
+        if (!_.isEmpty(pathPart)) {
+          if (pathPart.startsWith(':')) {
+            // ":id" => "id"
+            dynamicRoute = dynamicRoute.param(pathPart.substring(1))
+          } else {
+            dynamicRoute = dynamicRoute.extend(pathPart)
+          }
         }
-      }
-    })
-    // console.log('>PATH(TS): ' + dynamicRoute.toString());
+      })
+      // console.log('>PATH(TS): ' + dynamicRoute.toString());
+    }
 
     const routeElement: RouteElementLayout = {
       path: path,
@@ -63,6 +67,7 @@ export class RestApiWorker {
       callback: callback
     }
     this.routes.push(routeElement)
+    console.log('PATH: ' + JSON.stringify(routeElement));
   }
 
   public useRouter (path: string, router: any) {
@@ -85,6 +90,7 @@ export class RestApiWorker {
       request.getMethod(),
       request.getPath()
     )
+    // console.log('CHECK ROUTES: ' + JSON.stringify(this.routes));
 
     const validRoute = _.find(this.routes, (route: RouteElementLayout) => {
       return (

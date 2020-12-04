@@ -1,4 +1,5 @@
 import CloudflareWorkerGlobalScope from 'types-cloudflare-worker'
+import RootController from '../controller/root'
 import EntityManager from '../repository/entity-manager'
 import { RestApiWorker } from '../rest-api'
 import * as NoteRouter from '../router/note'
@@ -11,13 +12,16 @@ import { Note } from '../entity/note'
 // EntityManager.storage.resetTestData()
 
 EntityManager.setupStorageDriver(new KVStore())
+
+// Register Entities
 EntityManager.registerEntities([Note])
 
 // Create the REST API worker
 const worker = new RestApiWorker()
 
 // Register the route handlers
-worker.useRouter('/notes', NoteRouter)
+// worker.useRouter('/notes', NoteRouter)
+worker.register('/', 'GET', RootController.list)
 
 // Register the listener and handle the request
 declare let self: CloudflareWorkerGlobalScope

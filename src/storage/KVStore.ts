@@ -7,6 +7,13 @@ import * as _ from '../util/lodash'
 export class KVStore extends Storage implements StorageInterface {
   public readonly name: string = 'kvstore'
 
+  /**
+   * The storeIndex contains a reference (id) to each of the stored
+   * records in the KV together with some metadata info which can be
+   * searched so only specific records are retrieved.
+   */
+  protected storeIndex: {id:string, type:string, identifier:string}[] = []
+
   /*
     const PPMConfigKV = getPPMConfigKV()
     // const storageName = await PPMConfigKV.get('storageName')
@@ -22,27 +29,45 @@ export class KVStore extends Storage implements StorageInterface {
      */
 
   /**
+   * Fetches and stores the storeIndex
+   * @param table
+   */
+  public async fetchIndex(table: string): Promise<boolean> {
+    return new Promise<any>((resolve, reject) => {
+      if (_.isEmpty(this.storeIndex)) {
+        const PPMStorageKV = getPPMStorageKV()
+        PPMStorageKV.get('index', 'json').then((index:[]) => {
+          this.storeIndex = index
+          resolve(true)
+        }).catch(e => {
+          reject(e)
+        })
+      } else {
+        resolve(true)
+      }
+    })
+  }
+
+  /**
    * Fetches all elements from the storage
    * @param table           the name of the table
    * @return Promise<any>   the list of elements
    */
   public async fetchAll (table: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      const PPMStorageKV = getPPMStorageKV()
-      const prefix = table + ':::'
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      PPMStorageKV.list({ prefix: prefix }).then((mylist) => {
+      this.fetchIndex(table).then(() => {
+        const PPMStorageKV = getPPMStorageKV()
         const promises: Promise<any>[] = []
-        _.each(mylist.keys, (key) => {
-          promises.push(PPMStorageKV.get(key.name, 'json'))
+        _.each(this.storeIndex, (indexData) => {
+          Platform.log('Index Data: ', JSON.stringify(indexData))
+          promises.push(PPMStorageKV.get(indexData.id, 'json'))
         })
-        Promise.all(promises).then((values) => {
-          Platform.log('KV List: ', JSON.stringify(values))
-          resolve(values)
-        }).catch((e) => {
-          reject(e)
-        })
+        return Promise.all(promises)
+      }).then((values:any[]) => {
+        const merged = _.values(_.merge(_.keyBy(values, 'id'), _.keyBy(this.storeIndex, 'id')))
+        Platform.log("M1: ", JSON.stringify(merged))
+
+        resolve(merged)
       }).catch((e) => {
         reject(e)
       })
@@ -57,7 +82,18 @@ export class KVStore extends Storage implements StorageInterface {
    */
   public async fetchOne (table: string, id: number | string): Promise<any> {
     return new Promise<number>((resolve, reject) => {
-      resolve()
+      this.fetchIndex(table).then(() => {
+        const PPMStorageKV = getPPMStorageKV()
+        const indexData = _.find(this.storeIndex, {id: id.toString()})
+        if (_.isUndefined(indexData)) {
+          return reject(new Error('Requested id was not found in the table.'))
+        }
+        return PPMStorageKV.get(indexData.id, 'json')
+      }).then((recordData:any) => {
+        resolve(recordData)
+      }).catch((e) => {
+        reject(e)
+      })
     })
   }
 
