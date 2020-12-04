@@ -50,6 +50,5 @@ describe('worker', () => {
     // expect(fetchMock).toBeCalledTimes(1)
     expect(response.status).toBe(200)
     expect(await response.text()).toBeDefined()
-
   })
 })
