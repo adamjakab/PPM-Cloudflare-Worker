@@ -1,5 +1,5 @@
 jobs:
-  test_with_npm:
+  test_with_jest:
     executor:
       name: node/default
       tag: '15.0'
@@ -7,11 +7,11 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          command: npm run test-unit
+          command: npm run test
 version: 2.1
 orbs:
   node: circleci/node@4.1.0
 workflows:
   test_ppm_worker:
     jobs:
-      - test_with_npm
+      - test_with_jest
