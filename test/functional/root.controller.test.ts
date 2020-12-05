@@ -1,11 +1,4 @@
-/*
- * Using WebWorker library included with TypeScript
- * tsc --lib es5,webworker # or anything es5+
- *
- * https://github.com/Microsoft/TypeScript/issues/14877#issuecomment-340279293
- */
 
-import fetchMock from 'jest-fetch-mock'
 import {
   CloudflareWorkerGlobalScope,
   CloudflareWorkerKVOptions
@@ -19,10 +12,9 @@ import makeCloudflareWorkerEnv, {
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group _functional
- * @group incomplete
+ * @group functional
  */
-describe('something', () => {
+describe('root controller', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -37,7 +29,7 @@ describe('something', () => {
     jest.requireActual('../../src/index')
   })
 
-  it('should be true', async () => {
+  it('should respond to GET(/)', async () => {
     const request = makeCloudflareWorkerRequest('/', {
       method: 'GET',
       cf: {}
@@ -46,5 +38,26 @@ describe('something', () => {
 
     expect(response.status).toBe(200)
     expect(await response.json()).toBeDefined()
+  })
+
+  it('should respond to GET(/) with application info', async () => {
+    const expectedInfo = {
+      name: 'cloudflare-ppm-worker',
+      version: '0.0.2'
+    }
+
+    const request = makeCloudflareWorkerRequest('/', {
+      method: 'GET',
+      cf: {}
+    })
+    const response = await self.trigger('fetch', request)
+    const responseData = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(responseData).toBeInstanceOf(Array)
+    expect(responseData).toHaveLength(1)
+    const realInfo = responseData[0]
+    expect(realInfo).toBeInstanceOf(Object)
+    expect(realInfo).toEqual(expectedInfo)
   })
 })

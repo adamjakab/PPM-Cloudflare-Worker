@@ -10,7 +10,7 @@ declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group unit
- * @group incomplete
+ * @group _incomplete
  */
 describe('Test', () => {
   it('should work', () => {

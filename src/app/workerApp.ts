@@ -20,8 +20,8 @@ EntityManager.registerEntities([Note])
 const worker = new RestApiWorker()
 
 // Register the route handlers
-// worker.useRouter('/notes', NoteRouter)
 worker.register('/', 'GET', RootController.list)
+worker.useRouter('/notes', NoteRouter)
 
 // Register the listener and handle the request
 declare let self: CloudflareWorkerGlobalScope
