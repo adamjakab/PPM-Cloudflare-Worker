@@ -7,8 +7,9 @@
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint '{src,test}/**/*.{js,ts,tsx}'",
-    "test": "jest",
-    "test-unit": "jest --config=jest.unit.js",
+    "test": "jest --config=jest.config.js",
+    "test-unit": "jest --config=jest.config.js --group=unit",
+    "test-functional": "jest --config=jest.config.js --group=functional",
     "build": "webpack --config webpack.config.js --progress # Create minified output",
     "build-dev": "webpack --config webpack.config.dev.js # Creates readable output"
   },
@@ -38,6 +39,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.6.3",
     "jest-fetch-mock": "^3.0.3",
+    "jest-runner-groups": "^2.0.1",
     "terser-webpack-plugin": "^4.2.3",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",

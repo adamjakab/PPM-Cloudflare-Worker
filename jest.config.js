@@ -2,7 +2,10 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   automock: false,
+  verbose: true,
   setupFiles: [
-    './test/setupJest.ts'
-  ]
-};
+    './test/jest.setup.ts'
+  ],
+  testMatch: ['**/test/**/*.test.ts'],
+  runner: 'groups'
+}

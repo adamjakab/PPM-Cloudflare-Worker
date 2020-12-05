@@ -13,6 +13,9 @@ const defaultDataCreator = (elements: any[]) => {
   return answer
 }
 
+/**
+ * @group unit/storage
+ */
 describe('Memory(Storage)', () => {
   it('should have name: memory', () => {
     const ms = new Memory()

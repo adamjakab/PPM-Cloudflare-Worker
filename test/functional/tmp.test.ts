@@ -19,6 +19,10 @@ import makeCloudflareWorkerEnv, {
 
 declare let self: CloudflareWorkerGlobalScope
 
+/**
+ * @group functional
+ * @group incomplete
+ */
 describe('worker', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.

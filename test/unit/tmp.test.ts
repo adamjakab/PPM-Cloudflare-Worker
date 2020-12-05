@@ -8,6 +8,10 @@ import { createRoute as createTypedRoute } from 'typed-routes'
 
 declare let self: CloudflareWorkerGlobalScope
 
+/**
+ * @group unit
+ * @group incomplete
+ */
 describe('Test', () => {
   it('should work', () => {
     expect(true).toBeTruthy()

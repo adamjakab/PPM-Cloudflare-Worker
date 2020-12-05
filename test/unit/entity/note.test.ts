@@ -4,6 +4,9 @@ import { Note } from '../../../src/entity/note'
 import { Entity } from '../../../src/entity/entity'
 // import { delay } from '../../../src/util/utils'
 
+/**
+ * @group unit/entity
+ */
 describe('Note(Entity)', () => {
   it('should be instance of Entity', () => {
     const note = new Note({})

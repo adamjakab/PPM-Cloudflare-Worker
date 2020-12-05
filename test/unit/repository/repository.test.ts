@@ -9,6 +9,9 @@ import { getRandomString } from '../../../src/util/utils'
 import { Entity } from '../../../src/entity/entity'
 import { Repository } from '../../../src/repository/repository'
 
+/**
+ * @group unit/repository
+ */
 describe('Repository', () => {
   it('should not be possible to instantiate', () => {
     expect(() => {

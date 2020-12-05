@@ -4,6 +4,9 @@ import { v4 as generateUUIDv4 } from 'uuid'
 import { Entity } from '../../../src/entity/entity'
 import { Repository } from '../../../src/repository/repository'
 
+/**
+ * @group unit/entity
+ */
 describe('Entity', () => {
   it('should not be possible to instantiate', () => {
     expect(() => {

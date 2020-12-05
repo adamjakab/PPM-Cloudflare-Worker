@@ -17,6 +17,9 @@ const defaultData = {
   ]
 }
 
+/**
+ * @group unit/repository
+ */
 describe('NoteRepository', () => {
   beforeEach(async () => {
     EntityManager.storage.reset(defaultData)
