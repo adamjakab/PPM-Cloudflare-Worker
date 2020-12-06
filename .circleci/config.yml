@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  setup_and_install:
     executor: node-current
     steps:
       - checkout
@@ -21,18 +21,33 @@ jobs:
       - attach_workspace:
           at: .
       - run: npm run lint
+  build_worker:
+    executor: node-current
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm run build
+      - run: |
+          echo 'Checking for worker output script'
+          if [ ! -f ./worker/worker.js ]; then
+              exit 1
+          fi
 
 workflows:
   version: 2
   test_ppm_worker:
     jobs:
-      - build
+      - setup_and_install
       - run_tests:
           requires:
-            - build
+            - setup_and_install
       - code_quality:
           requires:
-            - build
+            - setup_and_install
+      - build_worker:
+          requires:
+            - run_tests
+            - code_quality
 
 orbs:
   # Ref.: https://circleci.com/developer/orbs/orb/circleci/node
