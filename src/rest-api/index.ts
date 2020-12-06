@@ -5,7 +5,6 @@ import { RestApiResponse } from './response'
 import { RouteElementLayout } from '../interface/route_element'
 import { createRoute as createTypedRoute } from 'typed-routes'
 
-// tslint:disable: no-console
 export class RestApiWorker {
   private routes: any
   private validMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
@@ -26,22 +25,20 @@ export class RestApiWorker {
     this.findRouteForRequest(request)
     const route = request.getValidRoute()
 
-    if (route) {
-      // console.log("Found registered Route: ", route);
-      return await route.callback(request, response)
+    if (_.isUndefined(route)) {
+      return response.send({ status: 0, message: 'Shit hit the fan!' }, 404)
     }
 
-    return response.send({ status: 0, message: 'Shit hit the fan!' }, 404)
+    return await route.callback(request, response)
   }
 
   public register (path: string, method: string, callback: any) {
     if (!this.validMethods.includes(method)) {
-      // tslint:disable-next-line: no-console
-      console.error('Cannot register invalid method: ' + method + '!')
+      Platform.logError('Cannot register invalid method: ' + method + '!')
       return
     }
 
-    // console.log('PATH: ' + path);
+    // Platform.log('PATH: ' + path);
     let dynamicRoute = createTypedRoute()
     if (path === '/') {
       dynamicRoute = dynamicRoute.extend('')
@@ -57,7 +54,7 @@ export class RestApiWorker {
           }
         }
       })
-      // console.log('>PATH(TS): ' + dynamicRoute.toString());
+      // Platform.log('>PATH(TS): ' + dynamicRoute.toString());
     }
 
     const routeElement: RouteElementLayout = {
@@ -66,8 +63,9 @@ export class RestApiWorker {
       method: method,
       callback: callback
     }
+
+    Platform.log('Registered route: ' + JSON.stringify(routeElement));
     this.routes.push(routeElement)
-    console.log('PATH: ' + JSON.stringify(routeElement));
   }
 
   public useRouter (path: string, router: any) {
@@ -85,12 +83,11 @@ export class RestApiWorker {
   };
 
   private findRouteForRequest (request: RestApiRequest) {
-    console.log(
+    Platform.log(
       'Finding route for request: ',
       request.getMethod(),
       request.getPath()
     )
-    // console.log('CHECK ROUTES: ' + JSON.stringify(this.routes));
 
     const validRoute = _.find(this.routes, (route: RouteElementLayout) => {
       return (

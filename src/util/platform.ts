@@ -13,13 +13,22 @@ export class Platform {
 
   /**
    * Log any message
-   * @param args
    */
   public static log (...args: any[]) {
     console.log(...args)
   }
 
-  public static warn (...args: any[]) {
-    Platform.log('WARNING: ', ...args)
+  /**
+   * Log any message as warning
+   */
+  public static logWarning (...args: any[]) {
+    console.warn(...args)
+  }
+
+  /**
+   * Log any message as error
+   */
+  public static logError (...args: any[]) {
+    console.error(...args)
   }
 }

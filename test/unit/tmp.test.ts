@@ -9,7 +9,6 @@ import { createRoute as createTypedRoute } from 'typed-routes'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group unit
  * @group _incomplete
  */
 describe('Test', () => {

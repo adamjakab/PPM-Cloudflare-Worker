@@ -1,4 +1,5 @@
 import { RouteElementLayout } from '../interface/route_element'
+import { Platform } from '../util/platform'
 // import URLParse from "url-parse";
 
 export class RestApiRequest {
@@ -15,7 +16,7 @@ export class RestApiRequest {
 
   public setValidRoute (route: RouteElementLayout) {
     // tslint:disable: no-console
-    console.log('Setting valid route for request:', route)
+    Platform.log('Setting valid route for request:', route)
     this.validRoute = route
   }
 
@@ -64,7 +65,7 @@ export class RestApiRequest {
   private elaborateRequest () {
     // do something like register path / params
     // const url = new URLParse(this.getUrl());
-    // console.log("Parsed URL: " + JSON.stringify(url));
+    // Platform.log("Parsed URL: " + JSON.stringify(url));
   }
   /*
   query() {

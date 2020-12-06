@@ -19,7 +19,6 @@ import makeCloudflareWorkerEnv, {
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group _functional
  * @group incomplete
  */
 describe('something', () => {
