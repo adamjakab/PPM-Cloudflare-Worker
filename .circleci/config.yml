@@ -27,11 +27,13 @@ jobs:
       - attach_workspace:
           at: .
       - run: npm run build
-      - run: |
-          echo 'Checking for worker output script'
-          if [ ! -f ./worker/worker.js ]; then
-              exit 1
-          fi
+      - run:
+          name: Checking for worker output script
+          command: |
+            if [ ! -f ./worker/worker.js ]; then
+                exit 1
+            fi
+
 
 workflows:
   version: 2
