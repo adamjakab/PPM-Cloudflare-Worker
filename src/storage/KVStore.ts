@@ -32,7 +32,7 @@ export class KVStore extends Storage implements StorageInterface {
    * Fetches and stores the storeIndex
    * @param table
    */
-  public async fetchIndex(table: string): Promise<boolean> {
+  public async fetchIndex (table: string): Promise<boolean> {
     return new Promise<any>((resolve, reject) => {
       if (_.isEmpty(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
@@ -65,7 +65,7 @@ export class KVStore extends Storage implements StorageInterface {
         return Promise.all(promises)
       }).then((values:any[]) => {
         const merged = _.values(_.merge(_.keyBy(values, 'id'), _.keyBy(this.storeIndex, 'id')))
-        Platform.log("M1: ", JSON.stringify(merged))
+        Platform.log('M1: ', JSON.stringify(merged))
 
         resolve(merged)
       }).catch((e) => {
@@ -84,7 +84,7 @@ export class KVStore extends Storage implements StorageInterface {
     return new Promise<number>((resolve, reject) => {
       this.fetchIndex(table).then(() => {
         const PPMStorageKV = getPPMStorageKV()
-        const indexData = _.find(this.storeIndex, {id: id.toString()})
+        const indexData = _.find(this.storeIndex, { id: id.toString() })
         if (_.isUndefined(indexData)) {
           return reject(new Error('Requested id was not found in the table.'))
         }

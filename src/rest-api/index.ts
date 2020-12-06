@@ -64,7 +64,7 @@ export class RestApiWorker {
       callback: callback
     }
 
-    Platform.log('Registered route: ' + JSON.stringify(routeElement));
+    Platform.log('Registered route: ' + JSON.stringify(routeElement))
     this.routes.push(routeElement)
   }
 

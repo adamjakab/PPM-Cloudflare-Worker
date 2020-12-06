@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
-    "lint": "eslint '{src,test}/**/*.{js,ts,tsx}'",
+    "lint": "eslint '{src,test}/**/*.{js,ts}'",
     "test": "jest --config=jest.config.js --silent",
     "test-unit": "jest --config=jest.config.js --group=unit",
     "test-functional": "jest --config=jest.config.js --group=functional",
