@@ -1,34 +1,33 @@
-/* tslint:disable:no-console */
+import AppConfiguration from '../app/configuration'
 
 /**
  * Platform
  */
 export class Platform {
   /**
-   * Gets global variable where global stuff can be stored.
-   */
-  public static getGlobalVariable (): any {
-    return global
-  }
-
-  /**
    * Log any message
    */
   public static log (...args: any[]) {
-    console.log(...args)
+    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+      console.log(...args)
+    }
   }
 
   /**
    * Log any message as warning
    */
   public static logWarning (...args: any[]) {
-    console.warn(...args)
+    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+      console.warn(...args)
+    }
   }
 
   /**
    * Log any message as error
    */
   public static logError (...args: any[]) {
-    console.error(...args)
+    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+      console.error(...args)
+    }
   }
 }

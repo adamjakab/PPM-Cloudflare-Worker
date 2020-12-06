@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-ppm-worker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Paranoia Password Manager Cloudflare Worker app.",
   "author": "Adam Jakab <adam@jakab.pro>",
   "license": "MIT",
@@ -17,11 +17,18 @@
     "type": "git",
     "url": "git+https://github.com/adamjakab/PPM-Cloudflare-Worker.git"
   },
+  "ppm-config": {
+    "log_to_console": false,
+    "cache_config": true,
+    "storage_to_use": "memory"
+  },
   "keywords": [
+    "Paranoia Password Manager",
     "typescript",
     "cloudflare",
     "worker",
-    "Paranoia Password Manager"
+    "rest",
+    "api"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.15",

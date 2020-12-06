@@ -113,6 +113,9 @@ export class Memory extends Storage implements StorageInterface {
     this._data = defaultData
   }
 
+  /**
+   * @todo: this is only needed for testing so it must me moved out from here
+   */
   public resetTestData (): void {
     this._data = testData
   }

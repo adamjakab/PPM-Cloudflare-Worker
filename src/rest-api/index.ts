@@ -68,6 +68,10 @@ export class RestApiWorker {
     this.routes.push(routeElement)
   }
 
+  /**
+   * @todo: This needs to be changed to use a different class.
+   * @see: ../router/note.ts
+   */
   public useRouter (path: string, router: any) {
     _.each(router.getRoutes(), (route: any) => {
       this.register(

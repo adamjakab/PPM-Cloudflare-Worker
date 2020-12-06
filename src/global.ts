@@ -1,12 +1,18 @@
-import { Platform } from './util/platform'
 import { MetadataStorage } from './metadata/metadata-storage'
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
+
+/**
+ * Returns global variable
+ */
+export function getGlobalVariable (): any {
+  return global
+}
 
 /**
  * Returns the KV Storage: "PPMConfigKV"
  */
 export function getPPMConfigKV (): CloudflareWorkerKV {
-  const globalScope = Platform.getGlobalVariable()
+  const globalScope = getGlobalVariable()
   return globalScope.PPMConfigKV
 }
 
@@ -14,7 +20,7 @@ export function getPPMConfigKV (): CloudflareWorkerKV {
  * Returns the KV Storage: "PPMStorageKV"
  */
 export function getPPMStorageKV (): CloudflareWorkerKV {
-  const globalScope = Platform.getGlobalVariable()
+  const globalScope = getGlobalVariable()
   return globalScope.PPMStorageKV
 }
 
@@ -23,7 +29,7 @@ export function getPPMStorageKV (): CloudflareWorkerKV {
  * This part of the application will be moved to a separate repository / package: tinyOrm
  */
 export function getMetadataStorage (): MetadataStorage {
-  const globalScope = Platform.getGlobalVariable()
+  const globalScope = getGlobalVariable()
   if (!globalScope.tinyOrmMetadataStorage) {
     globalScope.tinyOrmMetadataStorage = new MetadataStorage()
   }

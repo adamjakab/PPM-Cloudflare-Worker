@@ -2,6 +2,7 @@ import * as _ from '../util/lodash'
 import { Controller } from './controller'
 import { RestApiRequest } from '../rest-api/request'
 import { RestApiResponse } from '../rest-api/response'
+import AppConfiguration from '../app/configuration'
 
 class RootController extends Controller {
   /**
@@ -12,9 +13,10 @@ class RootController extends Controller {
    */
   public async list (req: RestApiRequest, res: RestApiResponse) {
     const reply = {
-      name: 'cloudflare-ppm-worker',
-      version: '0.0.2'
+      name: AppConfiguration.getProjectConfigValue('name'),
+      version: AppConfiguration.getProjectConfigValue('version')
     }
+
     return res.send(reply)
   }
 }

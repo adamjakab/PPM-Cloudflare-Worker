@@ -1,6 +1,8 @@
 import { RestApiWorker } from '../rest-api'
 import Controller from '../controller/note'
 
+// @todo: this is badly designed - Routers will need a specific class
+// This calls register method when being imported and potentially not allowing for configuration to be available
 const worker = new RestApiWorker()
 worker.register('/', 'GET', Controller.list)
 worker.register('/:id', 'GET', Controller.getOne)

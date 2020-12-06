@@ -1,4 +1,4 @@
 /**
- * Import the main app
+ * Import the main application
  */
 import './app/workerApp'
