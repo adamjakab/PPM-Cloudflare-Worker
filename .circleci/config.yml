@@ -33,7 +33,14 @@ jobs:
             if [ ! -f ./worker/worker.js ]; then
                 exit 1
             fi
-
+      - run:
+          name: Checking worker script size (Max 1MB)
+          command: |
+            max_size=1048576
+            actual_size=$(wc -c < ./worker/worker.js)
+            if [ $actual_size -ge $max_size ]; then
+                exit 1
+            fi
 
 workflows:
   version: 2
