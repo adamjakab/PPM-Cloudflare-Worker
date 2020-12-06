@@ -10,7 +10,7 @@ jobs:
           root: .
           paths: [ . ]
   run_tests:
-    # executor: node-current
+    executor: node-current
     steps:
       - attach_workspace:
           at: '.'
@@ -21,9 +21,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: npm run lint
-
-orbs:
-  node: circleci/node@4.1.0
 
 workflows:
   version: 2
@@ -36,6 +33,9 @@ workflows:
       - code_quality:
           requires:
             - build
+
+orbs:
+  node: circleci/node@4.1.0
 
 executors:
   node-current:
