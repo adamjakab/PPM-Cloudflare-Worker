@@ -9,6 +9,7 @@ jobs:
   run_tests:
     executor: node-def-15
     steps:
+      - checkout
       - run: npm run test
 
 orbs:
