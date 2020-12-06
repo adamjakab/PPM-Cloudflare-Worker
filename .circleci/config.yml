@@ -18,7 +18,10 @@ workflows:
   test_ppm_worker:
     jobs:
       - build
-      - run_tests
+      - run_tests:
+          requires:
+            - build
+
 
 executors:
   node-def-15:
