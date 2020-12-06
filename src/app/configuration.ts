@@ -1,22 +1,25 @@
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
+import { getPPMConfigKV } from '../global'
 import * as _ from '../util/lodash'
 
 const defaultApplicationConfig = {
   log_to_console: true,
   cache_config: true,
-  storage_to_use: 'memory'
+  storage_to_use: 'memory',
+  shared_key: ''
 }
 
 class AppConfiguration {
-  private readonly projectConfig:any
-  private readonly applicationConfig:any
+  private readonly projectConfig: any
+  private readonly applicationConfig: any
 
   public constructor () {
     this.projectConfig = require('../../package.json')
     this.applicationConfig = defaultApplicationConfig
+    this.mergeProjectConfigOverrides()
   }
 
-  public getAppConfigValue (path:string, defaultValue:any = undefined) {
+  public getAppConfigValue (path: string, defaultValue: any = undefined) {
     return _.get(this.applicationConfig, path, defaultValue)
   }
 
@@ -24,7 +27,7 @@ class AppConfiguration {
     return this.applicationConfig
   }
 
-  public getProjectConfigValue (path:string, defaultValue:any = undefined) {
+  public getProjectConfigValue (path: string, defaultValue: any = undefined) {
     return _.get(this.projectConfig, path, defaultValue)
   }
 
@@ -32,32 +35,17 @@ class AppConfiguration {
     return this.projectConfig
   }
 
-  public mergeAppConfigOverrides () {
-    // Get override from Project Config (ppm-config key in package.json)
+  /**
+   *  Merge config from Project Config (ppm-config key in package.json)
+   */
+  protected mergeProjectConfigOverrides () {
     const projectOverrideConfig = this.getProjectConfigValue('ppm-config', {})
     _.extend(this.applicationConfig, projectOverrideConfig)
   }
 
-  /*
-  public async mergeAppConfigOverridesKV (): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      // Get override from Project Config (ppm-config key in package.json)
-      const projectOverrideConfig = this.getProjectConfigValue('ppm-config', {})
-      _.extend(this.applicationConfig, projectOverrideConfig)
-
-      // Get override from KV Storage (PPMConfigKV)
-      const globalScope = Platform.getGlobalVariable()
-      const PPMConfigKV: CloudflareWorkerKV = globalScope.PPMConfigKV
-
-      PPMConfigKV.get('log_to_console', 'text').then((val:any) => {
-        _.set(this.applicationConfig, 'log_to_console', val === 'true')
-        resolve()
-      }).catch(e => {
-        reject(e)
-      })
-    })
+  public mergeKVStorageOverrides () {
+    return true
   }
-   */
 }
 
 // Singleton export

@@ -103,9 +103,9 @@ export class KVStore extends Storage implements StorageInterface {
    * @param element           element data
    * @return Promise<number>  the ID of the stored element
    */
-  public async store (table: string, element: any): Promise<number> {
+  public async store (table: string, element: any): Promise<any> {
     return new Promise<number>((resolve, reject) => {
-      resolve()
+      resolve(0)
     })
   }
 
@@ -117,7 +117,7 @@ export class KVStore extends Storage implements StorageInterface {
    */
   public async delete (table: string, id: number | string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      resolve()
+      resolve(true)
     })
   }
 
