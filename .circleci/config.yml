@@ -10,13 +10,13 @@ jobs:
           root: .
           paths: [ . ]
   run_tests:
-    executor: node-def-15
+    # executor: node-current
     steps:
       - attach_workspace:
           at: '.'
       - run: npm run test
   code_quality:
-    executor: node-def-15
+    executor: node-current
     steps:
       - attach_workspace:
           at: .
@@ -26,6 +26,7 @@ orbs:
   node: circleci/node@4.1.0
 
 workflows:
+  version: 2
   test_ppm_worker:
     jobs:
       - build
@@ -37,6 +38,6 @@ workflows:
             - build
 
 executors:
-  node-def-15:
+  node-current:
     docker:
-      - image: cimg/node:15.0
+      - image: cimg/node:current
