@@ -41,6 +41,7 @@ jobs:
             if [ $actual_size -ge $max_size ]; then
                 exit 1
             fi
+            echo "Worker script size is OK. $actual_size bytes"
 
 workflows:
   version: 2
