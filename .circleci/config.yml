@@ -6,6 +6,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages
+      - run: mkdir /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
           paths: [ . ]
