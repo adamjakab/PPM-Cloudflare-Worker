@@ -26,4 +26,4 @@ workflows:
 executors:
   node-def-15:
     docker:
-      - image: circleci/node:latest
+      - image: cimg/node:15.0
