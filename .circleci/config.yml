@@ -14,13 +14,13 @@ jobs:
     executor: node-current
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run: npm run test
   code_quality:
     executor: node-current
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run: npm run lint
 
 workflows:
