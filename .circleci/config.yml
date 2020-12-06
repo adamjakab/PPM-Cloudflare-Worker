@@ -1,19 +1,26 @@
-jobs:
-  test_with_jest:
-    executor:
-      name: node/default
-      tag: '15.0'
-    steps:
-      - checkout
-      - node/install-packages
-      - run:
-          command:
-            - npm run test
-            - npm run lint
 version: 2.1
+
+jobs:
+  build:
+    executor: node-def-15
+    steps:
+        - checkout
+        - node/install-packages
+  run_tests:
+    executor: node-def-15
+    steps:
+      - run: npm run test
+
 orbs:
   node: circleci/node@4.1.0
+
 workflows:
   test_ppm_worker:
     jobs:
-      - test_with_jest
+      - build
+      - run_tests
+
+executors:
+  node-def-15:
+    docker:
+      - image: circleci/node:latest
