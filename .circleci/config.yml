@@ -2,24 +2,24 @@ version: 2.1
 
 jobs:
   build:
-    executor: node-def-15
+    executor: node-current
     steps:
       - checkout
       - node/install-packages
       - persist_to_workspace:
-          root: .
+          root: /tmp/workspace
           paths: [ . ]
   run_tests:
     executor: node-current
     steps:
       - attach_workspace:
-          at: '.'
+          at: /tmp/workspace
       - run: npm run test
   code_quality:
     executor: node-current
     steps:
       - attach_workspace:
-          at: .
+          at: /tmp/workspace
       - run: npm run lint
 
 workflows:
@@ -35,9 +35,11 @@ workflows:
             - build
 
 orbs:
+  # Ref.: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.1.0
 
 executors:
   node-current:
     docker:
+      # Ref.: https://circleci.com/developer/images/image/cimg/node
       - image: cimg/node:current
