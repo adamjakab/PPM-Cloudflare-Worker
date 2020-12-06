@@ -13,15 +13,15 @@ jobs:
     executor: node-def-15
     steps:
       - attach_workspace:
-        at: .
+          at: '.'
       - checkout
       - node/install-packages
       - run: npm run test
   code_quality:
-    # executor: node-def-15
+    executor: node-def-15
     steps:
       - attach_workspace:
-        at: .
+          at: .
       - checkout
       - node/install-packages
       - run: npm run lint
