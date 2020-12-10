@@ -1,22 +1,20 @@
-import { CloudflareWorkerKV } from 'types-cloudflare-worker'
 import { getPPMConfigKV } from '../global'
 import * as _ from '../util/lodash'
 
 const defaultApplicationConfig = {
-  log_to_console: true,
-  cache_config: true,
+  log_to_console: false,
+  cache_config: false,
   storage_to_use: 'memory',
   shared_key: ''
 }
 
-class AppConfiguration {
+export class AppConfiguration {
   private readonly projectConfig: any
   private readonly applicationConfig: any
 
   public constructor () {
     this.projectConfig = require('../../package.json')
     this.applicationConfig = defaultApplicationConfig
-    this.mergeProjectConfigOverrides()
   }
 
   public getAppConfigValue (path: string, defaultValue: any = undefined) {
@@ -38,15 +36,39 @@ class AppConfiguration {
   /**
    *  Merge config from Project Config (ppm-config key in package.json)
    */
-  protected mergeProjectConfigOverrides () {
+  public mergeProjectConfigOverrides () {
     const projectOverrideConfig = this.getProjectConfigValue('ppm-config', {})
     _.extend(this.applicationConfig, projectOverrideConfig)
   }
 
-  public mergeKVStorageOverrides () {
-    return true
+  /**
+   *  Merge config from KV Storage: PPMConfigKV
+   */
+  public async mergeKVStorageOverrides (): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const PPMConfigKV = getPPMConfigKV()
+      if (_.isUndefined(PPMConfigKV)) {
+        return reject(new Error('PPMConfigKV is not defined!'))
+      }
+
+      const configKeys = _.keys(this.applicationConfig)
+      const promises: any[] = []
+
+      _.each(configKeys, (key) => {
+        promises.push(PPMConfigKV.get(key))
+      })
+
+      Promise.all(promises).then((results) => {
+        _.each(configKeys, (key) => {
+          const val = _.head(_.pullAt(results, 0))
+          if (!_.isUndefined(val) && !_.isNull(val)) {
+            _.set(this.applicationConfig, key, val)
+          }
+        })
+        resolve()
+      }).catch(e => {
+        reject(e)
+      })
+    })
   }
 }
-
-// Singleton export
-export = new AppConfiguration()

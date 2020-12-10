@@ -1,4 +1,4 @@
-import AppConfiguration from '../app/configuration'
+import app from '../'
 
 /**
  * Platform
@@ -8,7 +8,7 @@ export class Platform {
    * Log any message
    */
   public static log (...args: any[]) {
-    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+    if (app.appConfig.getAppConfigValue('log_to_console', false)) {
       console.log(...args)
     }
   }
@@ -17,7 +17,7 @@ export class Platform {
    * Log any message as warning
    */
   public static logWarning (...args: any[]) {
-    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+    if (app.appConfig.getAppConfigValue('log_to_console', false)) {
       console.warn(...args)
     }
   }
@@ -26,7 +26,7 @@ export class Platform {
    * Log any message as error
    */
   public static logError (...args: any[]) {
-    if (AppConfiguration.getAppConfigValue('log_to_console', false)) {
+    if (app.appConfig.getAppConfigValue('log_to_console', false)) {
       console.error(...args)
     }
   }

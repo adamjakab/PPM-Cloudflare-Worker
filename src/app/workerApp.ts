@@ -1,32 +1,70 @@
-import AppConfiguration from './configuration'
-import CloudflareWorkerGlobalScope from 'types-cloudflare-worker'
 import RootController from '../controller/root'
-import EntityManager from '../repository/entity-manager'
-import { RestApiWorker } from '../rest-api'
-import * as NoteRouter from '../router/note'
-import { Memory } from '../storage/memory'
-import { KVStore } from '../storage/KVStore'
 import { Note } from '../entity/note'
+import { routingTable as NoteRoutingTable } from '../router/note'
+import * as _ from '../util/lodash'
+import EntityManager from '../repository/entity-manager'
+import { KVStore } from '../storage/KVStore'
+import { Memory } from '../storage/memory'
+import { RestApiWorker } from '../rest-api'
+import { AppConfiguration } from './configuration'
 
-// Set up Entity Manager with the right storage
-if (AppConfiguration.getAppConfigValue('storage_to_use') === 'kvstore') {
-  EntityManager.setupStorageDriver(new KVStore())
-} else {
-  EntityManager.setupStorageDriver(new Memory())
-  EntityManager.storage.resetTestData()
+export class CloudflareWorkerApp {
+  private setupComplete: boolean
+  private restApiWorker: RestApiWorker
+  public appConfig: AppConfiguration
+
+  public constructor () {
+    this.setupComplete = false
+    this.restApiWorker = new RestApiWorker()
+  }
+
+  public async handle (fetchEvent: FetchEvent) {
+    await this.verifySetup()
+    return this.restApiWorker.handle(fetchEvent)
+  }
+
+  private async verifySetup (): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.setupComplete) {
+        resolve()
+      } else {
+        this.initializeAppConfiguration().then(() => {
+          console.log('APP CONFIG: ', this.appConfig.getAppConfig())
+          this.setupEntityManager()
+          this.setupRoutes()
+          this.setupComplete = true
+          resolve()
+        }).catch(e => {
+          console.error('APP CONFIG ERROR: ', e)
+          reject(e)
+        })
+      }
+    })
+  }
+
+  private async initializeAppConfiguration () {
+    this.appConfig = new AppConfiguration()
+    this.appConfig.mergeProjectConfigOverrides()
+    await this.appConfig.mergeKVStorageOverrides()
+  }
+
+  private setupEntityManager () {
+    // Set up Entity Manager with the right storage
+    if (this.appConfig.getAppConfigValue('storage_to_use') === 'kvstore') {
+      EntityManager.setupStorageDriver(new KVStore())
+    } else {
+      EntityManager.setupStorageDriver(new Memory())
+      EntityManager.storage.resetTestData()
+    }
+
+    // @todo: move this to a separate method
+    // Register Entities
+    EntityManager.registerEntities([Note])
+  }
+
+  private setupRoutes () {
+    this.restApiWorker.register('/', 'GET', RootController.list)
+    this.restApiWorker.useRoutingTable(NoteRoutingTable)
+    // this.restApiWorker.useRouter('/notes', NoteRouter)
+  }
 }
-
-// Register Entities
-EntityManager.registerEntities([Note])
-
-// Create the REST API worker and register the route handlers
-const worker = new RestApiWorker()
-worker.register('/', 'GET', RootController.list)
-worker.useRouter('/notes', NoteRouter)
-
-// Register the listener and handle the request
-declare let self: CloudflareWorkerGlobalScope
-self.addEventListener('fetch', (fetchEvent: FetchEvent) => {
-  fetchEvent.respondWith(worker.handle(fetchEvent))
-  AppConfiguration.mergeKVStorageOverrides()
-})

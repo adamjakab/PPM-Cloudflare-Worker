@@ -22,6 +22,7 @@ import isUndefined from 'lodash/isUndefined'
 import join from 'lodash/join'
 import keyBy from 'lodash/keyBy'
 import keys from 'lodash/keys'
+import pullAt from 'lodash/pullAt'
 import map from 'lodash/map'
 import merge from 'lodash/merge'
 import set from 'lodash/set'
@@ -30,7 +31,7 @@ import values from 'lodash/values'
 
 // exports
 export {
-  head, keys, values, has, get, set, unset, extend, merge, keyBy,
+  head, keys, values, has, get, set, unset, extend, merge, keyBy, pullAt,
   isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
   join, map, find, includes, each
 }

@@ -2,7 +2,7 @@ import * as _ from '../util/lodash'
 import { Platform } from '../util/platform'
 import { RestApiRequest } from './request'
 import { RestApiResponse } from './response'
-import { RouteElementLayout } from '../interface/route_element'
+import { RawRouteItem, RouteElementLayout } from '../interface/route_element'
 import { createRoute as createTypedRoute } from 'typed-routes'
 
 export class RestApiWorker {
@@ -71,6 +71,7 @@ export class RestApiWorker {
   /**
    * @todo: This needs to be changed to use a different class.
    * @see: ../router/note.ts
+   * @deprecated: will be removed from next version
    */
   public useRouter (path: string, router: any) {
     _.each(router.getRoutes(), (route: any) => {
@@ -80,6 +81,10 @@ export class RestApiWorker {
         route.callback
       )
     })
+  }
+
+  public useRoutingTable (rt: RawRouteItem[]) {
+    Platform.log('NoteRT', rt)
   }
 
   public getRoutes = () => {

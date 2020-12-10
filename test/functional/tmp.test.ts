@@ -10,6 +10,7 @@ import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
 import { Platform } from '../../src/util/platform'
+import { createGlobalPpmConfigKV, PpmConfig } from '../helper/ppm.config'
 
 declare let self: CloudflareWorkerGlobalScope
 
@@ -21,7 +22,10 @@ describe('something', () => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
 
-    // Merge the named KV into the global scope
+    // Merge the named KV into the global scope: PPMConfigKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
+
+    // Merge the named KV into the global scope: PPMStorageKV
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
     // Clear all module imports.
@@ -35,8 +39,11 @@ describe('something', () => {
     expect(true).toBeTruthy()
   })
 
-  /*
   it('should be true', async () => {
+    const ppmConfig = createGlobalPpmConfigKV({
+      log_to_console: false
+    })
+
     const request = makeCloudflareWorkerRequest('/', {
       method: 'GET',
       cf: {}
@@ -45,6 +52,6 @@ describe('something', () => {
 
     expect(response.status).toBe(200)
     expect(await response.json()).toBeDefined()
+    expect(ppmConfig.timesCalledGet).toBeGreaterThan(0)
   })
-   */
 })
