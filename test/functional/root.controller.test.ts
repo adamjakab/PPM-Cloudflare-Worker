@@ -29,7 +29,7 @@ describe('root controller', () => {
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
     ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: true
+      log_to_console: false
     })
 
     // Clear all module imports.

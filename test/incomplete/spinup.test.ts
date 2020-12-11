@@ -1,10 +1,5 @@
-
 import fetchMock from 'jest-fetch-mock'
-import {
-  CloudflareWorkerGlobalScope,
-  CloudflareWorkerKVOptions
-} from 'types-cloudflare-worker'
-
+import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
@@ -17,7 +12,7 @@ declare let self: CloudflareWorkerGlobalScope
 /**
  * @group incomplete
  */
-describe('something', () => {
+describe('Spinup Test', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -35,13 +30,9 @@ describe('something', () => {
     jest.requireActual('../../src/index')
   })
 
-  it('should work', async () => {
-    expect(true).toBeTruthy()
-  })
-
   it('should be true', async () => {
     const ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: false
+      log_to_console: true
     })
 
     const request = makeCloudflareWorkerRequest('/', {

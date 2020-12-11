@@ -1,11 +1,12 @@
+import * as _ from '../util/lodash'
 import RootController from '../controller/root'
 import { Note } from '../entity/note'
 import { routingTable as NoteRoutingTable } from '../router/note'
-import * as _ from '../util/lodash'
 import EntityManager from '../repository/entity-manager'
 import { KVStore } from '../storage/KVStore'
 import { Memory } from '../storage/memory'
 import { RestApiWorker } from '../rest-api'
+import { Platform } from '../util/platform'
 import { AppConfiguration } from './configuration'
 
 export class CloudflareWorkerApp {
@@ -29,13 +30,13 @@ export class CloudflareWorkerApp {
         resolve()
       } else {
         this.initializeAppConfiguration().then(() => {
-          console.log('APP CONFIG: ', this.appConfig.getAppConfig())
+          Platform.log('APP CONFIG: ', this.appConfig.getAppConfig())
           this.setupEntityManager()
           this.setupRoutes()
           this.setupComplete = true
           resolve()
         }).catch(e => {
-          console.error('APP CONFIG ERROR: ', e)
+          Platform.logError('APP CONFIG ERROR: ', e)
           reject(e)
         })
       }
@@ -64,7 +65,6 @@ export class CloudflareWorkerApp {
 
   private setupRoutes () {
     this.restApiWorker.register('/', 'GET', RootController.list)
-    this.restApiWorker.useRoutingTable(NoteRoutingTable)
-    // this.restApiWorker.useRouter('/notes', NoteRouter)
+    this.restApiWorker.useRoutingTable('/notes', NoteRoutingTable)
   }
 }

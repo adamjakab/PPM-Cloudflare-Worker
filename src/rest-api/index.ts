@@ -32,6 +32,12 @@ export class RestApiWorker {
     return await route.callback(request, response)
   }
 
+  /**
+   * this should use the RawRouteItem as parameter
+   * @param path
+   * @param method
+   * @param callback
+   */
   public register (path: string, method: string, callback: any) {
     if (!this.validMethods.includes(method)) {
       Platform.logError('Cannot register invalid method: ' + method + '!')
@@ -68,23 +74,15 @@ export class RestApiWorker {
     this.routes.push(routeElement)
   }
 
-  /**
-   * @todo: This needs to be changed to use a different class.
-   * @see: ../router/note.ts
-   * @deprecated: will be removed from next version
-   */
-  public useRouter (path: string, router: any) {
-    _.each(router.getRoutes(), (route: any) => {
+  public useRoutingTable (path: string, rt: RawRouteItem[]) {
+    // Platform.log('NoteRT', rt)
+    _.each(rt, (routeItem: RawRouteItem) => {
       this.register(
-        path + (route.path === '/' ? '' : route.path),
-        route.method,
-        route.callback
+        path + (routeItem.path === '/' ? '' : routeItem.path),
+        routeItem.method,
+        routeItem.callback
       )
     })
-  }
-
-  public useRoutingTable (rt: RawRouteItem[]) {
-    Platform.log('NoteRT', rt)
   }
 
   public getRoutes = () => {

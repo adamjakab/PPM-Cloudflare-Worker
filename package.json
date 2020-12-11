@@ -7,7 +7,8 @@
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint '{src,test}/**/*.{js,ts}'",
-    "test": "jest --config=jest.config.js --silent",
+    "lint-fix": "eslint '{src,test}/**/*.{js,ts}' --fix",
+    "test": "jest --config=jest.config.js --silent --group=unit --group=functional",
     "test-unit": "jest --config=jest.config.js --group=unit",
     "test-functional": "jest --config=jest.config.js --group=functional",
     "build": "webpack --config webpack.config.js --progress # Create minified output",
