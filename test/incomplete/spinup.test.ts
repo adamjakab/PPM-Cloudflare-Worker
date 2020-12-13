@@ -3,6 +3,7 @@ import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
+import { KVStore } from '../../src/storage/KVStore'
 import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 import { createGlobalPpmStorageKV } from '../helper/ppm.storage'
 import _ from 'lodash'

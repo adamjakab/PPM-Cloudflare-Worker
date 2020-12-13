@@ -75,7 +75,7 @@ export class RestApiWorker {
   }
 
   public useRoutingTable (path: string, rt: RawRouteItem[]) {
-    // Platform.log('NoteRT', rt)
+    // Platform.log('Routing Table: ', rt)
     _.each(rt, (routeItem: RawRouteItem) => {
       this.register(
         path + (routeItem.path === '/' ? '' : routeItem.path),

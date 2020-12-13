@@ -1,10 +1,11 @@
 /* tslint:disable:no-console */
 import * as _ from 'lodash'
-import { Note } from '../../../src/entity/note'
+import { Card } from '../../../src/entity/card'
 
 import EntityManager from '../../../src/repository/entity-manager'
-import { NoteRepository } from '../../../src/repository/note-repository'
+import { CardRepository } from '../../../src/repository/card.repository'
 import { v4 as generateUUIDv4 } from 'uuid'
+import { KVStore } from '../../../src/storage/KVStore'
 // import { Note } from "../../../src/entity/note";
 // import { InstanceCreator } from "../../../src/util/instance-creator";
 
@@ -22,13 +23,12 @@ const defaultData = {
  */
 describe('NoteRepository', () => {
   beforeEach(async () => {
-    EntityManager.storage.reset(defaultData)
-    EntityManager.registerEntities([Note])
+    EntityManager.registerEntities([Card])
   })
 
   it('should have a storage table name', () => {
-    const repo = new NoteRepository()
+    const repo = new CardRepository()
     expect(repo.storageTableName).not.toBeUndefined()
-    expect(repo.storageTableName).toEqual('notes')
+    expect(repo.storageTableName).toEqual('cards')
   })
 })

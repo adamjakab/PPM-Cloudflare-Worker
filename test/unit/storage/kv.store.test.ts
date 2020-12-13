@@ -1,9 +1,12 @@
-/* tslint:disable:no-console */
+import makeCloudflareWorkerEnv, { makeCloudflareWorkerKVEnv } from 'cloudflare-worker-mock'
 import * as _ from 'lodash'
 import { v4 as generateUUIDv4 } from 'uuid'
-import { Memory } from '../../../src/storage/memory'
+import { KVStore } from '../../../src/storage/KVStore'
+import { createGlobalPpmConfigKV } from '../../helper/ppm.config'
+import { createGlobalPpmStorageKV } from '../../helper/ppm.storage'
 // import { Entity } from "../../../src/entity/entity";
 
+// @todo: move to helper
 const defaultDataCreator = (elements: any[]) => {
   const answer = {}
   _.each(elements, element => {
@@ -16,23 +19,50 @@ const defaultDataCreator = (elements: any[]) => {
 /**
  * @group unit/storage
  */
-describe('Memory(Storage)', () => {
-  it('should have name: memory', () => {
-    const ms = new Memory()
+describe('KVStorage', () => {
+  beforeEach(() => {
+    // Merge the Cloudflare Worker Environment into the global scope.
+    Object.assign(global, makeCloudflareWorkerEnv())
+
+    // Merge the named KV into the global scope: PPMConfigKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
+
+    // Merge the named KV into the global scope: PPMStorageKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
+
+    // Clear all module imports.
+    jest.resetModules()
+
+    // Import and init the Worker.
+    jest.requireActual('../../../src/index')
+
+    createGlobalPpmConfigKV({
+      log_to_console: false,
+      storage_to_use: 'kvstore'
+    })
+  })
+
+  // @todo: we dont need the store name anymore - get rid of it
+  it('should have name: kvstore', () => {
+    const ms = new KVStore()
     expect(ms).toHaveProperty('name')
-    expect(ms.name).toEqual('memory')
+    expect(ms.name).toEqual('kvstore')
   })
 
-  it('[fetchAll] should throw an error on unknown table name', async () => {
-    expect.assertions(1)
-    const ms = new Memory()
-    try {
-      await ms.fetchAll('notes')
-    } catch (e) {
-      expect(e.toString()).toMatch('Unknown storage table')
-    }
+  it('[fetchIndex] should return the storage index', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json'
+    })
+    const storageData = ppmStorage.datastore
+
+    const store = new KVStore()
+    const index = await store.fetchIndex()
+
+    expect(index).toBeInstanceOf(Array)
+    expect(index).toEqual(_.get(storageData, 'index'))
   })
 
+  /*
   it('should return all data from a specific table', async () => {
     const defaultData = {
       notes: [
@@ -191,4 +221,5 @@ describe('Memory(Storage)', () => {
     const notes = await ms.fetchAll('notes')
     expect(_.size(notes)).toEqual(0)
   })
+   */
 })

@@ -1,10 +1,9 @@
 import { Platform } from '../util/platform'
-import { Storage, StorageInterface } from './storage'
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
 import { getPPMStorageKV } from '../global'
 import * as _ from '../util/lodash'
 
-export class KVStore extends Storage implements StorageInterface {
+export class KVStore {
   public readonly name: string = 'kvstore'
 
   /**
@@ -15,11 +14,10 @@ export class KVStore extends Storage implements StorageInterface {
   protected storeIndex: {id:string, type:string, identifier:string}[] = []
 
   /**
-   * Fetches and stores the storeIndex
-   * @param table
+   * Fetches and stores the storeIndex("index")
    */
-  public async fetchIndex (table: string): Promise<[]> {
-    return new Promise<[]>((resolve, reject) => {
+  public async fetchIndex (): Promise<{id:string, type:string, identifier:string}[]> {
+    return new Promise<{id:string, type:string, identifier:string}[]>((resolve, reject) => {
       if (_.isEmpty(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
         PPMStorageKV.get('index', 'json').then((index:[]) => {
@@ -29,7 +27,7 @@ export class KVStore extends Storage implements StorageInterface {
           reject(e)
         })
       } else {
-        resolve([])
+        resolve(this.storeIndex)
       }
     })
   }
@@ -46,7 +44,7 @@ export class KVStore extends Storage implements StorageInterface {
         reject(new Error("Storage cannot add to index - missing 'identifier'!"))
       }
 
-      this.fetchIndex(table).then(() => {
+      this.fetchIndex().then(() => {
         const indexData = {
           id: element.id,
           type: element.type,
@@ -71,7 +69,7 @@ export class KVStore extends Storage implements StorageInterface {
    */
   public async fetchAll (table: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.fetchIndex(table).then(() => {
+      this.fetchIndex().then(() => {
         const PPMStorageKV = getPPMStorageKV()
         const promises: Promise<any>[] = []
         _.each(this.storeIndex, (indexData) => {
@@ -98,7 +96,7 @@ export class KVStore extends Storage implements StorageInterface {
    */
   public async fetchOne (table: string, id: number | string): Promise<any> {
     return new Promise<number>((resolve, reject) => {
-      this.fetchIndex(table).then(() => {
+      this.fetchIndex().then(() => {
         const PPMStorageKV = getPPMStorageKV()
         const indexData = _.find(this.storeIndex, { id: id.toString() })
         if (_.isUndefined(indexData)) {

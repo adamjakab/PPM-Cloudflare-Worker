@@ -30,7 +30,7 @@ describe('Cards(/cards)', () => {
     jest.requireActual('../../src/index')
 
     createGlobalPpmConfigKV({
-      log_to_console: false,
+      log_to_console: true,
       storage_to_use: 'kvstore'
     })
   })

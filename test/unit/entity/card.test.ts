@@ -1,35 +1,36 @@
 /* tslint:disable:no-console */
 import * as _ from 'lodash'
-import { Note } from '../../../src/entity/note'
+import { Card } from '../../../src/entity/card'
 import { Entity } from '../../../src/entity/entity'
 // import { delay } from '../../../src/util/utils'
 
 /**
  * @group unit/entity
  */
-describe('Note(Entity)', () => {
+describe('Card(Entity)', () => {
   it('should be instance of Entity', () => {
-    const note = new Note({})
-    expect(note).toBeInstanceOf(Entity)
+    const card = new Card({})
+    expect(card).toBeInstanceOf(Entity)
   })
 
   it('should have default attributes', () => {
-    const note = new Note({})
-    const attrs = ['name', 'type', 'text']
+    const card = new Card({})
+    const attrs = ['name', 'type', 'identifier', 'text']
     _.each(attrs, attr => {
-      expect(note).toHaveProperty(attr)
+      expect(card).toHaveProperty(attr)
     })
   })
 
   it('should set the default attributes passed to the constructor', () => {
     const data = {
-      name: 'note-1',
-      type: 'memo',
+      name: 'card-1',
+      type: 'note',
+      identifier: 'own',
       text: 'Remember to brush your teeth.'
     }
-    const note = new Note(data)
+    const card = new Card(data)
     _.each(data, (v: any, k: string) => {
-      expect(_.get(note, k)).toEqual(v)
+      expect(_.get(card, k)).toEqual(v)
     })
   })
 })

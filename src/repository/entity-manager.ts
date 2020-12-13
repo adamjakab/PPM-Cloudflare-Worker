@@ -1,7 +1,7 @@
 import * as _ from '../util/lodash'
 import { Entity } from '../entity/entity'
-import { Memory } from '../storage/memory'
-import { StorageInterface } from '../storage/storage'
+// import { StorageInterface } from '../storage/storage'
+import { KVStore } from '../storage/KVStore'
 import { InstanceCreator } from '../util/instance-creator'
 import { Platform } from '../util/platform'
 
@@ -14,24 +14,23 @@ class EntityManager {
    */
   private fakeUuidV4 = '00000000-0000-4000-8000-000000000000'
 
-  private _storage: StorageInterface;
+  private _storage: KVStore;
   private readonly _knownEntities: Record<string, any>[];
 
-  constructor (driver: StorageInterface) {
+  constructor () {
     this._knownEntities = []
-    this.setupStorageDriver(driver)
   }
 
   get driver (): string {
     return this._storage.name
   }
 
-  get storage (): StorageInterface {
+  get storage (): KVStore {
     return this._storage
   }
 
   public async fetchIndex (table: string) {
-    return await this._storage.fetchIndex(table)
+    return await this._storage.fetchIndex()
   }
 
   public async fetchAll (table: string) {
@@ -78,11 +77,11 @@ class EntityManager {
     })
   }
 
-  public setupStorageDriver (driver: StorageInterface) {
+  public setupStorageDriver (driver: KVStore) {
     this._storage = driver
   }
 }
 
 // @todo: set it to KV Driver (once it exists)
 // Export a single instance
-export = new EntityManager(new Memory());
+export = new EntityManager();

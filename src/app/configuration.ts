@@ -4,7 +4,7 @@ import * as _ from '../util/lodash'
 const defaultApplicationConfig = {
   log_to_console: false,
   cache_config: false,
-  storage_to_use: 'memory',
+  storage_to_use: 'kvstore',
   shared_key: ''
 }
 
