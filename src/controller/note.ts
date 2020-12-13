@@ -15,8 +15,9 @@ class NoteController extends Controller {
    */
   public async list (req: RestApiRequest, res: RestApiResponse) {
     const repo = new NoteRepository()
-    const notes = await repo.getAll()
-    return res.send(notes)
+    // const notes = await repo.getAll()
+    const noteIndex = await repo.getIndex()
+    return res.send(noteIndex)
   }
 
   /**

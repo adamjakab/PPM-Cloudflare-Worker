@@ -33,7 +33,7 @@ export class RestApiWorker {
   }
 
   /**
-   * this should use the RawRouteItem as parameter
+   * @todo: this should use the RawRouteItem as parameter
    * @param path
    * @param method
    * @param callback

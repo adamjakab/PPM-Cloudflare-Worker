@@ -1,23 +1,16 @@
-
-import {
-  CloudflareWorkerGlobalScope,
-  CloudflareWorkerKVOptions
-} from 'types-cloudflare-worker'
-
+import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
-import { createGlobalPpmConfigKV, PpmConfig } from '../helper/ppm.config'
+import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group functional
  */
-describe('root controller', () => {
-  let ppmConfig:PpmConfig
-
+describe('Root path', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -28,29 +21,18 @@ describe('root controller', () => {
     // Merge the named KV into the global scope: PPMStorageKV
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
-    ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: false
-    })
-
     // Clear all module imports.
     jest.resetModules()
 
     // Import and init the Worker.
     jest.requireActual('../../src/index')
-  })
 
-  it('should respond to GET(/)', async () => {
-    const request = makeCloudflareWorkerRequest('/', {
-      method: 'GET',
-      cf: {}
+    createGlobalPpmConfigKV({
+      log_to_console: false
     })
-    const response = await self.trigger('fetch', request)
-
-    expect(response.status).toBe(200)
-    expect(await response.json()).toBeDefined()
   })
 
-  it('should respond to GET(/) with application info', async () => {
+  it('should provide app info', async () => {
     const expectedInfo = {
       name: 'cloudflare-ppm-worker',
       version: '0.0.2'
@@ -61,14 +43,14 @@ describe('root controller', () => {
       cf: {}
     })
     const response = await self.trigger('fetch', request)
-    const responseData = await response.json()
+    const reply = await response.json()
 
     expect(response.status).toBe(200)
-    expect(responseData).toBeInstanceOf(Array)
-    expect(responseData).toHaveLength(1)
-    const realInfo = responseData[0]
-    expect(realInfo).toBeInstanceOf(Object)
-    expect(realInfo).toEqual(expectedInfo)
-    expect(ppmConfig.timesCalledGet).toBeGreaterThan(0)
+    expect(reply).toBeInstanceOf(Array)
+    expect(reply).toHaveLength(1)
+    const replyInfo = reply[0]
+    expect(replyInfo).toBeInstanceOf(Object)
+    expect(replyInfo).toEqual(expectedInfo)
+    // console.log(reply)
   })
 })

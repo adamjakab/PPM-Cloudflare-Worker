@@ -9,7 +9,7 @@ import { Note } from '../../src/entity/note'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group incomplete
+ * @group ___incomplete
  */
 describe('Simple Test', () => {
   it('should match root path', () => {

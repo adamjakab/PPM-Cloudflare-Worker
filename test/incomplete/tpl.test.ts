@@ -1,17 +1,34 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import { createRoute as createTypedRoute } from 'typed-routes'
+import makeCloudflareWorkerEnv, {
+  makeCloudflareWorkerKVEnv,
+  makeCloudflareWorkerRequest
+} from 'cloudflare-worker-mock'
+import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 import * as _ from 'lodash'
-import { Platform } from '../../src/util/platform'
-import EntityManager from '../../src/repository/entity-manager'
-import { NoteRepository } from '../../src/repository/note-repository'
-import { Note } from '../../src/entity/note'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group incomplete
+ * @group change_me
  */
 describe('Test Template', () => {
+  beforeEach(() => {
+    // Merge the Cloudflare Worker Environment into the global scope.
+    Object.assign(global, makeCloudflareWorkerEnv())
+
+    // Merge the named KV into the global scope: PPMConfigKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
+
+    // Merge the named KV into the global scope: PPMStorageKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
+
+    // Clear all module imports.
+    jest.resetModules()
+
+    // Import and init the Worker.
+    jest.requireActual('../../src/index')
+  })
+
   it('should work', () => {
     expect(true).toBeTruthy()
   })

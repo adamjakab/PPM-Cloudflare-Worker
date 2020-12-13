@@ -30,6 +30,10 @@ export class Repository {
     return this._storageTableName
   }
 
+  public async getIndex () {
+    return await EntityManager.fetchIndex(this._storageTableName)
+  }
+
   public async getAll () {
     const storageData = await EntityManager.fetchAll(this._storageTableName)
 

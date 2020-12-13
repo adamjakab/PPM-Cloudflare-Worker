@@ -32,19 +32,49 @@ export class KVStore extends Storage implements StorageInterface {
    * Fetches and stores the storeIndex
    * @param table
    */
-  public async fetchIndex (table: string): Promise<boolean> {
-    return new Promise<any>((resolve, reject) => {
+  public async fetchIndex (table: string): Promise<[]> {
+    return new Promise<[]>((resolve, reject) => {
       if (_.isEmpty(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
         PPMStorageKV.get('index', 'json').then((index:[]) => {
           this.storeIndex = index
-          resolve(true)
+          resolve(index)
         }).catch(e => {
           reject(e)
         })
       } else {
-        resolve(true)
+        resolve([])
       }
+    })
+  }
+
+  protected async addToIndex (table: string, element: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (_.isUndefined(element.id) || _.isEmpty(element.id)) {
+        reject(new Error("Storage cannot add to index - missing 'id'!"))
+      }
+      if (_.isUndefined(element.type) || _.isEmpty(element.type)) {
+        reject(new Error("Storage cannot add to index - missing 'type'!"))
+      }
+      if (_.isUndefined(element.identifier) || _.isEmpty(element.identifier)) {
+        reject(new Error("Storage cannot add to index - missing 'identifier'!"))
+      }
+
+      this.fetchIndex(table).then(() => {
+        const indexData = {
+          id: element.id,
+          type: element.type,
+          identifier: element.identifier
+        }
+        // @fixme: on update this will create multiple entries!!!
+        this.storeIndex.push(indexData)
+        const PPMStorageKV = getPPMStorageKV()
+        return PPMStorageKV.put('index', this.storeIndex as any)
+      }).then(() => {
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
     })
   }
 
@@ -65,7 +95,7 @@ export class KVStore extends Storage implements StorageInterface {
         return Promise.all(promises)
       }).then((values:any[]) => {
         const merged = _.values(_.merge(_.keyBy(values, 'id'), _.keyBy(this.storeIndex, 'id')))
-        Platform.log('M1: ', JSON.stringify(merged))
+        Platform.log('fetchAll Merged: ', JSON.stringify(merged))
 
         resolve(merged)
       }).catch((e) => {
@@ -105,7 +135,14 @@ export class KVStore extends Storage implements StorageInterface {
    */
   public async store (table: string, element: any): Promise<any> {
     return new Promise<number>((resolve, reject) => {
-      resolve(0)
+      const PPMStorageKV = getPPMStorageKV()
+      PPMStorageKV.put(element.id, element).then(() => {
+        return this.addToIndex(table, element)
+      }).then(() => {
+        resolve(0)
+      }).catch((e) => {
+        reject(e)
+      })
     })
   }
 

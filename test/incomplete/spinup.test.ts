@@ -1,18 +1,18 @@
-import fetchMock from 'jest-fetch-mock'
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
-import { Platform } from '../../src/util/platform'
-import { createGlobalPpmConfigKV, PpmConfig } from '../helper/ppm.config'
+import { createGlobalPpmConfigKV } from '../helper/ppm.config'
+import { createGlobalPpmStorageKV } from '../helper/ppm.storage'
+import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group incomplete
+ * @group _incomplete
  */
-describe('Spinup Test', () => {
+describe('Notes(/notes)', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -28,21 +28,10 @@ describe('Spinup Test', () => {
 
     // Import and init the Worker.
     jest.requireActual('../../src/index')
-  })
 
-  it('should be true', async () => {
-    const ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: true
+    createGlobalPpmConfigKV({
+      log_to_console: false,
+      storage_to_use: 'kvstore'
     })
-
-    const request = makeCloudflareWorkerRequest('/', {
-      method: 'GET',
-      cf: {}
-    })
-    const response = await self.trigger('fetch', request)
-
-    expect(response.status).toBe(200)
-    expect(await response.json()).toBeDefined()
-    expect(ppmConfig.timesCalledGet).toBeGreaterThan(0)
   })
 })

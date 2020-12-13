@@ -29,6 +29,15 @@ export class Memory extends Storage implements StorageInterface {
     this.reset(defaultData)
   }
 
+  public async fetchIndex (table: string): Promise<boolean> {
+    return new Promise<any>((resolve, reject) => {
+      if (!_.has(this._data, table)) {
+        reject(new Error('Unknown storage table: ' + table))
+      }
+      resolve(_.keys(_.get(this._data, table, {})))
+    })
+  }
+
   /**
    * Fetches all elements from the storage
    * @param table           the name of the table

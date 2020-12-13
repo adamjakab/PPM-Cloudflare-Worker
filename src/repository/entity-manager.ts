@@ -30,6 +30,10 @@ class EntityManager {
     return this._storage
   }
 
+  public async fetchIndex (table: string) {
+    return await this._storage.fetchIndex(table)
+  }
+
   public async fetchAll (table: string) {
     return await this._storage.fetchAll(table)
   }

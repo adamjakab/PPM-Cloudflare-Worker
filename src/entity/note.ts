@@ -7,6 +7,7 @@ import { Entity as EnhancedEntity } from '../decorator/Entity'
 export class Note extends Entity {
   private _name: string;
   private _type: string;
+  private _identifier: string;
   private _text: string;
 
   constructor (data?: any) {
@@ -36,6 +37,14 @@ export class Note extends Entity {
     }
   }
 
+  public get identifier (): string {
+    return this._identifier
+  }
+
+  public set identifier (value: string) {
+    this._identifier = value
+  }
+
   get text (): string {
     return this._text
   }
@@ -51,6 +60,7 @@ export class Note extends Entity {
     return _.extend(super.getEntityData(), {
       name: this.name,
       type: this.type,
+      identifier: this.identifier,
       text: this.text
     })
   }
@@ -69,6 +79,7 @@ export class Note extends Entity {
     // the below assignments will trigger _entityChanged which will change the dateModified field
     this.name = data.name
     this.type = data.type
+    this.identifier = data.identifier
     this.text = data.text
     // this is why this must come after
     super.mapDataOnEntity(data, reset)
