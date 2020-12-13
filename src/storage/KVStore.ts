@@ -14,20 +14,6 @@ export class KVStore extends Storage implements StorageInterface {
    */
   protected storeIndex: {id:string, type:string, identifier:string}[] = []
 
-  /*
-    const PPMConfigKV = getPPMConfigKV()
-    // const storageName = await PPMConfigKV.get('storageName')
-    // Platform.log('StorageName: ', storageName)
-    const dataKeyName = 'KVTestKey'
-    let KVTestData: any = await PPMConfigKV.get(dataKeyName, 'json')
-    if (_.isNull(KVTestData)) {
-      KVTestData = { counter: 0, type: 'note', identificator: 'jakab.pro' }
-    }
-    KVTestData.counter++
-    await PPMConfigKV.put(dataKeyName, JSON.stringify(KVTestData))
-    Platform.log('KVTestData counter: ', KVTestData.counter)
-     */
-
   /**
    * Fetches and stores the storeIndex
    * @param table

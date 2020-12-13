@@ -10,9 +10,9 @@ import _ from 'lodash'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group _incomplete
+ * @group incomplete
  */
-describe('Notes(/notes)', () => {
+describe('Items', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -33,5 +33,9 @@ describe('Notes(/notes)', () => {
       log_to_console: false,
       storage_to_use: 'kvstore'
     })
+  })
+
+  it.skip('should provide notes index', async () => {
+    expect(true).toBeTruthy()
   })
 })

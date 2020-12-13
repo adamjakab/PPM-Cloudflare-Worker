@@ -1,7 +1,9 @@
 import * as _ from '../util/lodash'
 import RootController from '../controller/root'
 import { Note } from '../entity/note'
+import { Card } from '../entity/card'
 import { routingTable as NoteRoutingTable } from '../router/note'
+import { routingTable as CardRoutingTable } from '../router/card'
 import EntityManager from '../repository/entity-manager'
 import { KVStore } from '../storage/KVStore'
 import { Memory } from '../storage/memory'
@@ -60,11 +62,12 @@ export class CloudflareWorkerApp {
 
     // @todo: move this to a separate method
     // Register Entities
-    EntityManager.registerEntities([Note])
+    EntityManager.registerEntities([Card, Note])
   }
 
   private setupRoutes () {
     this.restApiWorker.register('/', 'GET', RootController.list)
+    this.restApiWorker.useRoutingTable('/cards', CardRoutingTable)
     this.restApiWorker.useRoutingTable('/notes', NoteRoutingTable)
   }
 }
