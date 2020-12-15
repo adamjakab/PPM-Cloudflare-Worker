@@ -21,10 +21,6 @@ class EntityManager {
     this._knownEntities = []
   }
 
-  get driver (): string {
-    return this._storage.name
-  }
-
   get storage (): KVStore {
     return this._storage
   }

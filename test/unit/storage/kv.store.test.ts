@@ -42,11 +42,9 @@ describe('KVStorage', () => {
     })
   })
 
-  // @todo: we dont need the store name anymore - get rid of it
-  it.skip('should be removed - name: kvstore', () => {
+  it('should not have a name', () => {
     const ms = new KVStore()
-    expect(ms).toHaveProperty('name')
-    expect(ms.name).toEqual('kvstore')
+    expect(ms).not.toHaveProperty('name')
   })
 
   it('[fetchIndex] should return the storage index', async () => {

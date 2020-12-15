@@ -4,10 +4,11 @@ import { getPPMStorageKV } from '../global'
 import { StorageIndexItem } from '../interface/storage.index'
 import * as _ from '../util/lodash'
 
+/**
+ * @class KVStore
+ * @description Dedicated to execute operations on the CF KV Storage
+ */
 export class KVStore {
-  // @todo: this is not needed anymore and can be removed
-  public readonly name: string = 'kvstore'
-
   /**
    * Contains a reference to each of the stored items in the KV
    * together with some metadata info.
@@ -178,20 +179,5 @@ export class KVStore {
         reject(e)
       })
     })
-  }
-
-  /**
-   * Reset storage
-   * @param defaultData
-   */
-  public reset (defaultData: Record<string, any> = {}): void {
-    throw new Error('Not implemented!')
-  }
-
-  /**
-   * Reset with test data
-   */
-  public resetTestData (): void {
-    throw new Error('Not implemented!')
   }
 }
