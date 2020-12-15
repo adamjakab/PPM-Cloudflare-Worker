@@ -9,7 +9,7 @@ export const createGlobalPpmStorageKV = (cfg: any = {}): PpmStorage => {
   return ppmStorage
 }
 
-class PpmStorage {
+export class PpmStorage {
   private _timesCalledGet: number
   private _timesCalledPut: number
   private _datastore = {}

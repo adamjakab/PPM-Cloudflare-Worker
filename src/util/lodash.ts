@@ -8,6 +8,7 @@ import head from 'lodash/head'
 import each from 'lodash/each'
 import extend from 'lodash/extend'
 import find from 'lodash/find'
+import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
@@ -33,5 +34,5 @@ import values from 'lodash/values'
 export {
   head, keys, values, has, get, set, unset, extend, merge, keyBy, pullAt,
   isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
-  join, map, find, includes, each
+  join, map, find, findIndex, includes, each
 }

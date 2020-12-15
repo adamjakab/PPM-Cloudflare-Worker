@@ -1,26 +1,27 @@
 import { Platform } from '../util/platform'
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
 import { getPPMStorageKV } from '../global'
+import { StorageIndexItem } from '../interface/storage.index'
 import * as _ from '../util/lodash'
 
 export class KVStore {
+  // @todo: this is not needed anymore and can be removed
   public readonly name: string = 'kvstore'
 
   /**
-   * The storeIndex contains a reference (id) to each of the stored
-   * records in the KV together with some metadata info which can be
-   * searched so only specific records are retrieved.
+   * Contains a reference to each of the stored items in the KV
+   * together with some metadata info.
    */
-  protected storeIndex: {id:string, type:string, identifier:string}[] = []
+  protected storeIndex: StorageIndexItem[] = []
 
   /**
    * Fetches and stores the storeIndex("index")
    */
-  public async fetchIndex (): Promise<{id:string, type:string, identifier:string}[]> {
-    return new Promise<{id:string, type:string, identifier:string}[]>((resolve, reject) => {
+  public async fetchIndex (): Promise<StorageIndexItem[]> {
+    return new Promise<StorageIndexItem[]>((resolve, reject) => {
       if (_.isEmpty(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
-        PPMStorageKV.get('index', 'json').then((index:[]) => {
+        PPMStorageKV.get('index', 'json').then((index:StorageIndexItem[]) => {
           this.storeIndex = index
           resolve(index)
         }).catch(e => {
@@ -45,13 +46,19 @@ export class KVStore {
       }
 
       this.fetchIndex().then(() => {
+        // Update index data
         const indexData = {
           id: element.id,
           type: element.type,
           identifier: element.identifier
         }
-        // @fixme: on update this will create multiple entries!!!
-        this.storeIndex.push(indexData)
+        const i = _.findIndex(this.storeIndex, {id: element.id})
+        if (i === -1) {
+          this.storeIndex.push(indexData)
+        } else {
+          _.extend(this.storeIndex[i], indexData)
+        }
+
         const PPMStorageKV = getPPMStorageKV()
         return PPMStorageKV.put('index', this.storeIndex as any)
       }).then(() => {

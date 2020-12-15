@@ -11,7 +11,7 @@ import _ from 'lodash'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group incomplete
+ * @group ___incomplete
  */
 describe('Items', () => {
   beforeEach(() => {
