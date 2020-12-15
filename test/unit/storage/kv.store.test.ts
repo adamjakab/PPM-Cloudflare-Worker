@@ -18,6 +18,7 @@ const defaultDataCreator = (elements: any[]) => {
 
 /**
  * @group unit/storage
+ * @group incomplete
  */
 describe('KVStorage', () => {
   beforeEach(() => {
@@ -37,14 +38,9 @@ describe('KVStorage', () => {
     jest.requireActual('../../../src/index')
 
     createGlobalPpmConfigKV({
-      log_to_console: false,
+      log_to_console: true,
       storage_to_use: 'kvstore'
     })
-  })
-
-  it('should not have a name', () => {
-    const ms = new KVStore()
-    expect(ms).not.toHaveProperty('name')
   })
 
   it('[fetchIndex] should return the storage index', async () => {
@@ -54,10 +50,52 @@ describe('KVStorage', () => {
     const storageData = ppmStorage.datastore
 
     const store = new KVStore()
-    const index = await store.fetchIndex()
+    const fetchedIndex = await store.fetchIndex()
 
-    expect(index).toBeInstanceOf(Array)
-    expect(index).toEqual(_.get(storageData, 'index'))
+    expect(fetchedIndex).toBeInstanceOf(Array)
+    expect(fetchedIndex).toEqual(_.get(storageData, 'index'))
+  })
+
+  it('[fetchIndex] should return an empty index if does not exist in the storage', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.empty.json'
+    })
+
+    const store = new KVStore()
+    const fetchedIndex = await store.fetchIndex()
+
+    expect(fetchedIndex).toBeInstanceOf(Array)
+    expect(fetchedIndex).toEqual([])
+  })
+
+  it('[fetchIndex] should throw an error if index in not an array', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json',
+      call_get: () => {
+        return Promise.reject(new Error('Error!'))
+      }
+    })
+    const store = new KVStore()
+
+    expect.assertions(1)
+    try {
+      await store.fetchIndex()
+    } catch (e) {
+      expect(e.message).toBe('Error!')
+    }
+  })
+
+  it('[fetchIndex] should use in-memory index once loaded from KV', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json'
+    })
+    const storageData = ppmStorage.datastore
+    const store = new KVStore()
+    const fetchedIndex1 = await store.fetchIndex()
+    const fetchedIndex2 = await store.fetchIndex()
+    expect(fetchedIndex1).toEqual(_.get(storageData, 'index'))
+    expect(fetchedIndex2).toEqual(_.get(storageData, 'index'))
+    expect(ppmStorage.timesCalledGet).toEqual(1)
   })
 
   /*

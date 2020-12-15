@@ -13,19 +13,22 @@ export class KVStore {
    * Contains a reference to each of the stored items in the KV
    * together with some metadata info.
    */
-  protected storeIndex: StorageIndexItem[] = []
+  protected storeIndex: StorageIndexItem[]
 
   /**
    * Fetches and stores the storeIndex("index")
    */
   public async fetchIndex (): Promise<StorageIndexItem[]> {
     return new Promise<StorageIndexItem[]>((resolve, reject) => {
-      if (_.isEmpty(this.storeIndex)) {
+      if (_.isUndefined(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
         PPMStorageKV.get('index', 'json').then((index:StorageIndexItem[]) => {
+          if(_.isNull(index)) {
+            index = []
+          }
           this.storeIndex = index
           resolve(index)
-        }).catch(e => {
+        }).catch((e) => {
           reject(e)
         })
       } else {

@@ -23,6 +23,18 @@ export class PpmStorage {
     if (_.has(cfg, 'data_file')) {
       storageData = require(_.get(cfg, 'data_file'))
     }
+    // Pass in a custom callback for 'get'
+    if (_.has(cfg, 'call_get')) {
+      this.get = _.get(cfg, 'call_get')
+    }
+    // Pass in a custom callback for 'put'
+    if (_.has(cfg, 'call_put')) {
+      this.put = _.get(cfg, 'call_put')
+    }
+    // Pass in a custom callback for 'delete'
+    if (_.has(cfg, 'call_delete')) {
+      this.delete = _.get(cfg, 'call_delete')
+    }
     this._datastore = storageData
     this._timesCalledGet = 0
     this._timesCalledPut = 0
@@ -54,8 +66,6 @@ export class PpmStorage {
     this._timesCalledDel++
     return Promise.resolve()
   }
-
-  // list
 
   public get timesCalledGet (): number {
     return this._timesCalledGet
