@@ -52,11 +52,35 @@ export class KVStore {
           type: element.type,
           identifier: element.identifier
         }
-        const i = _.findIndex(this.storeIndex, {id: element.id})
+        const i = _.findIndex(this.storeIndex, { id: element.id })
         if (i === -1) {
           this.storeIndex.push(indexData)
         } else {
           _.extend(this.storeIndex[i], indexData)
+        }
+
+        const PPMStorageKV = getPPMStorageKV()
+        return PPMStorageKV.put('index', this.storeIndex as any)
+      }).then(() => {
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+
+  protected async deleteFromIndex (table: string, id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (_.isUndefined(id) || _.isEmpty(id)) {
+        reject(new Error("Storage cannot delete from index - missing 'id'!"))
+      }
+
+      this.fetchIndex().then(() => {
+        const i = _.findIndex(this.storeIndex, { id: id })
+        if (i === -1) {
+          reject(new Error("Storage cannot delete from index - 'id' not found!"))
+        } else {
+          _.pullAt(this.storeIndex, [i])
         }
 
         const PPMStorageKV = getPPMStorageKV()
@@ -143,9 +167,16 @@ export class KVStore {
    * @param id                  the ID of the element to delete
    * @return Promise<boolean>   true if the element was deleted
    */
-  public async delete (table: string, id: number | string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      resolve(true)
+  public async delete (table: string, id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.deleteFromIndex(table, id).then(() => {
+        const PPMStorageKV = getPPMStorageKV()
+        return PPMStorageKV.delete(id)
+      }).then(() => {
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
     })
   }
 

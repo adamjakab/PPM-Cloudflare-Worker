@@ -43,7 +43,7 @@ describe('KVStorage', () => {
   })
 
   // @todo: we dont need the store name anymore - get rid of it
-  it('should have name: kvstore', () => {
+  it.skip('should be removed - name: kvstore', () => {
     const ms = new KVStore()
     expect(ms).toHaveProperty('name')
     expect(ms.name).toEqual('kvstore')

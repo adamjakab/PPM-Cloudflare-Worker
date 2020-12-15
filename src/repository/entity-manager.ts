@@ -53,7 +53,7 @@ class EntityManager {
    * @param table
    * @param id
    */
-  public async delete (table: string, id: number | string) {
+  public async delete (table: string, id: string) {
     return await this._storage.delete(table, id)
   }
 

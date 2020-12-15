@@ -40,7 +40,7 @@ describe('Card Get', () => {
     jest.requireActual('../../src/index')
 
     createGlobalPpmConfigKV({
-      log_to_console: true,
+      log_to_console: false,
       storage_to_use: 'kvstore'
     })
   })

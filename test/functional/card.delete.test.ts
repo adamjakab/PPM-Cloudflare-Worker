@@ -14,9 +14,9 @@ declare let self: CloudflareWorkerGlobalScope
  * @group functional
  * @group _incomplete
  *
- * Create a card
+ * Delete a card
  */
-describe('Card Create', () => {
+describe('Card Delete', () => {
   let ppmStorage: PpmStorage
 
   beforeEach(() => {
@@ -45,52 +45,42 @@ describe('Card Create', () => {
     })
   })
 
-  it('should create a card', async () => {
+  it('should delete a card', async () => {
     const ppmStorage = createGlobalPpmStorageKV({
       data_file: '../data/storage.data.default.json'
     })
 
-    const newCard = {
-      name: 'New Card',
-      type: 'text',
-      identifier: 'jpro.net',
-      text: 'This is a new card.'
-    }
+    const cardId = '00000000-0000-4000-8000-000000000001'
+    const cardData = _.get(ppmStorage.datastore, cardId)
 
-    const request = makeCloudflareWorkerRequest('/cards', {
-      method: 'POST',
-      body: JSON.stringify(newCard),
+    const request = makeCloudflareWorkerRequest('/cards/' + cardId, {
+      method: 'DELETE',
       cf: {}
     })
+
     const response = await self.trigger('fetch', request)
     const reply = await response.json()
-    const createdCard: any = _.head(reply)
+    const deletedCard: any = _.head(reply)
 
     expect(response.status).toBe(200)
-    // console.log('Created Card: ', createdCard)
+    expect(deletedCard).toEqual(cardData)
+    // console.log('Deleted Card: ', deletedCard)
 
     // one for the data and one for the index
-    expect(ppmStorage.timesCalledPut).toEqual(2)
+    expect(ppmStorage.timesCalledPut).toEqual(1)
+    expect(ppmStorage.timesCalledDel).toEqual(1)
 
-    // verify the stored element
+    // verify that the element is deleted
     const storageData = ppmStorage.datastore
     // console.log('Storage Data: ', storageData)
-    const cardInStorage: any = _.get(storageData, createdCard.id)
-    expect(cardInStorage).toBeDefined()
-    expect(cardInStorage).toEqual(createdCard)
-    expect(cardInStorage.name).toEqual(newCard.name)
-    expect(cardInStorage.type).toEqual(newCard.type)
-    expect(cardInStorage.identifier).toEqual(newCard.identifier)
-    expect(cardInStorage.text).toEqual(newCard.text)
+    const cardInStorage: any = _.get(storageData, cardId)
+    expect(cardInStorage).toBeUndefined()
 
     // verify that the index is updated
-    expect(storageData.index).toHaveLength(3)
-    const indexItem: any = _.find(storageData.index, { id: createdCard.id })
-    expect(indexItem).toBeDefined()
-    expect(indexItem.id).toEqual(createdCard.id)
-    expect(indexItem.type).toEqual(createdCard.type)
-    expect(indexItem.identifier).toEqual(createdCard.identifier)
+    expect(storageData.index).toHaveLength(1)
+    const indexItem: any = _.find(storageData.index, { id: cardId })
+    expect(indexItem).toBeUndefined()
 
-    // console.log(storageData)
+    // console.log(ppmStorage.datastore)
   })
 })

@@ -9,10 +9,14 @@ export const createGlobalPpmStorageKV = (cfg: any = {}): PpmStorage => {
   return ppmStorage
 }
 
+/**
+ * Cloudflare KV Storage Mock
+ */
 export class PpmStorage {
   private _timesCalledGet: number
   private _timesCalledPut: number
-  private _datastore = {}
+  private _timesCalledDel: number
+  private readonly _datastore = {}
 
   public constructor (cfg: any = {}) {
     let storageData = {}
@@ -22,6 +26,7 @@ export class PpmStorage {
     this._datastore = storageData
     this._timesCalledGet = 0
     this._timesCalledPut = 0
+    this._timesCalledDel = 0
   }
 
   public get (
@@ -42,7 +47,13 @@ export class PpmStorage {
     return Promise.resolve()
   }
 
-  // delete
+  public delete (
+    _key: string
+  ): Promise<void> {
+    _.unset(this._datastore, _key)
+    this._timesCalledDel++
+    return Promise.resolve()
+  }
 
   // list
 
@@ -52,6 +63,10 @@ export class PpmStorage {
 
   public get timesCalledPut (): number {
     return this._timesCalledPut
+  }
+
+  public get timesCalledDel (): number {
+    return this._timesCalledDel
   }
 
   public get datastore (): any {

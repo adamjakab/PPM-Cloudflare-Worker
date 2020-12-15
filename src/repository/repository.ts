@@ -67,6 +67,6 @@ export class Repository {
    * @param entity
    */
   public async remove (entity: Entity) {
-    return await EntityManager.delete(this._storageTableName, entity.id)
+    return await EntityManager.delete(this._storageTableName, entity.id.toString())
   }
 }
