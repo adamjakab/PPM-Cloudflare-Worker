@@ -23,7 +23,7 @@ export class KVStore {
       if (_.isUndefined(this.storeIndex)) {
         const PPMStorageKV = getPPMStorageKV()
         PPMStorageKV.get('index', 'json').then((index:StorageIndexItem[]) => {
-          if(_.isNull(index)) {
+          if (_.isNull(index)) {
             index = []
           }
           this.storeIndex = index
@@ -64,13 +64,13 @@ export class KVStore {
    * @param id              the ID of the element to fetch
    * @return Promise<any>   the element if found or undefined
    */
-  public async fetchOne (id: number | string): Promise<any> {
+  public async fetchOne (id: string): Promise<any> {
     return new Promise<number>((resolve, reject) => {
       this.fetchIndex().then(() => {
         const PPMStorageKV = getPPMStorageKV()
         const indexData = _.find(this.storeIndex, { id: id.toString() })
         if (_.isUndefined(indexData)) {
-          return reject(new Error('Requested id was not found in the index.'))
+          return reject(new Error('Requested id was not found!'))
         }
         return PPMStorageKV.get(indexData.id, 'json')
       }).then((recordData:any) => {
@@ -84,15 +84,15 @@ export class KVStore {
   /**
    * Stores the element
    * @param element           element data
-   * @return Promise<number>  the ID of the stored element
+   * @return Promise<void>
    */
-  public async store (element: any): Promise<any> {
-    return new Promise<number>((resolve, reject) => {
+  public async store (element: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       const PPMStorageKV = getPPMStorageKV()
       PPMStorageKV.put(element.id, element).then(() => {
         return this.addToIndex(element)
       }).then(() => {
-        resolve(0)
+        resolve()
       }).catch((e) => {
         reject(e)
       })

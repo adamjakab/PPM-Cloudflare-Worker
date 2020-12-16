@@ -33,7 +33,7 @@ class EntityManager {
     return await this._storage.fetchAll()
   }
 
-  public async fetchOne (table: string, id: number | string) {
+  public async fetchOne (table: string, id: string) {
     return await this._storage.fetchOne(id)
   }
 

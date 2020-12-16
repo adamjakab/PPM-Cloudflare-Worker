@@ -46,7 +46,7 @@ export class Repository {
     return entities
   }
 
-  public async get (id: number | string) {
+  public async get (id: string) {
     const data = await EntityManager.fetchOne(this._storageTableName, id)
     return data ? this._entityCreator.getNewInstance(data) : undefined
   }
