@@ -37,7 +37,87 @@ export class KVStore {
     })
   }
 
-  protected async addToIndex (table: string, element: any): Promise<void> {
+  /**
+   * Fetches all elements from the storage
+   * @return Promise<any>   the list of elements
+   */
+  public async fetchAll (): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.fetchIndex().then(() => {
+        const PPMStorageKV = getPPMStorageKV()
+        const promises: Promise<any>[] = []
+        _.each(this.storeIndex, (indexData) => {
+          // Platform.log('Index Data: ', JSON.stringify(indexData))
+          promises.push(PPMStorageKV.get(indexData.id, 'json'))
+        })
+        return Promise.all(promises)
+      }).then((values:any[]) => {
+        resolve(values)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+
+  /**
+   * Fetches a single element by ID
+   * @param id              the ID of the element to fetch
+   * @return Promise<any>   the element if found or undefined
+   */
+  public async fetchOne (id: number | string): Promise<any> {
+    return new Promise<number>((resolve, reject) => {
+      this.fetchIndex().then(() => {
+        const PPMStorageKV = getPPMStorageKV()
+        const indexData = _.find(this.storeIndex, { id: id.toString() })
+        if (_.isUndefined(indexData)) {
+          return reject(new Error('Requested id was not found in the index.'))
+        }
+        return PPMStorageKV.get(indexData.id, 'json')
+      }).then((recordData:any) => {
+        resolve(recordData)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+
+  /**
+   * Stores the element
+   * @param element           element data
+   * @return Promise<number>  the ID of the stored element
+   */
+  public async store (element: any): Promise<any> {
+    return new Promise<number>((resolve, reject) => {
+      const PPMStorageKV = getPPMStorageKV()
+      PPMStorageKV.put(element.id, element).then(() => {
+        return this.addToIndex(element)
+      }).then(() => {
+        resolve(0)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+
+  /**
+   * Deletes a single element by ID
+   * @param id                  the ID of the element to delete
+   * @return Promise<boolean>   true if the element was deleted
+   */
+  public async delete (id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.deleteFromIndex(id).then(() => {
+        const PPMStorageKV = getPPMStorageKV()
+        return PPMStorageKV.delete(id)
+      }).then(() => {
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+
+  protected async addToIndex (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (_.isUndefined(element.id) || _.isEmpty(element.id)) {
         reject(new Error("Storage cannot add to index - missing 'id'!"))
@@ -73,7 +153,7 @@ export class KVStore {
     })
   }
 
-  protected async deleteFromIndex (table: string, id: string): Promise<void> {
+  protected async deleteFromIndex (id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (_.isUndefined(id) || _.isEmpty(id)) {
         reject(new Error("Storage cannot delete from index - missing 'id'!"))
@@ -89,93 +169,6 @@ export class KVStore {
 
         const PPMStorageKV = getPPMStorageKV()
         return PPMStorageKV.put('index', this.storeIndex as any)
-      }).then(() => {
-        resolve()
-      }).catch((e) => {
-        reject(e)
-      })
-    })
-  }
-
-  /**
-   * Fetches all elements from the storage
-   * @param table           the name of the table
-   * @return Promise<any>   the list of elements
-   */
-  public async fetchAll (table: string): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.fetchIndex().then(() => {
-        const PPMStorageKV = getPPMStorageKV()
-        const promises: Promise<any>[] = []
-        _.each(this.storeIndex, (indexData) => {
-          Platform.log('Index Data: ', JSON.stringify(indexData))
-          promises.push(PPMStorageKV.get(indexData.id, 'json'))
-        })
-        return Promise.all(promises)
-      }).then((values:any[]) => {
-        const merged = _.values(_.merge(_.keyBy(values, 'id'), _.keyBy(this.storeIndex, 'id')))
-        Platform.log('fetchAll Merged: ', JSON.stringify(merged))
-
-        resolve(merged)
-      }).catch((e) => {
-        reject(e)
-      })
-    })
-  }
-
-  /**
-   * Fetches a single element by ID
-   * @param table           the name of the table
-   * @param id              the ID of the element to fetch
-   * @return Promise<any>   the element if found or undefined
-   */
-  public async fetchOne (table: string, id: number | string): Promise<any> {
-    return new Promise<number>((resolve, reject) => {
-      this.fetchIndex().then(() => {
-        const PPMStorageKV = getPPMStorageKV()
-        const indexData = _.find(this.storeIndex, { id: id.toString() })
-        if (_.isUndefined(indexData)) {
-          return reject(new Error('Requested id was not found in the table.'))
-        }
-        return PPMStorageKV.get(indexData.id, 'json')
-      }).then((recordData:any) => {
-        resolve(recordData)
-      }).catch((e) => {
-        reject(e)
-      })
-    })
-  }
-
-  /**
-   * Stores the element data in the indicated table
-   * @param table             the name of the table
-   * @param element           element data
-   * @return Promise<number>  the ID of the stored element
-   */
-  public async store (table: string, element: any): Promise<any> {
-    return new Promise<number>((resolve, reject) => {
-      const PPMStorageKV = getPPMStorageKV()
-      PPMStorageKV.put(element.id, element).then(() => {
-        return this.addToIndex(table, element)
-      }).then(() => {
-        resolve(0)
-      }).catch((e) => {
-        reject(e)
-      })
-    })
-  }
-
-  /**
-   * Deletes a single element by ID
-   * @param table               the name of the table
-   * @param id                  the ID of the element to delete
-   * @return Promise<boolean>   true if the element was deleted
-   */
-  public async delete (table: string, id: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.deleteFromIndex(table, id).then(() => {
-        const PPMStorageKV = getPPMStorageKV()
-        return PPMStorageKV.delete(id)
       }).then(() => {
         resolve()
       }).catch((e) => {

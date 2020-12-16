@@ -1,0 +1,32 @@
+{
+  "index": [
+    {
+      "id": "00000000-0000-4000-8000-00000000000A",
+      "type": "note",
+      "identifier": "jakab"
+    },
+    {
+      "id": "00000000-0000-4000-8000-00000000000B",
+      "type": "passcard",
+      "identifier": "jpro"
+    }
+  ],
+  "00000000-0000-4000-8000-000000000001": {
+    "id": "00000000-0000-4000-8000-000000000001",
+    "dateCreated": "2020-11-20T22:34:59.274Z",
+    "dateModified": "2020-11-20T22:34:59.274Z",
+    "name": "Note-1",
+    "type": "note",
+    "identifier": "jakab",
+    "text": "my note is cool"
+  },
+  "00000000-0000-4000-8000-000000000002": {
+    "id": "00000000-0000-4000-8000-000000000002",
+    "dateCreated": "2020-11-18T20:34:59.274Z",
+    "dateModified": "2020-11-20T22:34:59.274Z",
+    "name": "Note-2",
+    "type": "passcard",
+    "identifier": "jpro",
+    "text": "but this one is better"
+  }
+}

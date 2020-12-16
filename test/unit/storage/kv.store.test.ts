@@ -43,6 +43,8 @@ describe('KVStorage', () => {
     })
   })
 
+  // ---------------------------------------------------------------: fetchIndex
+
   it('[fetchIndex] should return the storage index', async () => {
     const ppmStorage = createGlobalPpmStorageKV({
       data_file: '../data/storage.data.default.json'
@@ -68,7 +70,7 @@ describe('KVStorage', () => {
     expect(fetchedIndex).toEqual([])
   })
 
-  it('[fetchIndex] should throw an error if index in not an array', async () => {
+  it('[fetchIndex] should throw an error on KV error', async () => {
     const ppmStorage = createGlobalPpmStorageKV({
       data_file: '../data/storage.data.default.json',
       call_get: () => {
@@ -76,7 +78,6 @@ describe('KVStorage', () => {
       }
     })
     const store = new KVStore()
-
     expect.assertions(1)
     try {
       await store.fetchIndex()
@@ -97,6 +98,36 @@ describe('KVStorage', () => {
     expect(fetchedIndex2).toEqual(_.get(storageData, 'index'))
     expect(ppmStorage.timesCalledGet).toEqual(1)
   })
+
+  // ---------------------------------------------------------------: fetchAll
+
+  it('[fetchAll] should return all items', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json'
+    })
+    const storageData = ppmStorage.datastore
+    const store = new KVStore()
+    const fetchedItems = await store.fetchAll()
+    expect(fetchedItems).toBeInstanceOf(Array)
+    expect(fetchedItems).toHaveLength(storageData.index.length)
+    // console.log(fetchedItems)
+  })
+
+  it('[fetchAll] should throw an error on KV error', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.faulty.index.json',
+      call_get: () => { return Promise.reject(new Error('Error!')) }
+    })
+    const store = new KVStore()
+    expect.assertions(1)
+    try {
+      const fetchedItems = await store.fetchAll()
+    } catch (e) {
+      expect(e.message).toBe('Error!')
+    }
+  })
+
+  // ---------------------------------------------------------------: store
 
   /*
   it('should return all data from a specific table', async () => {

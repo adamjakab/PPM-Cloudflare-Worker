@@ -30,27 +30,19 @@ class EntityManager {
   }
 
   public async fetchAll (table: string) {
-    return await this._storage.fetchAll(table)
+    return await this._storage.fetchAll()
   }
 
   public async fetchOne (table: string, id: number | string) {
-    return await this._storage.fetchOne(table, id)
+    return await this._storage.fetchOne(id)
   }
 
-  /**
-   * @param table
-   * @param entity
-   */
   public async store (table: string, entity: any) {
-    return await this._storage.store(table, entity)
+    return await this._storage.store(entity)
   }
 
-  /**
-   * @param table
-   * @param id
-   */
   public async delete (table: string, id: string) {
-    return await this._storage.delete(table, id)
+    return await this._storage.delete(id)
   }
 
   /**
