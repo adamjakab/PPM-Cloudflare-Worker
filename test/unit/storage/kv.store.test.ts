@@ -18,7 +18,6 @@ const defaultDataCreator = (elements: any[]) => {
 
 /**
  * @group unit/storage
- * @group incomplete
  */
 describe('KVStorage', () => {
   beforeEach(() => {
@@ -407,5 +406,4 @@ describe('KVStorage', () => {
       expect(e.message).toBe('Error!')
     }
   })
-
 })

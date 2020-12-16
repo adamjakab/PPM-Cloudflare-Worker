@@ -174,14 +174,14 @@ export class KVStore {
   private checkElement (element: any, attributes: string[]): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       let error:any = false
-      _.each(attributes, ((attribute) => {
+      _.each(attributes, (attribute) => {
         if (_.isNull(_.get(element, attribute, null))) {
           error = new Error('Storage cannot add to index - missing "' + attribute + '"!')
           return false
         } else {
           return true
         }
-      }))
+      })
       if (error) {
         return reject(error)
       }
