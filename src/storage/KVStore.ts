@@ -68,7 +68,7 @@ export class KVStore {
     return new Promise<number>((resolve, reject) => {
       this.fetchIndex().then(() => {
         const PPMStorageKV = getPPMStorageKV()
-        const indexData = _.find(this.storeIndex, { id: id.toString() })
+        const indexData = _.find(this.storeIndex, { id: id })
         if (_.isUndefined(indexData)) {
           return reject(new Error('Requested id was not found!'))
         }
@@ -89,7 +89,9 @@ export class KVStore {
   public async store (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const PPMStorageKV = getPPMStorageKV()
-      PPMStorageKV.put(element.id, element).then(() => {
+      this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
+        return PPMStorageKV.put(element.id, element)
+      }).then(() => {
         return this.addToIndex(element)
       }).then(() => {
         resolve()
@@ -119,17 +121,9 @@ export class KVStore {
 
   protected async addToIndex (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      if (_.isUndefined(element.id) || _.isEmpty(element.id)) {
-        reject(new Error("Storage cannot add to index - missing 'id'!"))
-      }
-      if (_.isUndefined(element.type) || _.isEmpty(element.type)) {
-        reject(new Error("Storage cannot add to index - missing 'type'!"))
-      }
-      if (_.isUndefined(element.identifier) || _.isEmpty(element.identifier)) {
-        reject(new Error("Storage cannot add to index - missing 'identifier'!"))
-      }
-
-      this.fetchIndex().then(() => {
+      this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
+        return this.fetchIndex()
+      }).then(() => {
         // Update index data
         const indexData = {
           id: element.id,
@@ -156,13 +150,13 @@ export class KVStore {
   protected async deleteFromIndex (id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       if (_.isUndefined(id) || _.isEmpty(id)) {
-        reject(new Error("Storage cannot delete from index - missing 'id'!"))
+        return reject(new Error('Storage cannot delete from index - missing "id"!'))
       }
 
       this.fetchIndex().then(() => {
         const i = _.findIndex(this.storeIndex, { id: id })
         if (i === -1) {
-          reject(new Error("Storage cannot delete from index - 'id' not found!"))
+          return reject(new Error('Storage cannot delete from index - "id" not found!'))
         } else {
           _.pullAt(this.storeIndex, [i])
         }
@@ -174,6 +168,24 @@ export class KVStore {
       }).catch((e) => {
         reject(e)
       })
+    })
+  }
+
+  private checkElement (element: any, attributes: string[]): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      let error:any = false
+      _.each(attributes, ((attribute) => {
+        if (_.isNull(_.get(element, attribute, null))) {
+          error = new Error('Storage cannot add to index - missing "' + attribute + '"!')
+          return false
+        } else {
+          return true
+        }
+      }))
+      if (error) {
+        return reject(error)
+      }
+      resolve()
     })
   }
 }
