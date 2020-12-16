@@ -7,5 +7,6 @@ module.exports = {
     './test/jest.setup.ts'
   ],
   testMatch: ['**/test/**/*.test.ts'],
+  collectCoverageFrom: ['**/src/**/*.ts'],
   runner: 'groups'
 }
