@@ -16,8 +16,6 @@ jobs:
           at: .
       - run: npm run test-full-coverage
       - coveralls/upload
-      - store_artifacts:
-          path: coverage
   code_quality:
     executor: node-current
     steps:
