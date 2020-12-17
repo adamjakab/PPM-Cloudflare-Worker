@@ -4,27 +4,17 @@
 
 Cloudflare PPM Worker
 ========================
+Secure distributed storage POC for PPM project. 
 
-
-What Now?
+Next Steps
 ---------
-ABC
-
-Useful Links
-------------
-- https://github.com/fongandrew/typed-routes
-- https://www.npmjs.com/package/url-parse
-
-
-
-Testing
---------
+- authentication
+- First release
+- encrypted channel
+- CI
 
 Notes
 ------------
-removed:
-
-    "@types/url-parse": "^1.4.3",
-    "url-parse": "^1.4.7",
-    "cloudflare-worker-rest-api": "^1.0.0",
-    "on-change": "^2.2.0",
+Consider adding these:
+- "url-parse": "^1.4.7",
+- "on-change": "^2.2.0",
