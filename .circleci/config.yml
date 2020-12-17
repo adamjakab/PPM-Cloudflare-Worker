@@ -15,6 +15,7 @@ jobs:
       - attach_workspace:
           at: .
       - run: npm run test-full-coverage
+      - coveralls/upload
       - store_artifacts:
           path: coverage
   code_quality:
@@ -64,6 +65,8 @@ workflows:
 orbs:
   # Ref.: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.1.0
+  # Ref.: https://circleci.com/developer/orbs/orb/coveralls/coveralls
+  coveralls: coveralls/coveralls@1.0.6
 
 executors:
   node-current:
