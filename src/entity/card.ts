@@ -11,7 +11,7 @@ export class Card extends Entity {
   private _text: string;
 
   constructor (data?: any) {
-    super(data)
+    super()
     this.mapDataOnEntity(data, true)
   }
 
