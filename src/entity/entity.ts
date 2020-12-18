@@ -56,6 +56,9 @@ export class Entity {
     }
   }
 
+  /**
+   * @description: Unused but keeping it for possible future implementation
+   */
   public getMetadataElement (name:string) {
     return getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
   }
@@ -87,8 +90,9 @@ export class Entity {
   }
 
   private setDefaultEntityData () {
-    this.changeDateCreated(new Date())
-    this.changeDateModified(new Date())
+    const defaultDate = new Date()
+    this.changeDateCreated(defaultDate)
+    this.changeDateModified(defaultDate)
   }
 
   private checkEntityId () {

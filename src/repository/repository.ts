@@ -57,8 +57,7 @@ export class Repository {
    * @param entity
    */
   public async persist (entity: Entity) {
-    const storageTableName = entity.getMetadataElement('tableName')
-    return await EntityManager.store(storageTableName, entity.getEntityData())
+    return await EntityManager.store(this._storageTableName, entity.getEntityData())
   }
 
   /**
