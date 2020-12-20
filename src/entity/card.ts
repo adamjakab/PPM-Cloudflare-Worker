@@ -1,10 +1,12 @@
 import * as _ from '../util/lodash'
 import { CardRepository } from '../repository/card.repository'
+import { Platform } from '../util/platform'
 import { Entity } from './entity'
 import { Entity as EnhancedEntity } from '../decorator/Entity'
 
 @EnhancedEntity('cards', CardRepository)
 export class Card extends Entity {
+  private attributeList = ['name', 'type', 'identifier', 'text']
   private _name: string;
   private _type: string;
   private _identifier: string;
@@ -70,18 +72,19 @@ export class Card extends Entity {
   }
 
   /**
-   * Map data from an object to the entity
+   * Map data to the entity
    * @param data    The data object
-   * @param reset   True is the entity is being constructed / False if entity is being updated
+   * @param reset   True is the entity is being constructed so id and dateCreated are added to the entity
    */
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    // the below assignments will trigger _entityChanged which will change the dateModified field
-    this.name = data.name
-    this.type = data.type
-    this.identifier = data.identifier
-    this.text = data.text
-    // this is why this must come after
+    _.each(this.attributeList, (attr) => {
+      if (_.has(data, attr)) {
+        _.set(this, attr, _.get(data, attr))
+        // Platform.log('Setting attribute: ' + attr)
+      }
+    })
+
     super.mapDataOnEntity(data, reset)
   }
 }

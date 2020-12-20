@@ -90,7 +90,7 @@ export class KVStore {
     return new Promise<void>((resolve, reject) => {
       const PPMStorageKV = getPPMStorageKV()
       this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
-        return PPMStorageKV.put(element.id, element)
+        return PPMStorageKV.put(element.id, JSON.stringify(element))
       }).then(() => {
         return this.addToIndex(element)
       }).then(() => {
@@ -138,7 +138,7 @@ export class KVStore {
         }
 
         const PPMStorageKV = getPPMStorageKV()
-        return PPMStorageKV.put('index', this.storeIndex as any)
+        return PPMStorageKV.put('index', JSON.stringify(this.storeIndex))
       }).then(() => {
         resolve()
       }).catch((e) => {
@@ -162,7 +162,7 @@ export class KVStore {
         }
 
         const PPMStorageKV = getPPMStorageKV()
-        return PPMStorageKV.put('index', this.storeIndex as any)
+        return PPMStorageKV.put('index', JSON.stringify(this.storeIndex))
       }).then(() => {
         resolve()
       }).catch((e) => {

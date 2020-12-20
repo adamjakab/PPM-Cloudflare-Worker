@@ -54,6 +54,9 @@ export class PpmStorage {
     _value: string | ReadableStream | ArrayBuffer | FormData,
     _options?: CloudflareWorkerKVOptions
   ): Promise<void> {
+    if (_.isString(_value)) {
+      _value = JSON.parse(_value)
+    }
     _.set(this._datastore, _key, _value)
     this._timesCalledPut++
     return Promise.resolve()
