@@ -1,6 +1,7 @@
 [![<ORG_NAME>](https://circleci.com/gh/adamjakab/PPM-Cloudflare-Worker.svg?style=shield)](https://circleci.com/gh/adamjakab/PPM-Cloudflare-Worker)
 [![Coverage Status](https://coveralls.io/repos/github/adamjakab/PPM-Cloudflare-Worker/badge.svg?branch=master)](https://coveralls.io/github/adamjakab/PPM-Cloudflare-Worker?branch=master)
 
+
 Cloudflare PPM Worker
 ========================
 Secure distributed serverless storage for PPM project. 
@@ -13,6 +14,9 @@ You will then create a new worker and add the worker javascript code (`worker.js
 You can also set this worker up to be available under your specific domain name.
 Once the worker is in place you can install the PPM client for your browser or for your mobile device and start using it.
 
+Documentation
+-------------
+[Read the docs here](https://adamjakab.github.io/PPM-Cloudflare-Worker/)
 
 How to contribute
 -----------------
