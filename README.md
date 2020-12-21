@@ -35,3 +35,8 @@ Roadmap:
 Consider adding these:
 - "url-parse": "^1.4.7",
 - "on-change": "^2.2.0",
+
+
+Circular Reference Check:
+`node_modules/madge/bin/cli.js --circular --webpack-config ./webpack.config.dev.js --ts-config tsconfig.json ./src/index.ts`
+
