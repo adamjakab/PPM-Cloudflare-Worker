@@ -1,5 +1,5 @@
-import { MetadataStorage } from './metadata/metadata-storage'
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
+import { MetadataStorage } from '../index'
 
 /**
  * Returns global variable
@@ -27,6 +27,7 @@ export function getPPMStorageKV (): CloudflareWorkerKV {
 /**
  * Gets metadata args storage from global scope
  * This part of the application will be moved to a separate repository / package: tinyOrm
+ * @todo: rethink this
  */
 export function getMetadataStorage (): MetadataStorage {
   const globalScope = getGlobalVariable()

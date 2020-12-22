@@ -1,9 +1,11 @@
 /* tslint:disable:no-console */
-import * as _ from 'lodash'
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
-import { Entity as EnhancedEntity } from '../../../src/decorator/Entity'
-import { Entity } from '../../../src/entity/entity'
-import { Repository } from '../../../src/repository/repository'
+import {
+  _,
+  EntityDecorator as EnhancedEntity,
+  Entity,
+  Repository
+} from '../../../src/index'
 
 const getTestEntity = () => {
   class TestRepository extends Repository {}

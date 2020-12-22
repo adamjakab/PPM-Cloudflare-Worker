@@ -1,8 +1,9 @@
-import * as _ from '../util/lodash'
-import { CardRepository } from '../repository/card.repository'
-import { Platform } from '../util/platform'
-import { Entity } from './entity'
-import { Entity as EnhancedEntity } from '../decorator/Entity'
+import {
+  _,
+  EntityDecorator as EnhancedEntity,
+  CardRepository,
+  Entity
+} from '../index'
 
 @EnhancedEntity('cards', CardRepository)
 export class Card extends Entity {

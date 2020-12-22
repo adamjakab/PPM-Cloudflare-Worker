@@ -1,6 +1,7 @@
-import * as _ from '../util/lodash'
-import { InstanceCreator } from '../util/instance-creator'
-import { Platform } from '../util/platform'
+import {
+  _,
+  InstanceCreator
+} from '../index'
 
 type metadataTypes = 'entity' | 'repository';
 

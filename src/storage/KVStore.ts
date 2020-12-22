@@ -1,8 +1,10 @@
-import { Platform } from '../util/platform'
 import { CloudflareWorkerKV } from 'types-cloudflare-worker'
-import { getPPMStorageKV } from '../global'
-import { StorageIndexItem } from '../interface/storage.index'
-import * as _ from '../util/lodash'
+import {
+  _,
+  Globals,
+  Platform,
+  StorageIndexItem
+} from '../index'
 
 /**
  * @class KVStore
@@ -21,7 +23,7 @@ export class KVStore {
   public async fetchIndex (): Promise<StorageIndexItem[]> {
     return new Promise<StorageIndexItem[]>((resolve, reject) => {
       if (_.isUndefined(this.storeIndex)) {
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         PPMStorageKV.get('index', 'json').then((index:StorageIndexItem[]) => {
           if (_.isNull(index)) {
             index = []
@@ -44,7 +46,7 @@ export class KVStore {
   public async fetchAll (): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.fetchIndex().then(() => {
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         const promises: Promise<any>[] = []
         _.each(this.storeIndex, (indexData) => {
           // Platform.log('Index Data: ', JSON.stringify(indexData))
@@ -67,7 +69,7 @@ export class KVStore {
   public async fetchOne (id: string): Promise<any> {
     return new Promise<number>((resolve, reject) => {
       this.fetchIndex().then(() => {
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         const indexData = _.find(this.storeIndex, { id: id })
         if (_.isUndefined(indexData)) {
           return reject(new Error('Requested id was not found!'))
@@ -88,7 +90,7 @@ export class KVStore {
    */
   public async store (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const PPMStorageKV = getPPMStorageKV()
+      const PPMStorageKV = Globals.getPPMStorageKV()
       this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
         return PPMStorageKV.put(element.id, JSON.stringify(element))
       }).then(() => {
@@ -109,7 +111,7 @@ export class KVStore {
   public async delete (id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.deleteFromIndex(id).then(() => {
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         return PPMStorageKV.delete(id)
       }).then(() => {
         resolve()
@@ -137,7 +139,7 @@ export class KVStore {
           _.extend(this.storeIndex[i], indexData)
         }
 
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         return PPMStorageKV.put('index', JSON.stringify(this.storeIndex))
       }).then(() => {
         resolve()
@@ -161,7 +163,7 @@ export class KVStore {
           _.pullAt(this.storeIndex, [i])
         }
 
-        const PPMStorageKV = getPPMStorageKV()
+        const PPMStorageKV = Globals.getPPMStorageKV()
         return PPMStorageKV.put('index', JSON.stringify(this.storeIndex))
       }).then(() => {
         resolve()

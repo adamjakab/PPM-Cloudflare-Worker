@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
+    "dep-check": "node_modules/madge/bin/cli.js --circular --ts-config tsconfig.json --exclude \"index\\.ts\" ./src/index.ts",
     "lint": "eslint '{src,test}/**/*.{js,ts}'",
     "lint-fix": "eslint '{src,test}/**/*.{js,ts}' --fix",
     "test": "jest --config=jest.config.js --silent --group=unit --group=functional",

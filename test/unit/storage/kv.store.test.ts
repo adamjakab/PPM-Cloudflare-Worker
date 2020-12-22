@@ -1,10 +1,9 @@
 import makeCloudflareWorkerEnv, { makeCloudflareWorkerKVEnv } from 'cloudflare-worker-mock'
 import * as _ from 'lodash'
 import { v4 as generateUUIDv4 } from 'uuid'
-import { KVStore } from '../../../src/storage/KVStore'
 import { createGlobalPpmConfigKV } from '../../helper/ppm.config'
 import { createGlobalPpmStorageKV } from '../../helper/ppm.storage'
-// import { Entity } from "../../../src/entity/entity";
+import { KVStore } from '../../../src'
 
 // @todo: move to helper
 const defaultDataCreator = (elements: any[]) => {
@@ -18,6 +17,7 @@ const defaultDataCreator = (elements: any[]) => {
 
 /**
  * @group unit/storage
+ * @group ___incomplete
  */
 describe('KVStorage', () => {
   beforeEach(() => {

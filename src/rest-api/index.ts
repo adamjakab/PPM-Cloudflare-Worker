@@ -1,9 +1,12 @@
-import * as _ from '../util/lodash'
-import { Platform } from '../util/platform'
-import { RestApiRequest } from './request'
-import { RestApiResponse } from './response'
-import { RawRouteItem, RouteElementLayout } from '../interface/route_element'
 import { createRoute as createTypedRoute } from 'typed-routes'
+import {
+  _,
+  Platform,
+  RestApiRequest,
+  RestApiResponse,
+  RawRouteItem,
+  RouteElementLayout
+} from '../index'
 
 export class RestApiWorker {
   private routes: any

@@ -1,7 +1,9 @@
 import { v4 as generateUUIDv4, validate as uuidValidate, version as uuidVersion } from 'uuid'
-import { getMetadataStorage } from '../global'
-import { Repository } from '../repository/repository'
-import * as _ from '../util/lodash'
+import {
+  _,
+  Globals,
+  Repository
+} from '../index'
 
 export class Entity {
   private _id: string;
@@ -20,7 +22,7 @@ export class Entity {
   }
 
   public getRepository (): Repository {
-    return getMetadataStorage().getRepositoryForEntityClass(this.constructor.name)
+    return Globals.getMetadataStorage().getRepositoryForEntityClass(this.constructor.name)
   }
 
   public get id (): string {
@@ -60,7 +62,7 @@ export class Entity {
    * @description: Unused but keeping it for possible future implementation
    */
   public getMetadataElement (name:string) {
-    return getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
+    return Globals.getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
   }
 
   // @todo: Better to look into something more structured: https://github.com/sindresorhus/on-change

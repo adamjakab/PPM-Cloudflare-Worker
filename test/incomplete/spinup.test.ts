@@ -1,17 +1,13 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import makeCloudflareWorkerEnv, {
-  makeCloudflareWorkerKVEnv,
-  makeCloudflareWorkerRequest
+  makeCloudflareWorkerKVEnv
 } from 'cloudflare-worker-mock'
-import { KVStore } from '../../src/storage/KVStore'
 import { createGlobalPpmConfigKV } from '../helper/ppm.config'
-import { createGlobalPpmStorageKV } from '../helper/ppm.storage'
-import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group ___incomplete
+ * @group incomplete
  */
 describe('Items', () => {
   beforeEach(() => {
@@ -31,12 +27,12 @@ describe('Items', () => {
     jest.requireActual('../../src/index')
 
     createGlobalPpmConfigKV({
-      log_to_console: false,
+      log_to_console: true,
       storage_to_use: 'kvstore'
     })
   })
 
-  it.skip('should provide notes index', async () => {
+  it('should provide notes index', async () => {
     expect(true).toBeTruthy()
   })
 })

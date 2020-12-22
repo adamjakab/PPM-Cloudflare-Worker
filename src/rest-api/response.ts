@@ -1,6 +1,8 @@
-import { Platform } from '../util/platform'
-import { RestApiRequest } from './request'
-import * as _ from '../util/lodash'
+import {
+  _,
+  Platform,
+  RestApiRequest
+} from '../index'
 
 export class RestApiResponse {
   public request: RestApiRequest

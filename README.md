@@ -39,4 +39,4 @@ Consider adding these:
 
 Circular Reference Check:
 `node_modules/madge/bin/cli.js --circular --webpack-config ./webpack.config.dev.js --ts-config tsconfig.json ./src/index.ts`
-
+`node_modules/madge/bin/cli.js --circular --ts-config tsconfig.json --exclude "index\.ts" ./src/index.ts`

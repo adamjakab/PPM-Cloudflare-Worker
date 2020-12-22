@@ -1,5 +1,7 @@
-import { RestApiRequest } from '../rest-api/request'
-import { RestApiResponse } from '../rest-api/response'
+import {
+  RestApiRequest,
+  RestApiResponse
+} from '../index'
 
 export class Controller {
   public async list (req: RestApiRequest, res: RestApiResponse) {

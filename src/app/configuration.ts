@@ -1,5 +1,4 @@
-import { getPPMConfigKV } from '../global'
-import * as _ from '../util/lodash'
+import { _, Globals } from '../index'
 
 const defaultApplicationConfig = {
   log_to_console: false,
@@ -46,7 +45,7 @@ export class AppConfiguration {
    */
   public async mergeKVStorageOverrides (): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      const PPMConfigKV = getPPMConfigKV()
+      const PPMConfigKV = Globals.getPPMConfigKV()
       if (_.isUndefined(PPMConfigKV)) {
         return reject(new Error('PPMConfigKV is not defined!'))
       }

@@ -7,7 +7,7 @@ import {
 } from 'uuid'
 import { getRandomString } from '../../../src/util/utils'
 import { Entity } from '../../../src/entity/entity'
-import { Repository } from '../../../src/repository/repository'
+import { Repository } from '../../../src/index'
 
 /**
  * @group unit/repository

@@ -1,13 +1,11 @@
-import * as _ from 'lodash'
-import { getMetadataStorage } from '../global'
-import { Platform } from '../util/platform'
+import { Globals } from '../index'
 
 /**
  * Decorator for class: Entity
  * Invoke with:
- *    @Entity(tableName, repository)
+ *    @EntityDecorator(tableName, repository)
  */
-export function Entity (
+export function EntityDecorator (
   tableName: string,
   repository: any,
   idType = 'uuidv4'
@@ -22,6 +20,6 @@ export function Entity (
       idType: idType,
       _class: target
     }
-    getMetadataStorage().setMetadataFor('entity', target.name, metadata)
+    Globals.getMetadataStorage().setMetadataFor('entity', target.name, metadata)
   }
 }

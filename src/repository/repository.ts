@@ -1,10 +1,10 @@
-/* tslint:disable:no-console */
-import * as _ from '../util/lodash'
-import { getMetadataStorage } from '../global'
-import { InstanceCreator } from '../util/instance-creator'
-import EntityManager from '../repository/entity-manager'
-import { Entity } from '../entity/entity'
-import { Platform } from '../util/platform'
+import {
+  _,
+  Globals,
+  InstanceCreator,
+  EntityManager,
+  Entity
+} from '../index'
 
 export class Repository {
   protected _storageTableName: string;
@@ -19,10 +19,10 @@ export class Repository {
       throw new Error('Repository class cannot be instantiated without being extended!')
     }
 
-    this._storageTableName = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, 'tableName')
+    this._storageTableName = Globals.getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, 'tableName')
     // Platform.log("REPO(" + this.constructor.name + ") has storage table: " + this._storageTableName);
 
-    const entityClass = getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, '_class')
+    const entityClass = Globals.getMetadataStorage().getEntityMetadataElementForRepository(this.constructor, '_class')
     this._entityCreator = new InstanceCreator(entityClass)
   }
 

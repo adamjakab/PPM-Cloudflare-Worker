@@ -1,9 +1,9 @@
-import * as _ from '../util/lodash'
-import { Entity } from '../entity/entity'
-// import { StorageInterface } from '../storage/storage'
-import { KVStore } from '../storage/KVStore'
-import { InstanceCreator } from '../util/instance-creator'
-import { Platform } from '../util/platform'
+import {
+  _,
+  Entity,
+  KVStore,
+  InstanceCreator
+} from '../index'
 
 class EntityManager {
   /**

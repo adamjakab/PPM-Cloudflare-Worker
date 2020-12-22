@@ -1,8 +1,9 @@
-import * as _ from '../util/lodash'
-import { Controller } from './controller'
-import { RestApiRequest } from '../rest-api/request'
-import { RestApiResponse } from '../rest-api/response'
-import app from '../'
+import {
+  app,
+  Controller,
+  RestApiRequest,
+  RestApiResponse
+} from '../index'
 
 class RootController extends Controller {
   /**

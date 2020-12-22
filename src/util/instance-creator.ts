@@ -1,6 +1,3 @@
-/* tslint:disable:no-console */
-import { Platform } from './platform'
-
 /**
  * A very weak attempt to create class instances dynamically
  */

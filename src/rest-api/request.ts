@@ -1,5 +1,7 @@
-import { RouteElementLayout } from '../interface/route_element'
-import { Platform } from '../util/platform'
+import {
+  Platform,
+  RouteElementLayout
+} from '../index'
 // import URLParse from "url-parse";
 
 export class RestApiRequest {

@@ -1,12 +1,13 @@
-import * as _ from '../util/lodash'
-import RootController from '../controller/root'
-import { Card } from '../entity/card'
-import { routingTable as CardRoutingTable } from '../router/card'
-import EntityManager from '../repository/entity-manager'
-import { KVStore } from '../storage/KVStore'
-import { RestApiWorker } from '../rest-api'
-import { Platform } from '../util/platform'
-import { AppConfiguration } from './configuration'
+import {
+  RootController,
+  Card,
+  CardRoutingTable,
+  EntityManager,
+  KVStore,
+  RestApiWorker,
+  Platform,
+  AppConfiguration
+} from '../index'
 
 export class CloudflareWorkerApp {
   private setupComplete: boolean

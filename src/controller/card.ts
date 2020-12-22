@@ -1,9 +1,9 @@
-import * as _ from '../util/lodash'
-import { Card } from '../entity/card'
-import { Controller } from './controller'
-import { RestApiRequest } from '../rest-api/request'
-import { RestApiResponse } from '../rest-api/response'
-import { CardRepository } from '../repository/card.repository'
+import {
+  Card,
+  Controller,
+  RestApiRequest, RestApiResponse,
+  CardRepository
+} from '../index'
 
 class CardController extends Controller {
   /**

@@ -1,4 +1,6 @@
-// import * as _ from './lodash'
+import {
+  _
+} from '../index'
 
 export function delay (ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
