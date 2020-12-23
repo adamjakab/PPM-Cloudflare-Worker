@@ -2,7 +2,8 @@ import {
   _,
   Entity,
   KVStore,
-  InstanceCreator
+  InstanceCreator,
+  Platform
 } from '../index'
 
 class EntityManager {
@@ -26,23 +27,48 @@ class EntityManager {
   }
 
   public async fetchIndex (table: string) {
-    return await this._storage.fetchIndex()
+    try {
+      return await this._storage.fetchIndex()
+    } catch (e) {
+      Platform.log('EM fetchIndex error: ', e)
+      return null
+    }
   }
 
   public async fetchAll (table: string) {
-    return await this._storage.fetchAll()
+    try {
+      return await this._storage.fetchAll()
+    } catch (e) {
+      Platform.log('EM fetchAll error: ', e)
+      return null
+    }
   }
 
   public async fetchOne (table: string, id: string) {
-    return await this._storage.fetchOne(id)
+    try {
+      return await this._storage.fetchOne(id)
+    } catch (e) {
+      Platform.log('EM fetchOne error: ', e)
+      return null
+    }
   }
 
   public async store (table: string, entity: any) {
-    return await this._storage.store(entity)
+    try {
+      return await this._storage.store(entity)
+    } catch (e) {
+      Platform.log('EM store error: ', e)
+      return null
+    }
   }
 
   public async delete (table: string, id: string) {
-    return await this._storage.delete(id)
+    try {
+      return await this._storage.delete(id)
+    } catch (e) {
+      Platform.log('EM delete error: ', e)
+      return null
+    }
   }
 
   /**

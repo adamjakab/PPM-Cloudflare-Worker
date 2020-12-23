@@ -1,4 +1,8 @@
-import { v4 as generateUUIDv4, validate as uuidValidate, version as uuidVersion } from 'uuid'
+import {
+  v4 as generateUUIDv4,
+  validate as uuidValidate,
+  version as uuidVersion
+} from 'uuid'
 import {
   _,
   Globals,
@@ -6,9 +10,9 @@ import {
 } from '../index'
 
 export class Entity {
-  private _id: string;
-  private _dateCreated: Date;
-  private _dateModified: Date;
+  private _id: string
+  private _dateCreated: Date
+  private _dateModified: Date
 
   constructor () {
     if (this.constructor.name === 'Entity') {
@@ -61,7 +65,7 @@ export class Entity {
   /**
    * @description: Unused but keeping it for possible future implementation
    */
-  public getMetadataElement (name:string) {
+  public getMetadataElement (name: string) {
     return Globals.getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
   }
 
@@ -72,7 +76,6 @@ export class Entity {
 
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    // Platform.log('Mapping data on entity[reset:' + reset + ']: ', data)
     if (reset) {
       this.id = data.id
       this.checkEntityId()

@@ -7,9 +7,9 @@ import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group incomplete
+ * @group _incomplete
  */
-describe('Items', () => {
+describe('App', () => {
   beforeEach(() => {
     // Merge the Cloudflare Worker Environment into the global scope.
     Object.assign(global, makeCloudflareWorkerEnv())
@@ -32,7 +32,7 @@ describe('Items', () => {
     })
   })
 
-  it('should provide notes index', async () => {
+  it('should start up', async () => {
     expect(true).toBeTruthy()
   })
 })

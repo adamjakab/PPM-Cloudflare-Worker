@@ -16,7 +16,7 @@ const getTestEntity = () => {
 
 /**
  * @group unit/entity
- * @group _incomplete
+ * @group incomplete
  */
 describe('Entity', () => {
   it('should not be possible to instantiate directly', () => {
@@ -88,5 +88,24 @@ describe('Entity', () => {
     expect(_.get(data, 'dateCreated')).toEqual(te.dateCreated.toISOString())
     expect(data).toHaveProperty('dateModified')
     expect(_.get(data, 'dateModified')).toEqual(te.dateModified.toISOString())
+  })
+
+  it('[mapDataOnEntity] should not do anything if a non-object is passed', () => {
+    const te = getTestEntity()
+    const entity_data_before = te.getEntityData()
+    const data = null
+    te.mapDataOnEntity(data)
+    const entity_data_after = te.getEntityData()
+    expect(entity_data_after).toEqual(entity_data_before)
+  })
+
+  it('[mapDataOnEntity (reset)] should not do anything if a non-object is passed', () => {
+    const te = getTestEntity()
+    const entity_data_before = te.getEntityData()
+    const data = null
+    te.mapDataOnEntity(data, true)
+    const entity_data_after = te.getEntityData()
+    expect(entity_data_after).not.toEqual(entity_data_before)
+    expect(_.get(entity_data_after,'id')).toBeDefined()
   })
 })
