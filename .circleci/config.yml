@@ -16,6 +16,12 @@ jobs:
           at: .
       - run: npm run test-full-coverage
       - coveralls/upload
+  check_dependencies:
+    executor: node-current
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm run dependency-check
   code_quality:
     executor: node-current
     steps:
@@ -52,12 +58,16 @@ workflows:
       - run_tests:
           requires:
             - setup_and_install
+      - check_dependencies:
+          requires:
+            - setup_and_install
       - code_quality:
           requires:
             - setup_and_install
       - build_worker:
           requires:
             - run_tests
+            - check_dependencies
             - code_quality
 
 orbs:
