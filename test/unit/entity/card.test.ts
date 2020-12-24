@@ -1,11 +1,13 @@
 /* tslint:disable:no-console */
-import * as _ from 'lodash'
-import { Card } from '../../../src/entity/card'
-import { Entity } from '../../../src/entity/entity'
-// import { delay } from '../../../src/util/utils'
+import {
+  _,
+  Card,
+  Entity
+} from '../../../src/index'
 
 /**
  * @group unit/entity
+ * @group _incomplete
  */
 describe('Card(Entity)', () => {
   it('should be instance of Entity', () => {
@@ -18,6 +20,7 @@ describe('Card(Entity)', () => {
     const attrs = ['name', 'type', 'identifier', 'text']
     _.each(attrs, attr => {
       expect(card).toHaveProperty(attr)
+      expect(_.get(card, attr)).toBeUndefined()
     })
   })
 
@@ -32,5 +35,35 @@ describe('Card(Entity)', () => {
     _.each(data, (v: any, k: string) => {
       expect(_.get(card, k)).toEqual(v)
     })
+  })
+
+  it('[getEntityData] should return all properties of the entity', () => {
+    const data = {
+      name: 'card-1',
+      type: 'note',
+      identifier: 'test',
+      text: 'abc'
+    }
+    const card = new Card(data)
+    const entityData = card.getEntityData()
+    expect(entityData).toBeInstanceOf(Object)
+    expect(entityData.id).toBeDefined()
+    expect(entityData.dateCreated).toBeDefined()
+    expect(entityData.dateModified).toBeDefined()
+    _.each(data, (v: any, k: string) => {
+      expect(_.get(entityData, k)).toEqual(v)
+    })
+  })
+
+  it('[getEntityData] should return all properties of the entity', () => {
+    const data = {
+      name: 'card-1',
+      type: 'note',
+      identifier: 'test',
+      text: 'abc'
+    }
+    const card = new Card(data)
+    const entityData = card.getEntityData()
+    expect(card.toJson()).toEqual(JSON.stringify(entityData))
   })
 })

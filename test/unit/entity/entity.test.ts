@@ -4,7 +4,8 @@ import {
   _,
   EntityDecorator as EnhancedEntity,
   Entity,
-  Repository
+  Repository,
+  Utils
 } from '../../../src/index'
 
 const getTestEntity = () => {
@@ -16,7 +17,7 @@ const getTestEntity = () => {
 
 /**
  * @group unit/entity
- * @group incomplete
+ * @group _incomplete
  */
 describe('Entity', () => {
   it('should not be possible to instantiate directly', () => {
@@ -90,19 +91,28 @@ describe('Entity', () => {
     expect(_.get(data, 'dateModified')).toEqual(te.dateModified.toISOString())
   })
 
-  it('[mapDataOnEntity] should not do anything if a non-object is passed', () => {
+  it('[mapDataOnEntity] should not generate new id', async () => {
     const te = getTestEntity()
     const entity_data_before = te.getEntityData()
     const data = null
+    /* @note: modification date should change but if we do this too fast it will have the same date */
+    /* @todo: use mock and check if changeDateModified was called */
+    await Utils.delay(100)
     te.mapDataOnEntity(data)
     const entity_data_after = te.getEntityData()
-    expect(entity_data_after).toEqual(entity_data_before)
+    expect(entity_data_after).not.toEqual(entity_data_before)
+    expect(_.get(entity_data_after,'id')).toBeUndefined()
   })
 
-  it('[mapDataOnEntity (reset)] should not do anything if a non-object is passed', () => {
+  it('[mapDataOnEntity (reset)] should not do anything if a non-object is passed', async () => {
     const te = getTestEntity()
     const entity_data_before = te.getEntityData()
+    expect(_.get(entity_data_before,'id')).toBeUndefined()
+    //console.log(entity_data_before)
     const data = null
+    /* @note: modification date should change but if we do this too fast it will have the same date */
+    /* @todo: use mock and check if changeDateModified was called */
+    await Utils.delay(100)
     te.mapDataOnEntity(data, true)
     const entity_data_after = te.getEntityData()
     expect(entity_data_after).not.toEqual(entity_data_before)
