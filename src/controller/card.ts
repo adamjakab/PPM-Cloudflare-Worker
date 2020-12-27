@@ -6,7 +6,7 @@ import {
   CardRepository
 } from '../index'
 
-class CardController extends Controller {
+export class CardController extends Controller {
   /**
    * Path: /cards (GET)
    * It will return the index and not the full item list
@@ -133,6 +133,3 @@ class CardController extends Controller {
     return res.send(card, status)
   }
 }
-
-// Singleton export
-export = new CardController()

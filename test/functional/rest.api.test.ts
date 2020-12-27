@@ -64,6 +64,6 @@ describe('Rest API', () => {
       route: '/non_existent_route',
       method: 'GET'
     }])
-    console.log(reply)
+    // console.log(reply)
   })
 })

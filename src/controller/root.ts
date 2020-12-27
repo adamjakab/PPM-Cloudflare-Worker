@@ -5,7 +5,7 @@ import {
   RestApiResponse
 } from '../index'
 
-class RootController extends Controller {
+export class RootController extends Controller {
   /**
    * Path: / (GET)
    *
@@ -21,6 +21,3 @@ class RootController extends Controller {
     return res.send(reply)
   }
 }
-
-// Singleton export
-export = new RootController()

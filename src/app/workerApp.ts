@@ -58,7 +58,8 @@ export class CloudflareWorkerApp {
   }
 
   private setupRoutes () {
-    this.restApiWorker.register('/', 'GET', RootController.list)
+    const rootController = new RootController()
+    this.restApiWorker.register('/', 'GET', rootController.list)
     this.restApiWorker.useRoutingTable('/cards', CardRoutingTable)
   }
 }

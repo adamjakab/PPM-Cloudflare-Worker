@@ -38,8 +38,8 @@ import { Platform } from './util/platform'
 
 // Controllers
 import { Controller } from './controller/controller'
-import RootController from './controller/root'
-import CardController from './controller/card'
+import { RootController } from './controller/root'
+import { CardController } from './controller/card'
 
 // Routing
 import { CardRoutingTable } from './router/card'
