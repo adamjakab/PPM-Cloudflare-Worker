@@ -12,7 +12,7 @@ declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group functional
- * @group incomplete
+ * @group _incomplete
  *
  * Listing here will NOT return the full list of items but will
  * return the index list of all items containing for each {id, type, identifier}
@@ -67,7 +67,7 @@ describe('Cards List', () => {
     })
   })
 
-  it('should provide cards index', async () => {
+  it('should respond with 404 if index is not available', async () => {
     ppmStorage = createGlobalPpmStorageKV({
       data_file: '../data/storage.data.default.json',
       call_get: () => {

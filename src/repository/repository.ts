@@ -34,21 +34,12 @@ export class Repository {
     return await EntityManager.fetchIndex(this._storageTableName)
   }
 
-  public async getAll () {
-    const storageData = await EntityManager.fetchAll(this._storageTableName)
-
-    const entities: any[] = []
-    _.each(storageData, sd => {
-      const entity = this._entityCreator.getNewInstance(sd)
-      entities.push(entity)
-    })
-
-    return entities
-  }
-
   public async get (id: string) {
-    const data = await EntityManager.fetchOne(this._storageTableName, id)
-    return data ? this._entityCreator.getNewInstance(data) : undefined
+    let data = await EntityManager.fetchOne(this._storageTableName, id)
+    if (!_.isError(data)) {
+      data = this._entityCreator.getNewInstance(data)
+    }
+    return data
   }
 
   /**

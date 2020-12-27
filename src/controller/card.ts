@@ -37,8 +37,16 @@ class CardController extends Controller {
   public async getOne (req: RestApiRequest, res: RestApiResponse) {
     const { id } = req.getParams()
     const repo = new CardRepository()
-    const card: Card = await repo.get(id)
-    return res.send(card, card ? 200 : 404)
+    let status = 200
+    let card = await repo.get(id)
+    if (_.isError(card)) {
+      status = 404
+      card = {
+        error: true,
+        message: card.toString()
+      }
+    }
+    return res.send(card, status)
   }
 
   /**

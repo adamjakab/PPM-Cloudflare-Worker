@@ -72,10 +72,14 @@ export class KVStore {
         const PPMStorageKV = Globals.getPPMStorageKV()
         const indexData = _.find(this.storeIndex, { id: id })
         if (_.isUndefined(indexData)) {
-          return reject(new Error('Requested id was not found!'))
+          throw new Error('Requested id was not found!')
         }
         return PPMStorageKV.get(indexData.id, 'json')
       }).then((recordData:any) => {
+        if (_.isNull(recordData)) {
+          // @todo: it should be removed from the index
+          throw new Error('Requested id was not found!')
+        }
         resolve(recordData)
       }).catch((e) => {
         reject(e)
