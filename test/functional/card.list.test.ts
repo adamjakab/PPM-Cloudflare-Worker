@@ -3,16 +3,16 @@ import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
-import { StorageIndexItem } from '../../src/interface/storage.index'
 import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 import { createGlobalPpmStorageKV, PpmStorage } from '../helper/ppm.storage'
+import { StorageIndexItem } from '../../src'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group functional
- * @group _incomplete
+ * @group incomplete
  *
  * Listing here will NOT return the full list of items but will
  * return the index list of all items containing for each {id, type, identifier}
@@ -30,10 +30,6 @@ describe('Cards List', () => {
     // Merge the named KV into the global scope: PPMStorageKV
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
-    ppmStorage = createGlobalPpmStorageKV({
-      data_file: '../data/storage.data.default.json'
-    })
-
     // Clear all module imports.
     jest.resetModules()
 
@@ -47,6 +43,10 @@ describe('Cards List', () => {
   })
 
   it('should provide cards index', async () => {
+    ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json'
+    })
+
     const storageData = ppmStorage.datastore
 
     const request = makeCloudflareWorkerRequest('/cards', {
@@ -65,7 +65,28 @@ describe('Cards List', () => {
       expect(item).toHaveProperty('type')
       expect(item).toHaveProperty('identifier')
     })
+  })
 
-    // console.log(reply)
+  it('should provide cards index', async () => {
+    ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json',
+      call_get: () => {
+        throw new Error('Index Error')
+      }
+    })
+
+    const request = makeCloudflareWorkerRequest('/cards', {
+      method: 'GET',
+      cf: {}
+    })
+    const response = await self.trigger('fetch', request)
+    const reply: StorageIndexItem[] = await response.json()
+
+    expect(response.status).toBe(404)
+    expect(reply).toBeInstanceOf(Array)
+    expect(reply).toEqual([{
+      error: true,
+      message: 'Error: Index Error'
+    }])
   })
 })

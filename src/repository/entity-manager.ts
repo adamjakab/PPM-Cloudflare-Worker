@@ -31,7 +31,7 @@ class EntityManager {
       return await this._storage.fetchIndex()
     } catch (e) {
       Platform.log('EM fetchIndex error: ', e)
-      return null
+      return e
     }
   }
 
@@ -40,7 +40,7 @@ class EntityManager {
       return await this._storage.fetchAll()
     } catch (e) {
       Platform.log('EM fetchAll error: ', e)
-      return null
+      return e
     }
   }
 
@@ -49,7 +49,7 @@ class EntityManager {
       return await this._storage.fetchOne(id)
     } catch (e) {
       Platform.log('EM fetchOne error: ', e)
-      return null
+      return e
     }
   }
 
@@ -58,7 +58,7 @@ class EntityManager {
       return await this._storage.store(entity)
     } catch (e) {
       Platform.log('EM store error: ', e)
-      return null
+      return e
     }
   }
 
@@ -67,7 +67,7 @@ class EntityManager {
       return await this._storage.delete(id)
     } catch (e) {
       Platform.log('EM delete error: ', e)
-      return null
+      return e
     }
   }
 

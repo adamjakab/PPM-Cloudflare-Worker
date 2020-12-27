@@ -16,6 +16,7 @@ import isArray from 'lodash/isArray'
 import isDate from 'lodash/isDate'
 import isEmpty from 'lodash/isEmpty'
 import isNull from 'lodash/isNull'
+import isError from 'lodash/isError'
 import isFunction from 'lodash/isFunction'
 import isNumber from 'lodash/isNumber'
 import isObject from 'lodash/isObject'
@@ -33,6 +34,6 @@ import values from 'lodash/values'
 // exports
 export {
   head, keys, values, has, get, set, unset, extend, merge, keyBy, pullAt,
-  isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
+  isError, isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
   join, map, find, findIndex, includes, each
 }

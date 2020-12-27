@@ -1,4 +1,5 @@
 import {
+  _,
   Card,
   Controller,
   RestApiRequest, RestApiResponse,
@@ -15,8 +16,16 @@ class CardController extends Controller {
    */
   public async list (req: RestApiRequest, res: RestApiResponse) {
     const repo = new CardRepository()
-    const index = await repo.getIndex()
-    return res.send(index)
+    let status = 200
+    let index = await repo.getIndex()
+    if (_.isError(index)) {
+      status = 404
+      index = {
+        error: true,
+        message: index.toString()
+      }
+    }
+    return res.send(index, status)
   }
 
   /**

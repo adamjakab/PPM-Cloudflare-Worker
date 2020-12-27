@@ -12,8 +12,8 @@ export class RestApiResponse {
   }
 
   public send (data: any, status = 200) {
-    if (status !== 200) {
-      Platform.log('R[' + status + ']: ', data)
+    if (status === 200) {
+      Platform.log('Sending Error[' + status + ']: ', data)
     }
 
     const convertedData = this.convertData(data)
@@ -21,7 +21,7 @@ export class RestApiResponse {
     const headers = _.extend({
       'content-type': 'text/plain'
     }, convertedData.headers)
-    // Platform.log('H: ', JSON.stringify(headers))
+    // Platform.log('Senfign Headers: ', JSON.stringify(headers))
 
     return new Response(convertedData.body, {
       status: status,
