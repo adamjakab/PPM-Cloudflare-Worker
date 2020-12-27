@@ -113,11 +113,22 @@ class CardController extends Controller {
     let status = 200
     const { id } = req.getParams()
     const repo = new CardRepository()
-    const card: Card = await repo.get(id)
-    if (card) {
-      await repo.remove(card)
-    } else {
+    let card = await repo.get(id)
+    if (_.isError(card)) {
       status = 404
+      card = {
+        error: true,
+        message: card.toString()
+      }
+    } else {
+      const repoStatus = await repo.remove(card)
+      if (_.isError(repoStatus)) {
+        status = 404
+        card = {
+          error: true,
+          message: repoStatus.toString()
+        }
+      }
     }
     return res.send(card, status)
   }
