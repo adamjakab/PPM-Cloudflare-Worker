@@ -28,10 +28,6 @@ describe('Card Create', () => {
     // Merge the named KV into the global scope: PPMStorageKV
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
-    ppmStorage = createGlobalPpmStorageKV({
-      data_file: '../data/storage.data.default.json'
-    })
-
     // Clear all module imports.
     jest.resetModules()
 
