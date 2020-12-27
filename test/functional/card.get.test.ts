@@ -64,7 +64,7 @@ describe('Card Get', () => {
     // console.log(replyData)
   })
 
-  it('should respond with 404 if error', async () => {
+  it('should respond with 404 in case of error', async () => {
     ppmStorage = createGlobalPpmStorageKV({
       data_file: '../data/storage.data.default.json',
       call_get: () => {

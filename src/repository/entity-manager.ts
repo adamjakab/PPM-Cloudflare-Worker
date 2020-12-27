@@ -35,15 +35,6 @@ class EntityManager {
     }
   }
 
-  public async fetchAll (table: string) {
-    try {
-      return await this._storage.fetchAll()
-    } catch (e) {
-      Platform.log('EM fetchAll error: ', e)
-      return e
-    }
-  }
-
   public async fetchOne (table: string, id: string) {
     try {
       return await this._storage.fetchOne(id)

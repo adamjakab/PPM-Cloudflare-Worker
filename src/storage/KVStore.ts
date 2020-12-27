@@ -40,28 +40,6 @@ export class KVStore {
   }
 
   /**
-   * Fetches all elements from the storage
-   * @return Promise<any>   the list of elements
-   */
-  public async fetchAll (): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.fetchIndex().then(() => {
-        const PPMStorageKV = Globals.getPPMStorageKV()
-        const promises: Promise<any>[] = []
-        _.each(this.storeIndex, (indexData) => {
-          // Platform.log('Index Data: ', JSON.stringify(indexData))
-          promises.push(PPMStorageKV.get(indexData.id, 'json'))
-        })
-        return Promise.all(promises)
-      }).then((values:any[]) => {
-        resolve(values)
-      }).catch((e) => {
-        reject(e)
-      })
-    })
-  }
-
-  /**
    * Fetches a single element by ID
    * @param id              the ID of the element to fetch
    * @return Promise<any>   the element if found or undefined
@@ -88,7 +66,7 @@ export class KVStore {
   }
 
   /**
-   * Stores the element
+   * Stores the element and adds it to the index
    * @param element           element data
    * @return Promise<void>
    */

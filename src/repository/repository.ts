@@ -43,7 +43,7 @@ export class Repository {
   }
 
   /**
-   * Persists the entity in the store and returns the id of the element
+   * Persists the entity in the store
    *
    * @param entity
    */

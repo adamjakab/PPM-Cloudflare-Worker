@@ -3,7 +3,6 @@ import makeCloudflareWorkerEnv, {
   makeCloudflareWorkerKVEnv,
   makeCloudflareWorkerRequest
 } from 'cloudflare-worker-mock'
-import { StorageIndexItem } from '../../src/interface/storage.index'
 import { createGlobalPpmConfigKV } from '../helper/ppm.config'
 import { createGlobalPpmStorageKV, PpmStorage } from '../helper/ppm.storage'
 import _ from 'lodash'
@@ -72,16 +71,16 @@ describe('Card Create', () => {
     // one for the data and one for the index
     expect(ppmStorage.timesCalledPut).toEqual(2)
 
-    // verify the stored element
     const storageData = ppmStorage.datastore
     // console.log('Storage Data: ', storageData)
+
+    // verify the stored element
     const cardInStorage: any = _.get(storageData, createdCard.id)
     expect(cardInStorage).toBeDefined()
     expect(cardInStorage).toEqual(createdCard)
-    expect(cardInStorage.name).toEqual(newCard.name)
-    expect(cardInStorage.type).toEqual(newCard.type)
-    expect(cardInStorage.identifier).toEqual(newCard.identifier)
-    expect(cardInStorage.text).toEqual(newCard.text)
+    _.each(_.keys(newCard), k => {
+      expect(_.get(cardInStorage, k)).toEqual(_.get(newCard, k))
+    })
 
     // verify that the index is updated
     expect(storageData.index).toHaveLength(3)
@@ -92,5 +91,38 @@ describe('Card Create', () => {
     expect(indexItem.identifier).toEqual(createdCard.identifier)
 
     // console.log(storageData)
+  })
+
+  it('should respond with 404 in case of storage error', async () => {
+    const ppmStorage = createGlobalPpmStorageKV({
+      data_file: '../data/storage.data.default.json',
+      call_put: () => {
+        throw new Error('Put Error')
+      }
+    })
+
+    const newCard = {
+      name: 'New Card',
+      type: 'text',
+      identifier: 'jpro.net',
+      text: 'This is a new card.'
+    }
+
+    const request = makeCloudflareWorkerRequest('/cards', {
+      method: 'POST',
+      body: JSON.stringify(newCard),
+      cf: {}
+    })
+    const response = await self.trigger('fetch', request)
+    const reply = await response.json()
+
+    expect(response.status).toBe(404)
+    expect(reply).toBeInstanceOf(Array)
+    expect(reply).toEqual([{
+      error: true,
+      message: 'Error: Put Error'
+    }])
+
+    // console.log(reply)
   })
 })

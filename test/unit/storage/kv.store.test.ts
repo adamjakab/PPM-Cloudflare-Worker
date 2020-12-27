@@ -98,34 +98,6 @@ describe('KVStorage', () => {
     expect(ppmStorage.timesCalledGet).toEqual(1)
   })
 
-  // ---------------------------------------------------------------: fetchAll
-
-  it('[fetchAll] should return all items', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
-      data_file: '../data/storage.data.default.json'
-    })
-    const storageData = ppmStorage.datastore
-    const store = new KVStore()
-    const fetchedItems = await store.fetchAll()
-    expect(fetchedItems).toBeInstanceOf(Array)
-    expect(fetchedItems).toHaveLength(storageData.index.length)
-    // console.log(fetchedItems)
-  })
-
-  it('[fetchAll] should throw an error on KV error', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
-      data_file: '../data/storage.data.faulty.index.json',
-      call_get: () => { return Promise.reject(new Error('Error!')) }
-    })
-    const store = new KVStore()
-    expect.assertions(1)
-    try {
-      await store.fetchAll()
-    } catch (e) {
-      expect(e.message).toBe('Error!')
-    }
-  })
-
   // ---------------------------------------------------------------: fetchOne
 
   it('[fetchOne] should fetch a specific item', async () => {

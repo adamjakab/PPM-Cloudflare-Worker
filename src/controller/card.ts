@@ -58,9 +58,17 @@ class CardController extends Controller {
   public async create (req: RestApiRequest, res: RestApiResponse) {
     const data = await req.getBody()
     const repo = new CardRepository()
-    const card = new Card(data)
-    await repo.persist(card)
-    return res.send(card, card ? 200 : 404)
+    let card: any = new Card(data)
+    const repoStatus = await repo.persist(card)
+    let status = 200
+    if (_.isError(repoStatus)) {
+      status = 404
+      card = {
+        error: true,
+        message: repoStatus.toString()
+      }
+    }
+    return res.send(card, status)
   }
 
   /**
