@@ -1,4 +1,3 @@
-
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import makeCloudflareWorkerEnv from 'cloudflare-worker-mock'
 

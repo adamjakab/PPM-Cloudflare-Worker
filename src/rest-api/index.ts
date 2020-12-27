@@ -29,7 +29,12 @@ export class RestApiWorker {
     const route = request.getValidRoute()
 
     if (_.isUndefined(route)) {
-      return response.send({ status: 0, message: 'Shit hit the fan!' }, 404)
+      return response.send({
+        error: true,
+        message: 'Route is not registered!',
+        route: request.getPath(),
+        method: request.getMethod()
+      }, 404)
     }
 
     return await route.callback(request, response)
