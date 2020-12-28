@@ -19,7 +19,7 @@ import * as Globals from './util/global'
 import { EntityDecorator } from './decorator/entity.decorator'
 
 // Entity
-import EntityManager from './repository/entity-manager'
+import { EntityManager } from './repository/entity-manager'
 import { Repository } from './repository/repository'
 import { CardRepository } from './repository/card.repository'
 import { Entity } from './entity/entity'
@@ -48,7 +48,7 @@ import { CloudflareWorkerApp } from './app/workerApp'
 // Declare self
 declare let self: CloudflareWorkerGlobalScope
 
-// only create the app instance but do not do anything else - allow export to happen first
+// @todo: only create the app instance but do not do anything else - allow export to happen first
 const app = new CloudflareWorkerApp()
 
 export {
@@ -69,7 +69,7 @@ export {
   EntityDecorator
 }
 
-// init app
+// @todo: init app only after all exports are available
 // app.run()
 
 try {

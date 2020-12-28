@@ -6,7 +6,7 @@ import {
   Platform
 } from '../index'
 
-class EntityManager {
+export class EntityManager {
   /**
    * About using a fake uuid
    * UUID v4 generation requires random rng call wich will throw this error if called during startup:
@@ -86,7 +86,3 @@ class EntityManager {
     this._storage = driver
   }
 }
-
-// @todo: set it to KV Driver (once it exists)
-// Export a single instance
-export = new EntityManager();

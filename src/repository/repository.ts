@@ -1,17 +1,16 @@
 import {
   _,
+  app,
   Globals,
   InstanceCreator,
-  EntityManager,
   Entity
 } from '../index'
 
 export class Repository {
+  // @fixme: this is not in use anymore - remove
   protected _storageTableName: string;
 
-  /**
-   * Instance creator for the entity class this repository is responsible for
-   */
+  // Instance creator for the entity class this repository is responsible for
   protected _entityCreator: any;
 
   constructor () {
@@ -31,11 +30,11 @@ export class Repository {
   }
 
   public async getIndex () {
-    return await EntityManager.fetchIndex(this._storageTableName)
+    return await app.entityManager.fetchIndex(this._storageTableName)
   }
 
   public async get (id: string) {
-    let data = await EntityManager.fetchOne(this._storageTableName, id)
+    let data = await app.entityManager.fetchOne(this._storageTableName, id)
     if (!_.isError(data)) {
       data = this._entityCreator.getNewInstance(data)
     }
@@ -48,7 +47,7 @@ export class Repository {
    * @param entity
    */
   public async persist (entity: Entity) {
-    return await EntityManager.store(this._storageTableName, entity.getEntityData())
+    return await app.entityManager.store(this._storageTableName, entity.getEntityData())
   }
 
   /**
@@ -57,6 +56,6 @@ export class Repository {
    * @param entity
    */
   public async remove (entity: Entity) {
-    return await EntityManager.delete(this._storageTableName, entity.id.toString())
+    return await app.entityManager.delete(this._storageTableName, entity.id.toString())
   }
 }

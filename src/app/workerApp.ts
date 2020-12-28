@@ -10,6 +10,7 @@ import {
 } from '../index'
 
 export class CloudflareWorkerApp {
+  private _entityManager: EntityManager
   private setupComplete: boolean
   private restApiWorker: RestApiWorker
   public appConfig: AppConfiguration
@@ -18,6 +19,7 @@ export class CloudflareWorkerApp {
     this.setupComplete = false
     this.restApiWorker = new RestApiWorker()
     this.appConfig = new AppConfiguration()
+    this._entityManager = new EntityManager()
   }
 
   public async handle (fetchEvent: FetchEvent) {
@@ -32,7 +34,7 @@ export class CloudflareWorkerApp {
       } else {
         this.initializeAppConfiguration().then(() => {
           Platform.log('APP CONFIG: ', this.appConfig.getAppConfig())
-          CloudflareWorkerApp.setupEntityManager()
+          this.setupEntityManager()
           this.setupRoutes()
           this.setupComplete = true
           resolve()
@@ -49,12 +51,18 @@ export class CloudflareWorkerApp {
     await this.appConfig.mergeKVStorageOverrides()
   }
 
-  private static setupEntityManager () {
+  private setupEntityManager () {
     // Set up Entity Manager with the right storage
-    EntityManager.setupStorageDriver(new KVStore())
+    this._entityManager.setupStorageDriver(new KVStore())
+    // EntityManager.setupStorageDriver(new KVStore())
 
     // Register Entities
-    EntityManager.registerEntities([Card])
+    this._entityManager.registerEntities([Card])
+    // EntityManager.registerEntities([Card])
+  }
+
+  public get entityManager (): EntityManager {
+    return this._entityManager
   }
 
   /**
