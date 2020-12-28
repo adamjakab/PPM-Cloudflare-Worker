@@ -82,17 +82,6 @@ export class RestApiWorker {
     this.routes.push(routeElement)
   }
 
-  public useRoutingTable (path: string, rt: RawRouteItem[]) {
-    // Platform.log('Routing Table: ', rt)
-    _.each(rt, (routeItem: RawRouteItem) => {
-      this.register(
-        path + (routeItem.path === '/' ? '' : routeItem.path),
-        routeItem.method,
-        routeItem.callback
-      )
-    })
-  }
-
   public getRoutes = () => {
     return this.routes
   };
