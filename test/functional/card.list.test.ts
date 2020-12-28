@@ -1,11 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import makeCloudflareWorkerEnv, {
-  makeCloudflareWorkerKVEnv,
-  makeCloudflareWorkerRequest
-} from 'cloudflare-worker-mock'
-import { createGlobalPpmConfigKV } from '../helper/ppm.config'
-import { createGlobalPpmStorageKV, PpmStorage } from '../helper/ppm.storage'
-import { StorageIndexItem } from '../../src'
+import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
+import { setupTestEnvironment } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -18,32 +13,20 @@ declare let self: CloudflareWorkerGlobalScope
  * return the index list of all items containing for each {id, type, identifier}
  */
 describe('Cards List', () => {
-  let ppmStorage: PpmStorage
-
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
-
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
-
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
-
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../src/index')
-
-    createGlobalPpmConfigKV({
-      log_to_console: false,
-      storage_to_use: 'kvstore'
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
     })
   })
 
   it('should provide cards index', async () => {
-    ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
 
@@ -54,7 +37,7 @@ describe('Cards List', () => {
       cf: {}
     })
     const response = await self.trigger('fetch', request)
-    const reply: StorageIndexItem[] = await response.json()
+    const reply = await response.json()
 
     expect(response.status).toBe(200)
     expect(reply).toBeInstanceOf(Array)
@@ -68,7 +51,7 @@ describe('Cards List', () => {
   })
 
   it('should respond with 404 if index is not available', async () => {
-    ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_get: () => {
         throw new Error('Index Error')
@@ -80,7 +63,7 @@ describe('Cards List', () => {
       cf: {}
     })
     const response = await self.trigger('fetch', request)
-    const reply: StorageIndexItem[] = await response.json()
+    const reply = await response.json()
 
     expect(response.status).toBe(404)
     expect(reply).toBeInstanceOf(Array)

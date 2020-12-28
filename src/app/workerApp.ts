@@ -10,59 +10,59 @@ import {
 } from '../index'
 
 export class CloudflareWorkerApp {
+  // @fixme: we don't need this anymore
+  private _setupComplete: boolean
+  private _restApiWorker: RestApiWorker
+  private _appConfig: AppConfiguration
   private _entityManager: EntityManager
-  private setupComplete: boolean
-  private restApiWorker: RestApiWorker
-  public appConfig: AppConfiguration
 
   public constructor () {
-    this.setupComplete = false
-    this.restApiWorker = new RestApiWorker()
-    this.appConfig = new AppConfiguration()
-    this._entityManager = new EntityManager()
+    this._setupComplete = false
   }
 
-  public async handle (fetchEvent: FetchEvent) {
-    await this.verifySetup()
-    return this.restApiWorker.handle(fetchEvent)
-  }
-
-  public async verifySetup (): Promise<void> {
+  public initialize (): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      if (this.setupComplete) {
+      this._restApiWorker = new RestApiWorker()
+      this._appConfig = new AppConfiguration()
+      this._entityManager = new EntityManager()
+      return this.initializeAppConfiguration().then(() => {
+        this.setupEntityManager()
+        this.setupRoutes()
+        this._setupComplete = true
+        Platform.log('App initialized with config: ', this._appConfig.getAppConfig())
         resolve()
-      } else {
-        this.initializeAppConfiguration().then(() => {
-          Platform.log('APP CONFIG: ', this.appConfig.getAppConfig())
-          this.setupEntityManager()
-          this.setupRoutes()
-          this.setupComplete = true
-          resolve()
-        }).catch(e => {
-          Platform.logError('APP CONFIG ERROR: ', e)
-          reject(e)
-        })
-      }
+      })
     })
   }
 
+  public handle (fetchEvent: FetchEvent) {
+    return this._restApiWorker.handle(fetchEvent)
+  }
+
+  // @fixme: move this to AppConfiguration
   private async initializeAppConfiguration () {
-    this.appConfig.mergeProjectConfigOverrides()
-    await this.appConfig.mergeKVStorageOverrides()
+    this._appConfig.mergeProjectConfigOverrides()
+    await this._appConfig.mergeKVStorageOverrides()
   }
 
   private setupEntityManager () {
     // Set up Entity Manager with the right storage
     this._entityManager.setupStorageDriver(new KVStore())
-    // EntityManager.setupStorageDriver(new KVStore())
 
     // Register Entities
     this._entityManager.registerEntities([Card])
-    // EntityManager.registerEntities([Card])
+  }
+
+  public get setupComplete (): boolean {
+    return this._setupComplete
   }
 
   public get entityManager (): EntityManager {
     return this._entityManager
+  }
+
+  public get appConfig (): AppConfiguration {
+    return this._appConfig
   }
 
   /**
@@ -71,12 +71,12 @@ export class CloudflareWorkerApp {
    */
   private setupRoutes () {
     const rootController = new RootController()
-    this.restApiWorker.register('/', 'GET', rootController.list)
+    this._restApiWorker.register('/', 'GET', rootController.list)
     const cardController = new CardController()
-    this.restApiWorker.register('/cards/', 'GET', cardController.list)
-    this.restApiWorker.register('/cards/:id', 'GET', cardController.getOne)
-    this.restApiWorker.register('/cards/', 'POST', cardController.create)
-    this.restApiWorker.register('/cards/:id', 'PUT', cardController.update)
-    this.restApiWorker.register('/cards/:id', 'DELETE', cardController.delete)
+    this._restApiWorker.register('/cards/', 'GET', cardController.list)
+    this._restApiWorker.register('/cards/:id', 'GET', cardController.getOne)
+    this._restApiWorker.register('/cards/', 'POST', cardController.create)
+    this._restApiWorker.register('/cards/:id', 'PUT', cardController.update)
+    this._restApiWorker.register('/cards/:id', 'DELETE', cardController.delete)
   }
 }

@@ -1,12 +1,17 @@
-import _ from 'lodash'
 import { CloudflareWorkerKVOptions } from 'types-cloudflare-worker'
+import _ from 'lodash'
 
+/**
+ * Create a mock PpmStorage and add it to the global scope for the application
+ * @param cfg
+ */
 export const createGlobalPpmStorageKV = (cfg: any = {}): PpmStorage => {
-  const ppmStorage = new PpmStorage(cfg)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  global.PPMStorageKV = ppmStorage
-  return ppmStorage
+  const getGlobal = (): any => {
+    return global
+  }
+  const globalScope = getGlobal()
+  globalScope.PPMStorageKV = new PpmStorage(cfg)
+  return globalScope.PPMStorageKV
 }
 
 /**
@@ -16,9 +21,13 @@ export class PpmStorage {
   private _timesCalledGet: number
   private _timesCalledPut: number
   private _timesCalledDel: number
-  private readonly _datastore = {}
+  private _datastore = {}
 
   public constructor (cfg: any = {}) {
+    this.reset(cfg)
+  }
+
+  public reset (cfg: any) {
     let storageData = {}
     if (_.has(cfg, 'data_file')) {
       storageData = require(_.get(cfg, 'data_file'))

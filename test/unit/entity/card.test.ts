@@ -1,22 +1,30 @@
-/* tslint:disable:no-console */
-import {
-  _,
-  Card,
-  Entity
-} from '../../../src/index'
+import { setupTestEnvironment } from '../../helper/test.app.setup'
+import * as _ from 'lodash'
 
 /**
  * @group unit/entity
  * @group _incomplete
  */
 describe('Card(Entity)', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
+  beforeEach(() => {
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
+    })
+  })
+
   it('should be instance of Entity', () => {
-    const card = new Card({})
-    expect(card).toBeInstanceOf(Entity)
+    const card = new appIndex.Card({})
+    expect(card).toBeInstanceOf(appIndex.Entity)
   })
 
   it('should have default attributes', () => {
-    const card = new Card({})
+    const card = new appIndex.Card({})
     const attrs = ['name', 'type', 'identifier', 'text']
     _.each(attrs, attr => {
       expect(card).toHaveProperty(attr)
@@ -31,7 +39,7 @@ describe('Card(Entity)', () => {
       identifier: 'own',
       text: 'Remember to brush your teeth.'
     }
-    const card = new Card(data)
+    const card = new appIndex.Card(data)
     _.each(data, (v: any, k: string) => {
       expect(_.get(card, k)).toEqual(v)
     })
@@ -44,7 +52,7 @@ describe('Card(Entity)', () => {
       identifier: 'test',
       text: 'abc'
     }
-    const card = new Card(data)
+    const card = new appIndex.Card(data)
     const entityData = card.getEntityData()
     expect(entityData).toBeInstanceOf(Object)
     expect(entityData.id).toBeDefined()
@@ -62,7 +70,7 @@ describe('Card(Entity)', () => {
       identifier: 'test',
       text: 'abc'
     }
-    const card = new Card(data)
+    const card = new appIndex.Card(data)
     const entityData = card.getEntityData()
     expect(card.toJson()).toEqual(JSON.stringify(entityData))
   })

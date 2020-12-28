@@ -1,10 +1,15 @@
+import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
+import makeCloudflareWorkerEnv, {
+  makeCloudflareWorkerKVEnv,
+  makeCloudflareWorkerRequest
+} from 'cloudflare-worker-mock'
 import { v4 as generateUUIDv4 } from 'uuid'
-import {
-  CardRepository,
-  EntityManager,
-  Card
-} from '../../../src/index'
+import { CardRepository } from '../../../src'
+import { createGlobalPpmConfigKV } from '../../helper/ppm.config'
 import * as _ from 'lodash'
+import { createGlobalPpmStorageKV } from '../../helper/ppm.storage'
+
+declare let self: CloudflareWorkerGlobalScope
 
 const defaultData = {
   notes: [
@@ -19,13 +24,35 @@ const defaultData = {
  * @group unit/repository
  * @group _incomplete
  */
-describe('NoteRepository', () => {
+describe('Card Repository', () => {
+  let index: any
+
   beforeEach(async () => {
-    // EntityManager.registerEntities([Card])
+    // Merge the Cloudflare Worker Environment into the global scope.
+    Object.assign(global, makeCloudflareWorkerEnv())
+
+    // Merge the named KV into the global scope: PPMConfigKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
+
+    // Merge the named KV into the global scope: PPMStorageKV
+    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
+
+    createGlobalPpmConfigKV({
+      log_to_console: false,
+      storage_to_use: 'kvstore'
+    })
+
+    createGlobalPpmStorageKV({})
+
+    // Clear all module imports.
+    jest.resetModules()
+
+    // Import and init the Worker.
+    index = jest.requireActual('../../../src/index')
   })
 
   it('should have a storage table name', () => {
-    const repo = new CardRepository()
+    const repo: CardRepository = new index.CardRepository()
     expect(repo.storageTableName).toEqual('cards')
   })
 })

@@ -1,21 +1,28 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import makeCloudflareWorkerEnv from 'cloudflare-worker-mock'
+import { setupTestEnvironment } from '../helper/test.app.setup'
+import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group functional
+ * @group _incomplete
  */
-describe('worker', () => {
+describe('WorkerApp', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
+    })
+  })
 
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../src/index')
+  it('should be initialized', async () => {
+    expect(appIndex.app.setupComplete).toBeTruthy()
   })
 
   it('should have a listener', async () => {

@@ -70,12 +70,11 @@ export {
 }
 
 // @todo: init app only after all exports are available
-// app.run()
-
-try {
+app.initialize().then(() => {
+  Platform.log('Registering listener...')
   self.addEventListener('fetch', (fetchEvent: FetchEvent) => {
     fetchEvent.respondWith(app.handle(fetchEvent))
   })
-} catch (e) {
-  // console.warn('Failed to register listener!', e)
-}
+}).catch(e => {
+  console.error('Failed to register listener!', e)
+})

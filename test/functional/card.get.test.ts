@@ -1,11 +1,7 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import makeCloudflareWorkerEnv, {
-  makeCloudflareWorkerKVEnv,
-  makeCloudflareWorkerRequest
-} from 'cloudflare-worker-mock'
+import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
 import { StorageIndexItem } from '../../src'
-import { createGlobalPpmConfigKV } from '../helper/ppm.config'
-import { createGlobalPpmStorageKV, PpmStorage } from '../helper/ppm.storage'
+import { setupTestEnvironment } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -17,32 +13,20 @@ declare let self: CloudflareWorkerGlobalScope
  * Get a single card
  */
 describe('Card Get', () => {
-  let ppmStorage: PpmStorage
-
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
-
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
-
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
-
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../src/index')
-
-    createGlobalPpmConfigKV({
-      log_to_console: false,
-      storage_to_use: 'kvstore'
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
     })
   })
 
   it('should get a single card by id', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const storageData = ppmStorage.datastore
@@ -65,7 +49,7 @@ describe('Card Get', () => {
   })
 
   it('should respond with 404 in case of error', async () => {
-    ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_get: () => {
         throw new Error('Get Error')
@@ -93,7 +77,7 @@ describe('Card Get', () => {
    * Test for an item which is not in the index
    */
   it('should return not found on non-existent id', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const storageData = ppmStorage.datastore
@@ -118,7 +102,7 @@ describe('Card Get', () => {
    * Test for an item which is in the index but there is no item in the storage === Faulty Index
    */
   it('should return not found on non-existent id (faulty index)', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.faulty.index.json'
     })
     const storageData = ppmStorage.datastore

@@ -1,30 +1,49 @@
 /* tslint:disable:no-console */
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
+/*
 import {
-  _,
   EntityDecorator as EnhancedEntity,
   Entity,
-  Repository,
-  Utils
+  Repository
 } from '../../../src/index'
+ */
+import { setupTestEnvironment } from '../../helper/test.app.setup'
+import * as _ from 'lodash'
 
+/*
 const getTestEntity = () => {
   class TestRepository extends Repository {}
   @EnhancedEntity('testentity', TestRepository)
   class TestEntity extends Entity {}
   return new TestEntity()
 }
+*/
 
 /**
  * @group unit/entity
- * @group _incomplete
+ * @group incomplete
  */
 describe('Entity', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
+  beforeEach(() => {
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
+    })
+  })
+
+
   it('should not be possible to instantiate directly', () => {
     expect(() => {
-      const entity = new Entity()
+      const entity = new appIndex.Entity()
     }).toThrow(/Entity class cannot be instantiated/)
   })
+
+  /*
 
   it('should initiate with creation and modification dates', () => {
     const te = getTestEntity()
@@ -95,9 +114,9 @@ describe('Entity', () => {
     const te = getTestEntity()
     const entityDataBefore = te.getEntityData()
     const data = null
-    /* @note: modification date should change but if we do this too fast it will have the same date */
-    /* @todo: use mock and check if changeDateModified was called */
-    await Utils.delay(100)
+    // @note: modification date should change but if we do this too fast it will have the same date
+    // @todo: use mock and check if changeDateModified was called
+    await appIndex.Utils.delay(100)
     te.mapDataOnEntity(data)
     const entityDataAfter = te.getEntityData()
     expect(entityDataAfter).not.toEqual(entityDataBefore)
@@ -110,12 +129,13 @@ describe('Entity', () => {
     expect(_.get(entityDataBefore, 'id')).toBeUndefined()
     // console.log(entity_data_before)
     const data = null
-    /* @note: modification date should change but if we do this too fast it will have the same date */
-    /* @todo: use mock and check if changeDateModified was called */
-    await Utils.delay(100)
+    // @note: modification date should change but if we do this too fast it will have the same date
+    // @todo: use mock and check if changeDateModified was called
+    await appIndex.Utils.delay(100)
     te.mapDataOnEntity(data, true)
     const entityDataAfter = te.getEntityData()
     expect(entityDataAfter).not.toEqual(entityDataBefore)
     expect(_.get(entityDataAfter, 'id')).toBeDefined()
   })
+*/
 })

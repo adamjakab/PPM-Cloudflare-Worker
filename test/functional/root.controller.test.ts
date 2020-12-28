@@ -1,35 +1,16 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import makeCloudflareWorkerEnv, {
-  makeCloudflareWorkerKVEnv,
-  makeCloudflareWorkerRequest
-} from 'cloudflare-worker-mock'
-import { createGlobalPpmConfigKV } from '../helper/ppm.config'
+import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
+import { setupTestEnvironment } from '../helper/test.app.setup'
 
 declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group functional
+ * @group _incomplete
  */
 describe('Root path', () => {
-  beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
-
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
-
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
-
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../src/index')
-
-    createGlobalPpmConfigKV({
-      log_to_console: false
-    })
+  beforeAll(() => {
+    return setupTestEnvironment()
   })
 
   it('should provide app info', async () => {

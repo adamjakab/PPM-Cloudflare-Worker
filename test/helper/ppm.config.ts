@@ -1,12 +1,18 @@
 import _ from 'lodash'
 import { CloudflareWorkerKVOptions } from 'types-cloudflare-worker'
+import { PpmStorage } from './ppm.storage'
 
+/**
+ * Create a mock PpmConfig and add it to the global scope for the application
+ * @param cfg
+ */
 export const createGlobalPpmConfigKV = (cfg:any = {}): PpmConfig => {
-  const ppmConfig = new PpmConfig(cfg)
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  global.PPMConfigKV = ppmConfig
-  return ppmConfig
+  const getGlobal = (): any => {
+    return global
+  }
+  const globalScope = getGlobal()
+  globalScope.PPMConfigKV = new PpmConfig(cfg)
+  return globalScope.PPMConfigKV
 }
 
 class PpmConfig {

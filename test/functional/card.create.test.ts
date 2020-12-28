@@ -1,10 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import makeCloudflareWorkerEnv, {
-  makeCloudflareWorkerKVEnv,
-  makeCloudflareWorkerRequest
-} from 'cloudflare-worker-mock'
-import { createGlobalPpmConfigKV } from '../helper/ppm.config'
-import { createGlobalPpmStorageKV, PpmStorage } from '../helper/ppm.storage'
+import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
+import { setupTestEnvironment } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -16,32 +12,20 @@ declare let self: CloudflareWorkerGlobalScope
  * Create a card
  */
 describe('Card Create', () => {
-  let ppmStorage: PpmStorage
-
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
-
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
-
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
-
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../src/index')
-
-    createGlobalPpmConfigKV({
-      log_to_console: false,
-      storage_to_use: 'kvstore'
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
     })
   })
 
   it('should create a card', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
 
@@ -90,7 +74,7 @@ describe('Card Create', () => {
   })
 
   it('should respond with 404 in case of storage error', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_put: () => {
         throw new Error('Put Error')

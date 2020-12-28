@@ -1,9 +1,6 @@
-import makeCloudflareWorkerEnv, { makeCloudflareWorkerKVEnv } from 'cloudflare-worker-mock'
-import * as _ from 'lodash'
+import { setupTestEnvironment } from '../../helper/test.app.setup'
 import { v4 as generateUUIDv4 } from 'uuid'
-import { createGlobalPpmConfigKV } from '../../helper/ppm.config'
-import { createGlobalPpmStorageKV } from '../../helper/ppm.storage'
-import { KVStore } from '../../../src'
+import * as _ from 'lodash'
 
 // @todo: move to helper
 const defaultDataCreator = (elements: any[]) => {
@@ -17,40 +14,31 @@ const defaultDataCreator = (elements: any[]) => {
 
 /**
  * @group unit/storage
- * @group ___incomplete
+ * @group _incomplete
  */
 describe('KVStorage', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
-
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
-
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
-
-    // Clear all module imports.
-    jest.resetModules()
-
-    // Import and init the Worker.
-    jest.requireActual('../../../src/index')
-
-    createGlobalPpmConfigKV({
-      log_to_console: true,
-      storage_to_use: 'kvstore'
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
     })
   })
 
   // ---------------------------------------------------------------: fetchIndex
 
   it('[fetchIndex] should return the storage index', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const storageData = ppmStorage.datastore
 
-    const store = new KVStore()
+    // const KVStore = appIndex.KVStore
+    const store = new appIndex.KVStore()
     const fetchedIndex = await store.fetchIndex()
 
     expect(fetchedIndex).toBeInstanceOf(Array)
@@ -58,11 +46,11 @@ describe('KVStorage', () => {
   })
 
   it('[fetchIndex] should return an empty index if does not exist in the storage', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const fetchedIndex = await store.fetchIndex()
 
     expect(fetchedIndex).toBeInstanceOf(Array)
@@ -70,13 +58,13 @@ describe('KVStorage', () => {
   })
 
   it('[fetchIndex] should throw an error on KV error', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_get: () => {
         return Promise.reject(new Error('Error!'))
       }
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.fetchIndex()
@@ -86,11 +74,11 @@ describe('KVStorage', () => {
   })
 
   it('[fetchIndex] should use in-memory index once loaded from KV', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const storageData = ppmStorage.datastore
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const fetchedIndex1 = await store.fetchIndex()
     const fetchedIndex2 = await store.fetchIndex()
     expect(fetchedIndex1).toEqual(_.get(storageData, 'index'))
@@ -101,12 +89,12 @@ describe('KVStorage', () => {
   // ---------------------------------------------------------------: fetchOne
 
   it('[fetchOne] should fetch a specific item', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const fetchId = '00000000-0000-4000-8000-000000000001'
     const storageData = ppmStorage.datastore
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const fetchedItem = await store.fetchOne(fetchId)
     expect(fetchedItem).not.toBeNull()
     expect(fetchedItem).toBeInstanceOf(Object)
@@ -115,12 +103,12 @@ describe('KVStorage', () => {
   })
 
   it('[fetchOne] should throw an error if item is not in the index', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
     const fetchId = '00000000-0000-4000-8000-00000000000F'
     const storageData = ppmStorage.datastore
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
 
     expect.assertions(1)
     try {
@@ -133,13 +121,13 @@ describe('KVStorage', () => {
   })
 
   it('[fetchOne] should throw an error on KV error', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_get: () => {
         return Promise.reject(new Error('Error!'))
       }
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.fetchOne('00000000-0000-4000-8000-000000000001')
@@ -151,7 +139,7 @@ describe('KVStorage', () => {
   // ---------------------------------------------------------------: store
 
   it('[store] should not store item if "id" is missing.', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
 
@@ -164,7 +152,7 @@ describe('KVStorage', () => {
       text: 'Adding a new item.'
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(2)
     try {
       await store.store(newItem)
@@ -175,7 +163,7 @@ describe('KVStorage', () => {
   })
 
   it('[store] should not store item if "type" is missing.', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
 
@@ -188,7 +176,7 @@ describe('KVStorage', () => {
       text: 'Adding a new item.'
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(2)
     try {
       await store.store(newItem)
@@ -199,7 +187,7 @@ describe('KVStorage', () => {
   })
 
   it('[store] should not store item if "identifier" is missing.', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
 
@@ -212,7 +200,7 @@ describe('KVStorage', () => {
       text: 'Adding a new item.'
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(2)
     try {
       await store.store(newItem)
@@ -223,7 +211,7 @@ describe('KVStorage', () => {
   })
 
   it('[store] should store a new item', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
 
@@ -237,7 +225,7 @@ describe('KVStorage', () => {
       text: 'Adding a new item.'
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     await store.store(newItem)
     const storageData = ppmStorage.datastore
     const createdItem = _.get(storageData, newItem.id)
@@ -249,7 +237,7 @@ describe('KVStorage', () => {
   })
 
   it('[store] should update an existing item', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
 
@@ -264,7 +252,7 @@ describe('KVStorage', () => {
       extra: true
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const oldItem = _.get(ppmStorage.datastore, newItem.id)
     const oldIndexLength = ppmStorage.datastore.index.length
     expect(oldItem).not.toEqual(newItem)
@@ -279,7 +267,7 @@ describe('KVStorage', () => {
   })
 
   it('[store] should store the minimal item', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
 
@@ -289,7 +277,7 @@ describe('KVStorage', () => {
       identifier: 'unit test'
     }
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const oldIndexLength = ppmStorage.datastore.index.length
     await store.store(newItem)
     const storageData = ppmStorage.datastore
@@ -305,13 +293,13 @@ describe('KVStorage', () => {
   // ---------------------------------------------------------------: delete
 
   it('[delete] should delete item', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
 
     const deleteId = '00000000-0000-4000-8000-000000000001'
 
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     const oldIndexLength = ppmStorage.datastore.index.length
     await store.delete(deleteId)
     const storageData = ppmStorage.datastore
@@ -322,13 +310,13 @@ describe('KVStorage', () => {
   })
 
   it('[delete] should throw an error on KV error', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_delete: () => {
         return Promise.reject(new Error('Error!'))
       }
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.delete('00000000-0000-4000-8000-000000000001')
@@ -338,10 +326,10 @@ describe('KVStorage', () => {
   })
 
   it('[delete] should throw an error on missing id', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.delete('')
@@ -351,10 +339,10 @@ describe('KVStorage', () => {
   })
 
   it('[delete] should throw an error on non-existent id', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.delete('00000000-0000-4000-8000-00000000000F')
@@ -364,13 +352,13 @@ describe('KVStorage', () => {
   })
 
   it('[delete] should throw an error on KV error (index update)', async () => {
-    const ppmStorage = createGlobalPpmStorageKV({
+    ppmStorage.reset({
       data_file: '../data/storage.data.default.json',
       call_put: () => {
         return Promise.reject(new Error('Error!'))
       }
     })
-    const store = new KVStore()
+    const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
       await store.delete('00000000-0000-4000-8000-000000000001')

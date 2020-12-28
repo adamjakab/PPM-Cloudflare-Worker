@@ -1,21 +1,25 @@
-/* tslint:disable:no-console */
-import * as _ from 'lodash'
-import {
-  v4 as generateUUIDv4,
-  validate as uuidValidate,
-  version as uuidVersion
-} from 'uuid'
-import {
-  Repository
-} from '../../../src/index'
+import { setupTestEnvironment } from '../../helper/test.app.setup'
 
 /**
  * @group unit/repository
+ * @group _incomplete
  */
 describe('Repository', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
+  beforeEach(() => {
+    return new Promise<void>((resolve, reject) => {
+      setupTestEnvironment().then((envData) => {
+        appIndex = envData.appIndex
+        ppmConfig = envData.ppmConfig
+        ppmStorage = envData.ppmStorage
+        resolve()
+      })
+    })
+  })
+
   it('should not be possible to instantiate', () => {
     expect(() => {
-      const repo = new Repository()
+      const repo = new appIndex.Repository()
     }).toThrow(/Repository class cannot be instantiated/)
   })
 
