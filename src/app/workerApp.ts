@@ -1,7 +1,7 @@
 import {
   RootController,
+  CardController,
   Card,
-  CardRoutingTable,
   EntityManager,
   KVStore,
   RestApiWorker,
@@ -57,9 +57,18 @@ export class CloudflareWorkerApp {
     EntityManager.registerEntities([Card])
   }
 
+  /**
+   * @todo: implement decorator based routing
+   * @private
+   */
   private setupRoutes () {
     const rootController = new RootController()
     this.restApiWorker.register('/', 'GET', rootController.list)
-    this.restApiWorker.useRoutingTable('/cards', CardRoutingTable)
+    const cardController = new CardController()
+    this.restApiWorker.register('/cards/', 'GET', cardController.list)
+    this.restApiWorker.register('/cards/:id', 'GET', cardController.getOne)
+    this.restApiWorker.register('/cards/', 'POST', cardController.create)
+    this.restApiWorker.register('/cards/:id', 'PUT', cardController.update)
+    this.restApiWorker.register('/cards/:id', 'DELETE', cardController.delete)
   }
 }

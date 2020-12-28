@@ -41,9 +41,6 @@ import { Controller } from './controller/controller'
 import { RootController } from './controller/root'
 import { CardController } from './controller/card'
 
-// Routing
-import { CardRoutingTable } from './router/card'
-
 // Application
 import { AppConfiguration } from './app/configuration'
 import { CloudflareWorkerApp } from './app/workerApp'
@@ -61,7 +58,6 @@ export {
   Controller, RootController, CardController,
   Entity, Card,
   Repository, CardRepository,
-  CardRoutingTable,
   EntityManager,
   KVStore,
   RestApiWorker,
