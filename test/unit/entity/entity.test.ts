@@ -1,4 +1,4 @@
-/* tslint:disable:no-console */
+import { setupTestEnvironment } from '../../helper/test.app.setup'
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
 /*
 import {
@@ -7,7 +7,6 @@ import {
   Repository
 } from '../../../src/index'
  */
-import { setupTestEnvironment } from '../../helper/test.app.setup'
 import * as _ from 'lodash'
 
 /*
@@ -21,7 +20,7 @@ const getTestEntity = () => {
 
 /**
  * @group unit/entity
- * @group incomplete
+ * @group _incomplete
  */
 describe('Entity', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
@@ -35,7 +34,6 @@ describe('Entity', () => {
       })
     })
   })
-
 
   it('should not be possible to instantiate directly', () => {
     expect(() => {

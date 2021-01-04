@@ -4,9 +4,11 @@ import { createRoute as createTypedRoute } from 'typed-routes'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group ___incomplete
+ * This is just a temporary test file (can be eliminated)
+ *
+ * @group _incomplete
  */
-describe('Simple Test', () => {
+describe('Temporary Test', () => {
   it('should match root path', () => {
     let dynamicRoute = createTypedRoute()
     dynamicRoute = dynamicRoute.extend('')
