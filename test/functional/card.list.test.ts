@@ -16,7 +16,7 @@ describe('Cards List', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
     return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
+      setupTestEnvironment(false).then((envData) => {
         appIndex = envData.appIndex
         ppmConfig = envData.ppmConfig
         ppmStorage = envData.ppmStorage

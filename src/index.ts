@@ -45,12 +45,10 @@ import { CardController } from './controller/card'
 import { AppConfiguration } from './app/configuration'
 import { CloudflareWorkerApp } from './app/workerApp'
 
-// Declare self
-declare let self: CloudflareWorkerGlobalScope
-
-// @todo: only create the app instance but do not do anything else - allow export to happen first
+// Create the application
 const app = new CloudflareWorkerApp()
 
+// Export all
 export {
   app,
   _, InstanceCreator, Utils,
@@ -69,12 +67,13 @@ export {
   EntityDecorator
 }
 
-// @todo: init app only after all exports are available
-app.initialize().then(() => {
-  Platform.log('Registering listener...')
-  self.addEventListener('fetch', (fetchEvent: FetchEvent) => {
-    fetchEvent.respondWith(app.handle(fetchEvent))
-  })
-}).catch(e => {
-  console.error('Failed to register listener!', e)
+// Configure the application
+app.configure()
+
+// Declare self
+declare let self: CloudflareWorkerGlobalScope
+
+// Register the listener
+self.addEventListener('fetch', (fetchEvent: FetchEvent) => {
+  fetchEvent.respondWith(app.handle(fetchEvent))
 })

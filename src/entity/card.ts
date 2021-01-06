@@ -5,6 +5,7 @@ import {
   Entity
 } from '../index'
 
+// @todo: At the moment it is possible to create a card without a "name" - throw an error
 @EnhancedEntity('cards', CardRepository)
 export class Card extends Entity {
   private attributeList = ['name', 'type', 'identifier', 'text']
@@ -74,6 +75,9 @@ export class Card extends Entity {
 
   /**
    * Map data to the entity
+   * @todo: Throw an error if data is empty
+   * @todo: Throw an error on in-existent attribute found in data
+   *
    * @param data    The data object
    * @param reset   True is the entity is being constructed so id and dateCreated are added to the entity
    */

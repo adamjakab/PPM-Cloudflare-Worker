@@ -16,7 +16,7 @@ describe('Root path', () => {
   it('should provide app info', async () => {
     const expectedInfo = {
       name: 'cloudflare-ppm-worker',
-      version: '0.0.2'
+      version: '0.0.3'
     }
 
     const request = makeCloudflareWorkerRequest('/', {

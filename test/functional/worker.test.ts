@@ -21,10 +21,6 @@ describe('WorkerApp', () => {
     })
   })
 
-  it('should be initialized', async () => {
-    expect(appIndex.app.setupComplete).toBeTruthy()
-  })
-
   it('should have a listener', async () => {
     expect(self.listeners.get('fetch')).toBeDefined()
   })

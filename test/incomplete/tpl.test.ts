@@ -6,7 +6,7 @@ declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group suite/block
- * @group incomplete
+ * @group _incomplete
  */
 describe('Test Template', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any

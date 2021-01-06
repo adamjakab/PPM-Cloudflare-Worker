@@ -10,39 +10,39 @@ import {
 } from '../index'
 
 export class CloudflareWorkerApp {
-  // @fixme: we don't need this anymore
-  private _setupComplete: boolean
   private _restApiWorker: RestApiWorker
-  private _appConfig: AppConfiguration
-  private _entityManager: EntityManager
+  private readonly _appConfig: AppConfiguration
+  private readonly _entityManager: EntityManager
 
   public constructor () {
-    this._setupComplete = false
+    this._restApiWorker = new RestApiWorker()
+    this._appConfig = new AppConfiguration()
+    this._entityManager = new EntityManager()
   }
 
-  public initialize (): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this._restApiWorker = new RestApiWorker()
-      this._appConfig = new AppConfiguration()
-      this._entityManager = new EntityManager()
-      return this.initializeAppConfiguration().then(() => {
-        this.setupEntityManager()
-        this.setupRoutes()
-        this._setupComplete = true
-        Platform.log('App initialized with config: ', this._appConfig.getAppConfig())
-        resolve()
+  public configure () {
+    this._appConfig.mergeProjectConfigOverrides()
+    this.setupEntityManager()
+    this.setupRoutes()
+    Platform.log('App initialized with config: ', this._appConfig.getAppConfig())
+  }
+
+  /**
+   * Handles the incoming request
+   *
+   * Note: Since it is only possible to call async methods from inside the event listener call (i.e.: here),
+   * the call to merge the configuration options from the KV storage must be called from this method
+   */
+  public async handle (fetchEvent: FetchEvent): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this._appConfig.mergeKVStorageOverrides().then(() => {
+        return this._restApiWorker.handle(fetchEvent)
+      }).then((response) => {
+        resolve(response)
+      }).catch((e) => {
+        reject(e)
       })
     })
-  }
-
-  public handle (fetchEvent: FetchEvent) {
-    return this._restApiWorker.handle(fetchEvent)
-  }
-
-  // @fixme: move this to AppConfiguration
-  private async initializeAppConfiguration () {
-    this._appConfig.mergeProjectConfigOverrides()
-    await this._appConfig.mergeKVStorageOverrides()
   }
 
   private setupEntityManager () {
@@ -51,10 +51,6 @@ export class CloudflareWorkerApp {
 
     // Register Entities
     this._entityManager.registerEntities([Card])
-  }
-
-  public get setupComplete (): boolean {
-    return this._setupComplete
   }
 
   public get entityManager (): EntityManager {
