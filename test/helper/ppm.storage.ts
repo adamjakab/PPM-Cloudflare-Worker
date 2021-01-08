@@ -1,4 +1,5 @@
 import { CloudflareWorkerKVOptions } from 'types-cloudflare-worker'
+import { getRandomKVStoreData } from './test.helper'
 import _ from 'lodash'
 
 /**
@@ -31,7 +32,11 @@ export class PpmStorage {
     let storageData = {}
     if (_.has(cfg, 'data_file')) {
       storageData = require(_.get(cfg, 'data_file'))
+    } else {
+      // @todo: get random data from test helper
+      storageData = getRandomKVStoreData(5)
     }
+
     // Pass in a custom callback for 'get'
     if (_.has(cfg, 'call_get')) {
       this.get = _.get(cfg, 'call_get')

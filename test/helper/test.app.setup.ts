@@ -23,7 +23,7 @@ export async function setupTestEnvironment (log_to_console = false):Promise<any>
     })
 
     const ppmStorage = createGlobalPpmStorageKV({
-      data_file: '../data/storage.data.default.json'
+      /* data_file: '../data/storage.data.default.json' */
     })
 
     // Clear all module imports.

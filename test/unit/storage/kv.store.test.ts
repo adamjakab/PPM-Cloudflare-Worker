@@ -1,20 +1,9 @@
 import { setupTestEnvironment } from '../../helper/test.app.setup'
-import { v4 as generateUUIDv4 } from 'uuid'
 import * as _ from 'lodash'
-
-// @todo: move to helper
-const defaultDataCreator = (elements: any[]) => {
-  const answer = {}
-  _.each(elements, element => {
-    const id = generateUUIDv4()
-    _.set(answer, id, _.extend({ id: id }, element))
-  })
-  return answer
-}
 
 /**
  * @group unit/storage
- * @group _incomplete
+ * @group incomplete
  */
 describe('KVStorage', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
@@ -32,15 +21,9 @@ describe('KVStorage', () => {
   // ---------------------------------------------------------------: fetchIndex
 
   it('[fetchIndex] should return the storage index', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.default.json'
-    })
     const storageData = ppmStorage.datastore
-
-    // const KVStore = appIndex.KVStore
     const store = new appIndex.KVStore()
     const fetchedIndex = await store.fetchIndex()
-
     expect(fetchedIndex).toBeInstanceOf(Array)
     expect(fetchedIndex).toEqual(_.get(storageData, 'index'))
   })
@@ -49,17 +32,14 @@ describe('KVStorage', () => {
     ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
-
     const store = new appIndex.KVStore()
     const fetchedIndex = await store.fetchIndex()
-
     expect(fetchedIndex).toBeInstanceOf(Array)
     expect(fetchedIndex).toEqual([])
   })
 
   it('[fetchIndex] should throw an error on KV error', async () => {
     ppmStorage.reset({
-      data_file: '../data/storage.data.default.json',
       call_get: () => {
         return Promise.reject(new Error('Error!'))
       }
@@ -74,9 +54,6 @@ describe('KVStorage', () => {
   })
 
   it('[fetchIndex] should use in-memory index once loaded from KV', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.default.json'
-    })
     const storageData = ppmStorage.datastore
     const store = new appIndex.KVStore()
     const fetchedIndex1 = await store.fetchIndex()
@@ -107,22 +84,18 @@ describe('KVStorage', () => {
       data_file: '../data/storage.data.default.json'
     })
     const fetchId = '00000000-0000-4000-8000-00000000000F'
-    const storageData = ppmStorage.datastore
     const store = new appIndex.KVStore()
-
     expect.assertions(1)
     try {
       await store.fetchOne(fetchId)
     } catch (e) {
       expect(e.message).toBe('Requested id was not found!')
     }
-
     // console.log(fetchedItems)
   })
 
   it('[fetchOne] should throw an error on KV error', async () => {
     ppmStorage.reset({
-      data_file: '../data/storage.data.default.json',
       call_get: () => {
         return Promise.reject(new Error('Error!'))
       }
@@ -139,10 +112,7 @@ describe('KVStorage', () => {
   // ---------------------------------------------------------------: store
 
   it('[store] should not store item if "id" is missing.', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.empty.json'
-    })
-
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
     const newItem = {
       dateCreated: '2020-11-20T22:34:59.274Z',
       dateModified: '2020-11-20T22:34:59.274Z',
@@ -153,20 +123,18 @@ describe('KVStorage', () => {
     }
 
     const store = new appIndex.KVStore()
-    expect.assertions(2)
+    expect.assertions(3)
     try {
       await store.store(newItem)
     } catch (e) {
       expect(e.message).toBe('Storage cannot add to index - missing "id"!')
     }
-    expect(ppmStorage.datastore).toEqual({})
+    expect(ppmStorage.timesCalledPut).toEqual(0)
+    expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 
   it('[store] should not store item if "type" is missing.', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.empty.json'
-    })
-
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
     const newItem = {
       id: '00000000-0000-4000-8000-000000000001',
       dateCreated: '2020-11-20T22:34:59.274Z',
@@ -177,20 +145,18 @@ describe('KVStorage', () => {
     }
 
     const store = new appIndex.KVStore()
-    expect.assertions(2)
+    expect.assertions(3)
     try {
       await store.store(newItem)
     } catch (e) {
       expect(e.message).toBe('Storage cannot add to index - missing "type"!')
     }
-    expect(ppmStorage.datastore).toEqual({})
+    expect(ppmStorage.timesCalledPut).toEqual(0)
+    expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 
   it('[store] should not store item if "identifier" is missing.', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.empty.json'
-    })
-
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
     const newItem = {
       id: '00000000-0000-4000-8000-000000000001',
       dateCreated: '2020-11-20T22:34:59.274Z',
@@ -201,16 +167,19 @@ describe('KVStorage', () => {
     }
 
     const store = new appIndex.KVStore()
-    expect.assertions(2)
+    expect.assertions(3)
     try {
       await store.store(newItem)
     } catch (e) {
       expect(e.message).toBe('Storage cannot add to index - missing "identifier"!')
     }
-    expect(ppmStorage.datastore).toEqual({})
+    expect(ppmStorage.timesCalledPut).toEqual(0)
+    expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 
-  it('[store] should store a new item', async () => {
+  // @todo: add test for: '[store] should not store item if "name" is missing.'
+
+  it('[store] should store a new item in an empty storage', async () => {
     ppmStorage.reset({
       data_file: '../data/storage.data.empty.json'
     })
@@ -232,6 +201,29 @@ describe('KVStorage', () => {
     expect(createdItem).toBeDefined()
     expect(createdItem).toEqual(newItem)
     expect(storageData.index).toHaveLength(1)
+    expect(_.find(storageData.index, { id: newItem.id })).toBeDefined()
+    // console.log(storageData)
+  })
+
+  it('[store] should store a new item in a non-empty storage', async () => {
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
+    const newItem = {
+      id: '00000000-0000-4000-8000-000000000001',
+      dateCreated: '2020-11-20T22:34:59.274Z',
+      dateModified: '2020-11-20T22:34:59.274Z',
+      name: 'Test-1',
+      type: 'memo',
+      identifier: 'unit test',
+      text: 'Adding a new item.'
+    }
+
+    const store = new appIndex.KVStore()
+    await store.store(newItem)
+    const storageData = ppmStorage.datastore
+    const createdItem = _.get(storageData, newItem.id)
+    expect(createdItem).toBeDefined()
+    expect(createdItem).toEqual(newItem)
+    expect(storageData.index).toHaveLength(initialDatastore.index.length + 1)
     expect(_.find(storageData.index, { id: newItem.id })).toBeDefined()
     // console.log(storageData)
   })
@@ -266,6 +258,7 @@ describe('KVStorage', () => {
     // console.log(storageData)
   })
 
+  // @todo: Add 'name' to minimal item
   it('[store] should store the minimal item', async () => {
     ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
@@ -317,18 +310,16 @@ describe('KVStorage', () => {
       }
     })
     const store = new appIndex.KVStore()
-    expect.assertions(1)
+    expect.assertions(2)
     try {
       await store.delete('00000000-0000-4000-8000-000000000001')
     } catch (e) {
       expect(e.message).toBe('Error!')
     }
+    expect(ppmStorage.timesCalledDel).toEqual(0)
   })
 
   it('[delete] should throw an error on missing id', async () => {
-    ppmStorage.reset({
-      data_file: '../data/storage.data.default.json'
-    })
     const store = new appIndex.KVStore()
     expect.assertions(1)
     try {
@@ -353,17 +344,21 @@ describe('KVStorage', () => {
 
   it('[delete] should throw an error on KV error (index update)', async () => {
     ppmStorage.reset({
-      data_file: '../data/storage.data.default.json',
       call_put: () => {
         return Promise.reject(new Error('Error!'))
       }
     })
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
+    const id = _.get(_.head(ppmStorage.datastore.index), 'id')
     const store = new appIndex.KVStore()
-    expect.assertions(1)
+    expect.assertions(2)
     try {
-      await store.delete('00000000-0000-4000-8000-000000000001')
+      await store.delete(id)
     } catch (e) {
       expect(e.message).toBe('Error!')
     }
+    expect(ppmStorage.timesCalledDel).toEqual(0)
+    // @todo: if index storage fails the items has already been deleted from storage so there will not be a match
+    // expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 })
