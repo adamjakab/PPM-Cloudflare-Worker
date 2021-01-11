@@ -19,16 +19,27 @@ describe('Card(Entity)', () => {
   })
 
   it('should be instance of Entity', () => {
-    const card = new appIndex.Card({})
+    const data = {
+      name: 'card-1',
+      type: 'note',
+      identifier: 'own',
+      text: 'Remember to brush your teeth.'
+    }
+    const card = new appIndex.Card(data)
     expect(card).toBeInstanceOf(appIndex.Entity)
   })
 
   it('should have default attributes', () => {
-    const card = new appIndex.Card({})
-    const attrs = ['name', 'type', 'identifier', 'text']
+    const data = {
+      name: 'card-1',
+      type: 'note',
+      identifier: 'own',
+      text: 'Remember to brush your teeth.'
+    }
+    const card = new appIndex.Card(data)
+    const attrs = _.keys(data)
     _.each(attrs, attr => {
       expect(card).toHaveProperty(attr)
-      expect(_.get(card, attr)).toBeUndefined()
     })
   })
 

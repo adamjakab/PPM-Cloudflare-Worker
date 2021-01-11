@@ -10,6 +10,7 @@ import {
 } from '../index'
 
 export class Entity {
+  protected entityAttributeList = ['id', 'dateCreated', 'dateModified']
   private _id: string
   private _dateCreated: Date
   private _dateModified: Date

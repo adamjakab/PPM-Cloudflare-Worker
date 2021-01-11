@@ -8,7 +8,7 @@ import {
 // @todo: At the moment it is possible to create a card without a "name" - throw an error
 @EnhancedEntity('cards', CardRepository)
 export class Card extends Entity {
-  private attributeList = ['name', 'type', 'identifier', 'text']
+  protected cardAttributeList = ['name', 'type', 'identifier', 'text']
   private _name: string;
   private _type: string;
   private _identifier: string;
@@ -75,7 +75,6 @@ export class Card extends Entity {
 
   /**
    * Map data to the entity
-   * @todo: Throw an error if data is empty
    * @todo: Throw an error on in-existent attribute found in data
    *
    * @param data    The data object
@@ -83,7 +82,17 @@ export class Card extends Entity {
    */
   public mapDataOnEntity (data: any, reset = false) {
     data = _.isObject(data) ? data : {}
-    _.each(this.attributeList, (attr) => {
+    if (reset && !_.includes(_.keys(data), 'name')) {
+      throw new Error('Cannot create Card entity without a name!')
+    }
+    if (reset && !_.includes(_.keys(data), 'type')) {
+      throw new Error('Cannot create Card entity without a type!')
+    }
+    if (reset && !_.includes(_.keys(data), 'identifier')) {
+      throw new Error('Cannot create Card entity without an identifier!')
+    }
+
+    _.each(this.cardAttributeList, (attr) => {
       if (_.has(data, attr)) {
         _.set(this, attr, _.get(data, attr))
         // Platform.log('Setting attribute: ' + attr)

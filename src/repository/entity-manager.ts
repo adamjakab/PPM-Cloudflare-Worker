@@ -72,7 +72,12 @@ export class EntityManager {
     if (!_.includes(this._knownEntities, entity)) {
       this._knownEntities.push(entity)
       const ic = new InstanceCreator(entity)
-      const e = ic.getNewInstance({ id: this.fakeUuidV4 })
+      const e = ic.getNewInstance({
+        id: this.fakeUuidV4,
+        name: 'fake',
+        type: 'fake',
+        identifier: 'fake'
+      })
     }
   }
 
