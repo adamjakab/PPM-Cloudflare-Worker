@@ -73,7 +73,7 @@ export class KVStore {
   public async store (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       const PPMStorageKV = Globals.getPPMStorageKV()
-      this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
+      this.checkElement(element, ['id', 'name', 'type', 'identifier']).then(() => {
         return PPMStorageKV.put(element.id, JSON.stringify(element))
       }).then(() => {
         return this.addToIndex(element)
@@ -106,12 +106,13 @@ export class KVStore {
   // @todo: also add "name" to index so we can search for an item by name
   protected async addToIndex (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.checkElement(element, ['id', 'type', 'identifier']).then(() => {
+      this.checkElement(element, ['id', 'name', 'type', 'identifier']).then(() => {
         return this.fetchIndex()
       }).then(() => {
         // Update index data
         const indexData = {
           id: element.id,
+          name: element.name,
           type: element.type,
           identifier: element.identifier
         }

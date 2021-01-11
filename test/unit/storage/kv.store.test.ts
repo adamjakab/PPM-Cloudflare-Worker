@@ -258,7 +258,6 @@ describe('KVStorage', () => {
     // console.log(storageData)
   })
 
-  // @todo: Add 'name' to minimal item
   it('[store] should store the minimal item', async () => {
     ppmStorage.reset({
       data_file: '../data/storage.data.default.json'
@@ -266,6 +265,7 @@ describe('KVStorage', () => {
 
     const newItem = {
       id: '00000000-0000-4000-8000-00000000000A',
+      name: 'minimal',
       type: 'memo',
       identifier: 'unit test'
     }

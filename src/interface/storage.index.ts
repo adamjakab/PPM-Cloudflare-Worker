@@ -1,5 +1,6 @@
 export interface StorageIndexItem {
-  id: string;
-  type: string;
-  identifier: any;
+  id: string
+  name: string
+  type: string
+  identifier: any
 }

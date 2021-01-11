@@ -2,11 +2,13 @@
   "index": [
     {
       "id": "00000000-0000-4000-8000-00000000000A",
+      "name": "Note-1",
       "type": "note",
       "identifier": "jakab"
     },
     {
       "id": "00000000-0000-4000-8000-00000000000B",
+      "name": "Note-2",
       "type": "passcard",
       "identifier": "jpro"
     }

@@ -5,7 +5,6 @@ import {
   Entity
 } from '../index'
 
-// @todo: At the moment it is possible to create a card without a "name" - throw an error
 @EnhancedEntity('cards', CardRepository)
 export class Card extends Entity {
   protected cardAttributeList = ['name', 'type', 'identifier', 'text']
