@@ -41,23 +41,23 @@ export class RestApiWorker {
   }
 
   /**
-   * @todo: this should use the RawRouteItem as parameter
+   * Registers a route
+   *
    * @param path
    * @param method
    * @param callback
    */
-  public register (path: string, method: string, callback: any) {
-    if (!this.validMethods.includes(method)) {
-      Platform.logError('Cannot register invalid method: ' + method + '!')
+  public register (route: RawRouteItem) {
+    if (!this.validMethods.includes(route.method)) {
+      Platform.logError('Cannot register invalid method: ' + route.method + '!')
       return
     }
 
-    // Platform.log('PATH: ' + path);
     let dynamicRoute = createTypedRoute()
-    if (path === '/') {
+    if (route.path === '/') {
       dynamicRoute = dynamicRoute.extend('')
     } else {
-      const pathParts = path.split('/')
+      const pathParts = route.path.split('/')
       _.each(pathParts, (pathPart: string) => {
         if (!_.isEmpty(pathPart)) {
           if (pathPart.startsWith(':')) {
@@ -68,14 +68,13 @@ export class RestApiWorker {
           }
         }
       })
-      // Platform.log('>PATH(TS): ' + dynamicRoute.toString());
     }
 
     const routeElement: RouteElementLayout = {
-      path: path,
+      path: route.path,
       dynamicRoute: dynamicRoute,
-      method: method,
-      callback: callback
+      method: route.method,
+      callback: route.callback
     }
 
     Platform.log('Registered route: ' + JSON.stringify(routeElement))

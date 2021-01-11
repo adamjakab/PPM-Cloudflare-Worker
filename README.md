@@ -34,7 +34,7 @@ Roadmap
 Notes:
 -------
 Consider adding these:
-- "url-parse": "^1.4.7",
+- "url-parse": "^1.4.7", : in rest-api route registration/matching
 - "on-change": "^2.2.0", 
 
 Entity: insead of _entityChanged() method on the Entity it would be better to look into something more structured: https://github.com/sindresorhus/on-change

@@ -50,7 +50,6 @@
     /* Parse in strict mode and emit "use strict" for each source file. */
 
     /* Additional Checks */
-    /* @todo: set it to true after devel */
     "noUnusedLocals": false,
 
     /* Report errors on unused locals. */

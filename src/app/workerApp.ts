@@ -67,13 +67,16 @@ export class CloudflareWorkerApp {
    * @private
    */
   private setupRoutes () {
+    // Root
     const rootController = new RootController()
-    this._restApiWorker.register('/', 'GET', rootController.list)
+    this._restApiWorker.register({ path: '/', method: 'GET', callback: rootController.list })
+
+    // Card
     const cardController = new CardController()
-    this._restApiWorker.register('/cards/', 'GET', cardController.list)
-    this._restApiWorker.register('/cards/:id', 'GET', cardController.getOne)
-    this._restApiWorker.register('/cards/', 'POST', cardController.create)
-    this._restApiWorker.register('/cards/:id', 'PUT', cardController.update)
-    this._restApiWorker.register('/cards/:id', 'DELETE', cardController.delete)
+    this._restApiWorker.register({ path: '/cards/', method: 'GET', callback: cardController.list })
+    this._restApiWorker.register({ path: '/cards/:id', method: 'GET', callback: cardController.getOne })
+    this._restApiWorker.register({ path: '/cards/', method: 'POST', callback: cardController.create })
+    this._restApiWorker.register({ path: '/cards/:id', method: 'PUT', callback: cardController.update })
+    this._restApiWorker.register({ path: '/cards/:id', method: 'DELETE', callback: cardController.delete })
   }
 }
