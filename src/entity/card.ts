@@ -75,7 +75,6 @@ export class Card extends Entity {
 
   /**
    * Map data to the entity
-   * @todo: Throw an error on in-existent attribute found in data
    *
    * @param data    The data object
    * @param reset   True is the entity is being constructed so id and dateCreated are added to the entity
@@ -90,6 +89,11 @@ export class Card extends Entity {
     }
     if (reset && !_.includes(_.keys(data), 'identifier')) {
       throw new Error('Cannot create Card entity without an identifier!')
+    }
+
+    if (!_.isEmpty(_.difference(_.keys(data), _.concat(this.entityAttributeList, this.cardAttributeList)))) {
+      const diff = _.difference(_.keys(data), _.concat(this.entityAttributeList, this.cardAttributeList))
+      throw new Error('Unknown attribute when creating Card entity!' + JSON.stringify(diff))
     }
 
     _.each(this.cardAttributeList, (attr) => {

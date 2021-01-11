@@ -12,6 +12,8 @@ import findIndex from 'lodash/findIndex'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import includes from 'lodash/includes'
+import difference from 'lodash/difference'
+import concat from 'lodash/concat'
 import isArray from 'lodash/isArray'
 import isDate from 'lodash/isDate'
 import isEmpty from 'lodash/isEmpty'
@@ -35,5 +37,5 @@ import values from 'lodash/values'
 export {
   head, keys, values, has, get, set, unset, extend, merge, keyBy, pullAt,
   isError, isFunction, isObject, isArray, isNumber, isDate, isEmpty, isUndefined, isNull,
-  join, map, find, findIndex, includes, each
+  join, map, find, findIndex, includes, each, difference, concat
 }
