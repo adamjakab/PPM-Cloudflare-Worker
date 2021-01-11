@@ -22,7 +22,7 @@ const defaultData = {
 
 /**
  * @group unit/repository
- * @group incomplete
+ * @group _incomplete
  */
 describe('Card Repository', () => {
   let index: any

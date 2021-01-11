@@ -119,7 +119,7 @@ describe('Card Get', () => {
     expect(reply).toBeInstanceOf(Array)
     expect(reply).toEqual([{
       error: true,
-      message: 'Error: Requested id was not found!'
+      message: 'Error: Bad Data! Requested id is present in the index but no item by that id was not found!'
     }])
 
     // console.log(reply)

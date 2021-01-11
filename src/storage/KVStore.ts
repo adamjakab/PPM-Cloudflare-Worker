@@ -55,8 +55,7 @@ export class KVStore {
         return PPMStorageKV.get(indexData.id, 'json')
       }).then((recordData:any) => {
         if (_.isNull(recordData)) {
-          // @todo: it should be removed from the index
-          throw new Error('Requested id was not found!')
+          throw new Error('Bad Data! Requested id is present in the index but no item by that id was not found!')
         }
         resolve(recordData)
       }).catch((e) => {
