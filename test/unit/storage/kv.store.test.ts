@@ -3,7 +3,7 @@ import * as _ from 'lodash'
 
 /**
  * @group unit/storage
- * @group incomplete
+ * @group _incomplete
  */
 describe('KVStorage', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any

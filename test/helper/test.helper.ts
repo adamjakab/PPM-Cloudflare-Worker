@@ -35,6 +35,7 @@ function getKVStoreDataStructure (items: any[]) {
     _.set(answer, item.id, item)
     indexItem = {
       id: item.id,
+      name: item.name,
       type: _.get(item, 'type', null),
       identifier: _.get(item, 'identifier', null)
     }

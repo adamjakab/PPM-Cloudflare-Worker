@@ -5,7 +5,7 @@ import {
   Entity
 } from '../index'
 
-@EnhancedEntity('cards', CardRepository)
+@EnhancedEntity(CardRepository)
 export class Card extends Entity {
   protected cardAttributeList = ['name', 'type', 'identifier', 'text']
   private _name: string;

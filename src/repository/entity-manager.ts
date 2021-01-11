@@ -16,6 +16,7 @@ export class EntityManager {
   private fakeUuidV4 = '00000000-0000-4000-8000-000000000000'
 
   private _storage: KVStore;
+
   private readonly _knownEntities: Record<string, any>[];
 
   constructor () {
@@ -26,7 +27,7 @@ export class EntityManager {
     return this._storage
   }
 
-  public async fetchIndex (table: string) {
+  public async fetchIndex () {
     try {
       return await this._storage.fetchIndex()
     } catch (e) {
@@ -35,7 +36,7 @@ export class EntityManager {
     }
   }
 
-  public async fetchOne (table: string, id: string) {
+  public async fetchOne (id: string) {
     try {
       return await this._storage.fetchOne(id)
     } catch (e) {
@@ -44,7 +45,7 @@ export class EntityManager {
     }
   }
 
-  public async store (table: string, entity: any) {
+  public async store (entity: any) {
     try {
       return await this._storage.store(entity)
     } catch (e) {
@@ -53,7 +54,7 @@ export class EntityManager {
     }
   }
 
-  public async delete (table: string, id: string) {
+  public async delete (id: string) {
     try {
       return await this._storage.delete(id)
     } catch (e) {

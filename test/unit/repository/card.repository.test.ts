@@ -22,7 +22,7 @@ const defaultData = {
 
 /**
  * @group unit/repository
- * @group _incomplete
+ * @group incomplete
  */
 describe('Card Repository', () => {
   let index: any
@@ -51,8 +51,11 @@ describe('Card Repository', () => {
     index = jest.requireActual('../../../src/index')
   })
 
-  it('should have a storage table name', () => {
+  it('should have a storage table name', async () => {
     const repo: CardRepository = new index.CardRepository()
-    expect(repo.storageTableName).toEqual('cards')
+    const repoIndex = await repo.getIndex()
+    expect(repoIndex).toBeInstanceOf(Array)
+    expect(repoIndex).toHaveLength(5)
+    console.log(repoIndex)
   })
 })
