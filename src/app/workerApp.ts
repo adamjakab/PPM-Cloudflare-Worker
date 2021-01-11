@@ -62,7 +62,8 @@ export class CloudflareWorkerApp {
   }
 
   /**
-   * @todo: implement decorator based routing
+   * Set up application routes
+   *
    * @private
    */
   private setupRoutes () {

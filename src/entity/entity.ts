@@ -70,7 +70,6 @@ export class Entity {
     return Globals.getMetadataStorage().getMetadataElementFor('entity', this.constructor.name, name)
   }
 
-  // @todo: Better to look into something more structured: https://github.com/sindresorhus/on-change
   protected _entityChanged () {
     this._dateModified = new Date()
   }

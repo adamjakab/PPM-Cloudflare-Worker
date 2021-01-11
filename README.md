@@ -18,25 +18,36 @@ Documentation
 -------------
 [Read the docs here](https://adamjakab.github.io/PPM-Cloudflare-Worker/)
 
+
 How to contribute
 -----------------
 (Add guidelines here) - in the meanwhile use the [Discussions](/discussions) feature.
 
 
-Notes
------
-Roadmap:
+Roadmap
+-------
 - authentication
 - First release
 - encrypted channel
 - CI
 
-
+Notes:
+-------
 Consider adding these:
 - "url-parse": "^1.4.7",
-- "on-change": "^2.2.0",
+- "on-change": "^2.2.0", 
+
+Entity: insead of _entityChanged() method on the Entity it would be better to look into something more structured: https://github.com/sindresorhus/on-change
+
+Routes: @todo: implement decorator based routing
 
 
+
+
+Developers:
+-----------
 Circular Reference Check:
+
 `node_modules/madge/bin/cli.js --circular --webpack-config ./webpack.config.dev.js --ts-config tsconfig.json ./src/index.ts`
+
 `node_modules/madge/bin/cli.js --circular --ts-config tsconfig.json --exclude "index\.ts" ./src/index.ts`

@@ -27,12 +27,11 @@ export function getPPMStorageKV (): CloudflareWorkerKV {
 /**
  * Gets metadata args storage from global scope
  * This part of the application will be moved to a separate repository / package: tinyOrm
- * @todo: rethink this
  */
 export function getMetadataStorage (): MetadataStorage {
   const globalScope = getGlobalVariable()
-  if (!globalScope.tinyOrmMetadataStorage) {
-    globalScope.tinyOrmMetadataStorage = new MetadataStorage()
+  if (!globalScope.PPMMetadataStorage) {
+    globalScope.PPMMetadataStorage = new MetadataStorage()
   }
-  return globalScope.tinyOrmMetadataStorage
+  return globalScope.PPMMetadataStorage
 }

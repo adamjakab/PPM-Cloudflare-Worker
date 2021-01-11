@@ -103,7 +103,6 @@ export class KVStore {
     })
   }
 
-  // @todo: also add "name" to index so we can search for an item by name
   protected async addToIndex (element: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.checkElement(element, ['id', 'name', 'type', 'identifier']).then(() => {
