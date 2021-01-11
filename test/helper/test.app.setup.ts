@@ -5,7 +5,6 @@ import { createGlobalPpmConfigKV } from './ppm.config'
 import { createGlobalPpmStorageKV } from './ppm.storage'
 
 // @fixme: there is no need for this function to be async or to return a promise
-// @todo: need to fix all test calls
 export async function setupTestEnvironment (log_to_console = false):Promise<any> {
   return new Promise<any>((resolve, reject) => {
     // Merge the Cloudflare Worker Environment into the global scope.

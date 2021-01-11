@@ -62,7 +62,7 @@ describe('Card Update', () => {
     _.each(_.keys(cardData), k => {
       expect(_.get(cardInStorage, k)).toEqual(_.get(cardData, k))
     })
-    // @todo: mod time must have been changed as well
+    // @todo: also check that _dateModified has changed as well
 
     // verify that the index is updated
     expect(storageData.index).toHaveLength(2)

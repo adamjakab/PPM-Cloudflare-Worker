@@ -33,7 +33,6 @@ export class PpmStorage {
     if (_.has(cfg, 'data_file')) {
       storageData = require(_.get(cfg, 'data_file'))
     } else {
-      // @todo: get random data from test helper
       storageData = getRandomKVStoreData(5)
     }
 

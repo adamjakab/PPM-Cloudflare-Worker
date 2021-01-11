@@ -133,6 +133,28 @@ describe('KVStorage', () => {
     expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 
+  it('[store] should not store item if "name" is missing.', async () => {
+    const initialDatastore = _.cloneDeep(ppmStorage.datastore)
+    const newItem = {
+      id: '00000000-0000-4000-8000-000000000001',
+      dateCreated: '2020-11-20T22:34:59.274Z',
+      dateModified: '2020-11-20T22:34:59.274Z',
+      type: 'memo',
+      identifier: 'unit test',
+      text: 'Adding a new item.'
+    }
+
+    const store = new appIndex.KVStore()
+    expect.assertions(3)
+    try {
+      await store.store(newItem)
+    } catch (e) {
+      expect(e.message).toBe('Storage cannot add to index - missing "name"!')
+    }
+    expect(ppmStorage.timesCalledPut).toEqual(0)
+    expect(ppmStorage.datastore).toEqual(initialDatastore)
+  })
+
   it('[store] should not store item if "type" is missing.', async () => {
     const initialDatastore = _.cloneDeep(ppmStorage.datastore)
     const newItem = {
@@ -176,8 +198,6 @@ describe('KVStorage', () => {
     expect(ppmStorage.timesCalledPut).toEqual(0)
     expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
-
-  // @todo: add test for: '[store] should not store item if "name" is missing.'
 
   it('[store] should store a new item in an empty storage', async () => {
     ppmStorage.reset({
@@ -358,7 +378,5 @@ describe('KVStorage', () => {
       expect(e.message).toBe('Error!')
     }
     expect(ppmStorage.timesCalledDel).toEqual(0)
-    // @todo: if index storage fails the items has already been deleted from storage so there will not be a match
-    // expect(ppmStorage.datastore).toEqual(initialDatastore)
   })
 })
