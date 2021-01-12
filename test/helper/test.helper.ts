@@ -1,6 +1,20 @@
 import * as _ from 'lodash'
 import { v4 as generateUUIDv4 } from 'uuid'
 
+/**
+ * TestEntity allows for testing the Entity class which cannot be instantiated directly
+ *
+ * @param appIndex
+ * @return Entity
+ */
+function getTestEntity (appIndex:any) {
+  class TestRepository extends appIndex.Repository {}
+  const EnhancedEntity = appIndex.EntityDecorator
+  @EnhancedEntity(TestRepository)
+  class TestEntity extends appIndex.Entity {}
+  return new TestEntity()
+}
+
 function getRandomKVStoreData (length: number) {
   const items = []
   let dateCreated, dateModified
@@ -61,5 +75,6 @@ function getRandomDate (from: Date, to: Date) {
 
 // Export
 export {
+  getTestEntity,
   getRandomKVStoreData, getKVStoreDataStructure, addRandomIdToItem
 }

@@ -1,22 +1,7 @@
 import { setupTestEnvironment } from '../../helper/test.app.setup'
+import { getTestEntity } from '../../helper/test.helper'
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
-/*
-import {
-  EntityDecorator as EnhancedEntity,
-  Entity,
-  Repository
-} from '../../../src/index'
- */
 import * as _ from 'lodash'
-
-/*
-const getTestEntity = () => {
-  class TestRepository extends Repository {}
-  @EnhancedEntity('testentity', TestRepository)
-  class TestEntity extends Entity {}
-  return new TestEntity()
-}
-*/
 
 /**
  * @group unit/entity
@@ -41,19 +26,31 @@ describe('Entity', () => {
     }).toThrow(/Entity class cannot be instantiated/)
   })
 
-  /*
-
   it('should initiate with creation and modification dates', () => {
-    const te = getTestEntity()
-    expect(te).toBeInstanceOf(Entity)
+    const te = getTestEntity(appIndex)
+    expect(te).toBeInstanceOf(appIndex.Entity)
     expect(te.id).toBeUndefined()
     expect(te.dateCreated).toBeInstanceOf(Date)
     expect(te.dateModified).toBeInstanceOf(Date)
     expect(te.dateCreated).toEqual(te.dateModified)
   })
 
+  it('should have its own repository', () => {
+    const te = getTestEntity(appIndex)
+    const repo = te.getRepository()
+    expect(repo).toBeDefined()
+    expect(repo).toBeInstanceOf(appIndex.Repository)
+  })
+
+  it('should allow access to its metadata elements', () => {
+    const te = getTestEntity(appIndex)
+    const repo = te.getMetadataElement('repository')
+    expect(repo).toBeDefined()
+    expect(repo).toBeInstanceOf(Function)
+  })
+
   it('should throw an error when changing id', () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     te.id = generateUUIDv4()
     expect.assertions(1)
     try {
@@ -64,7 +61,7 @@ describe('Entity', () => {
   })
 
   it('should throw an error when id is not a valid UUID', () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     expect.assertions(1)
     try {
       te.id = 'abc'
@@ -74,7 +71,7 @@ describe('Entity', () => {
   })
 
   it('should throw an error when id is not a valid UUIDv4', () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     expect.assertions(1)
     try {
       te.id = generateUUIDv1()
@@ -84,7 +81,7 @@ describe('Entity', () => {
   })
 
   it('should return default entity data', () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     const data = te.getEntityData()
     expect(data).toBeInstanceOf(Object)
     expect(data).toHaveProperty('id')
@@ -96,7 +93,7 @@ describe('Entity', () => {
   })
 
   it('should return modified entity data', () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     te.id = generateUUIDv4()
     const data = te.getEntityData()
     expect(data).toBeInstanceOf(Object)
@@ -109,7 +106,7 @@ describe('Entity', () => {
   })
 
   it('[mapDataOnEntity] should not generate new id', async () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     const entityDataBefore = te.getEntityData()
     const data = null
     // @note: modification date should change but if we do this too fast it will have the same date
@@ -122,7 +119,7 @@ describe('Entity', () => {
   })
 
   it('[mapDataOnEntity (reset)] should not do anything if a non-object is passed', async () => {
-    const te = getTestEntity()
+    const te = getTestEntity(appIndex)
     const entityDataBefore = te.getEntityData()
     expect(_.get(entityDataBefore, 'id')).toBeUndefined()
     // console.log(entity_data_before)
@@ -135,5 +132,4 @@ describe('Entity', () => {
     expect(entityDataAfter).not.toEqual(entityDataBefore)
     expect(_.get(entityDataAfter, 'id')).toBeDefined()
   })
-*/
 })
