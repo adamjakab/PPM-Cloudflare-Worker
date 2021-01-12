@@ -5,8 +5,8 @@ import * as _ from 'lodash'
 declare let self: CloudflareWorkerGlobalScope
 
 /**
- * @group suite/block
- * @group incomplete
+ * @group unit/util
+ * @group _incomplete
  */
 describe('Platform', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
