@@ -18,7 +18,7 @@ export const createGlobalPpmConfigKV = (cfg:any = {}): PpmConfig => {
 class PpmConfig {
   private _timesCalledGet: number
   private _timesCalledPut: number
-  private readonly config: any = {}
+  private config: any = {}
 
   public constructor (cfg:any = {}) {
     _.extend(this.config, cfg)

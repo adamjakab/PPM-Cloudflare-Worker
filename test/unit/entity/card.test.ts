@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 
 /**
  * @group unit/entity
- * @group incomplete
+ * @group _incomplete
  */
 describe('Card(Entity)', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any

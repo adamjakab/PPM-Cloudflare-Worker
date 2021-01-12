@@ -17,13 +17,10 @@ export async function setupTestEnvironment (log_to_console = false):Promise<any>
     Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
     const ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: log_to_console,
-      storage_to_use: 'kvstore'
+      log_to_console: log_to_console
     })
 
-    const ppmStorage = createGlobalPpmStorageKV({
-      /* data_file: '../data/storage.data.default.json' */
-    })
+    const ppmStorage = createGlobalPpmStorageKV({})
 
     // Clear all module imports.
     jest.resetModules()
