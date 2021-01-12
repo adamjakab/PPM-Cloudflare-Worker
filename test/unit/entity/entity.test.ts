@@ -1,4 +1,3 @@
-import exp from 'constants'
 import { setupTestEnvironment } from '../../helper/test.app.setup'
 import { getTestEntity } from '../../helper/test.helper'
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
@@ -45,11 +44,10 @@ describe('Entity', () => {
 
   it('should allow access to its metadata elements', () => {
     const te = getTestEntity(appIndex)
-    const repo = te.getMetadataElement("repository")
+    const repo = te.getMetadataElement('repository')
     expect(repo).toBeDefined()
     expect(repo).toBeInstanceOf(Function)
   })
-
 
   it('should throw an error when changing id', () => {
     const te = getTestEntity(appIndex)
