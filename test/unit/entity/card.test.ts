@@ -1,9 +1,10 @@
+import { v4 as generateUUIDv4 } from 'uuid'
 import { setupTestEnvironment } from '../../helper/test.app.setup'
 import * as _ from 'lodash'
 
 /**
  * @group unit/entity
- * @group _incomplete
+ * @group incomplete
  */
 describe('Card(Entity)', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
@@ -56,6 +57,60 @@ describe('Card(Entity)', () => {
     })
   })
 
+  it('should throw an error if name is not passed to the constructor', () => {
+    const data = {
+      type: 'note',
+      identifier: 'own'
+    }
+    expect.assertions(1)
+    try {
+      const card = new appIndex.Card(data)
+    } catch (e) {
+      expect(e.message).toBe('Cannot create Card entity without a name!')
+    }
+  })
+
+  it('should throw an error if type is not passed to the constructor', () => {
+    const data = {
+      name: 'card-1',
+      identifier: 'own'
+    }
+    expect.assertions(1)
+    try {
+      const card = new appIndex.Card(data)
+    } catch (e) {
+      expect(e.message).toBe('Cannot create Card entity without a type!')
+    }
+  })
+
+  it('should throw an error if identifier is not passed to the constructor', () => {
+    const data = {
+      name: 'card-1',
+      type: 'note'
+    }
+    expect.assertions(1)
+    try {
+      const card = new appIndex.Card(data)
+    } catch (e) {
+      expect(e.message).toBe('Cannot create Card entity without an identifier!')
+    }
+  })
+
+  it('should throw an error if an unknown attribute is passed to the constructor', () => {
+    const data = {
+      name: 'card-1',
+      type: 'note',
+      identifier: 'own',
+      volume: 11
+    }
+    expect.assertions(1)
+    try {
+      const card = new appIndex.Card(data)
+    } catch (e) {
+      expect(e.message).toBe('Unknown attribute when creating Card entity! ' + JSON.stringify(['volume']))
+    }
+  })
+
   it('[getEntityData] should return all properties of the entity', () => {
     const data = {
       name: 'card-1',
@@ -74,7 +129,7 @@ describe('Card(Entity)', () => {
     })
   })
 
-  it('[getEntityData] should return all properties of the entity', () => {
+  it('[toJson] should return the stringified version of the entity data', () => {
     const data = {
       name: 'card-1',
       type: 'note',

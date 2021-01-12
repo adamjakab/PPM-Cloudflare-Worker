@@ -92,7 +92,7 @@ export class Card extends Entity {
 
     if (!_.isEmpty(_.difference(_.keys(data), _.concat(this.entityAttributeList, this.cardAttributeList)))) {
       const diff = _.difference(_.keys(data), _.concat(this.entityAttributeList, this.cardAttributeList))
-      throw new Error('Unknown attribute when creating Card entity!' + JSON.stringify(diff))
+      throw new Error('Unknown attribute when creating Card entity! ' + JSON.stringify(diff))
     }
 
     _.each(this.cardAttributeList, (attr) => {
