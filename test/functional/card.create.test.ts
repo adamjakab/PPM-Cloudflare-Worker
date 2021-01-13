@@ -1,6 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
-import { setupTestEnvironment } from '../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -14,14 +14,10 @@ declare let self: CloudflareWorkerGlobalScope
 describe('Card Create', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should create a card', async () => {

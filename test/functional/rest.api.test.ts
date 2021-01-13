@@ -1,6 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
-import { setupTestEnvironment } from '../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -12,8 +12,12 @@ declare let self: CloudflareWorkerGlobalScope
  * Get a single card
  */
 describe('Rest API', () => {
+  let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return setupTestEnvironment()
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should respond with 404 if route is not registered', async () => {

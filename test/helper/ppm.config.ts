@@ -1,9 +1,10 @@
 import _ from 'lodash'
 import { CloudflareWorkerKVOptions } from 'types-cloudflare-worker'
-import { PpmStorage } from './ppm.storage'
 
 /**
  * Create a mock PpmConfig and add it to the global scope for the application
+ * Note: values from the KV storage are only loaded upon the first request and NOT on app initialization
+ *
  * @param cfg
  */
 export const createGlobalPpmConfigKV = (cfg:any = {}): PpmConfig => {

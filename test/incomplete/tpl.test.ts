@@ -1,24 +1,17 @@
-import { setupTestEnvironment } from '../helper/test.app.setup'
-import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 import * as _ from 'lodash'
-
-declare let self: CloudflareWorkerGlobalScope
 
 /**
  * @group suite/block
  * @group _incomplete
  */
-describe('Test Template', () => {
+describe('TestTemplate', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should work', () => {

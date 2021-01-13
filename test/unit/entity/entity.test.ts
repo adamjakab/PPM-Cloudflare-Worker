@@ -1,4 +1,4 @@
-import { setupTestEnvironment } from '../../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../../helper/test.app.setup'
 import { getTestEntity } from '../../helper/test.helper'
 import { v1 as generateUUIDv1, v4 as generateUUIDv4 } from 'uuid'
 import * as _ from 'lodash'
@@ -10,14 +10,10 @@ import * as _ from 'lodash'
 describe('Entity', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should not be possible to instantiate directly', () => {

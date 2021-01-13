@@ -1,7 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
-import { StorageIndexItem } from '../../src'
-import { setupTestEnvironment } from '../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 import _ from 'lodash'
 
 declare let self: CloudflareWorkerGlobalScope
@@ -15,14 +14,10 @@ declare let self: CloudflareWorkerGlobalScope
 describe('Card Get', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should get a single card by id', async () => {
@@ -63,7 +58,7 @@ describe('Card Get', () => {
       cf: {}
     })
     const response = await self.trigger('fetch', request)
-    const reply: StorageIndexItem[] = await response.json()
+    const reply = await response.json()
 
     expect(response.status).toBe(404)
     expect(reply).toBeInstanceOf(Array)

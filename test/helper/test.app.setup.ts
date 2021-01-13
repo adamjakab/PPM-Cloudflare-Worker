@@ -4,37 +4,33 @@ import makeCloudflareWorkerEnv, {
 import { createGlobalPpmConfigKV } from './ppm.config'
 import { createGlobalPpmStorageKV } from './ppm.storage'
 
-// @fixme: there is no need for this function to be async or to return a promise
-export async function setupTestEnvironment (log_to_console = false):Promise<any> {
-  return new Promise<any>((resolve, reject) => {
-    // Merge the Cloudflare Worker Environment into the global scope.
-    Object.assign(global, makeCloudflareWorkerEnv())
+/**
+ * Bootstrap the application for test
+ */
+export function bootstrapApplicationForTest (): {appIndex:any, ppmConfig:any, ppmStorage:any} {
+  // Merge the Cloudflare Worker Environment into the global scope.
+  Object.assign(global, makeCloudflareWorkerEnv())
 
-    // Merge the named KV into the global scope: PPMConfigKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
+  // Merge the named KV into the global scope: PPMConfigKV
+  Object.assign(global, makeCloudflareWorkerKVEnv('PPMConfigKV'))
 
-    // Merge the named KV into the global scope: PPMStorageKV
-    Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
+  // Merge the named KV into the global scope: PPMStorageKV
+  Object.assign(global, makeCloudflareWorkerKVEnv('PPMStorageKV'))
 
-    const ppmConfig = createGlobalPpmConfigKV({
-      log_to_console: log_to_console
-    })
+  const ppmConfig = createGlobalPpmConfigKV({})
 
-    const ppmStorage = createGlobalPpmStorageKV({})
+  const ppmStorage = createGlobalPpmStorageKV({})
 
-    // Clear all module imports.
-    jest.resetModules()
+  // Clear all module imports, import and init the app and register the listener.
+  jest.resetModules()
+  const appIndex = jest.requireActual('../../src/index')
 
-    // Import and init the app and register the listener.
-    const appIndex = jest.requireActual('../../src/index')
+  // const cfg = appIndex.app.appConfig
+  // console.log('Config: ', cfg.getAppConfig())
 
-    // const cfg = appIndex.app.appConfig
-    // console.log('Config: ', cfg.getAppConfig())
-
-    resolve({
-      appIndex: appIndex,
-      ppmConfig: ppmConfig,
-      ppmStorage: ppmStorage
-    })
+  return ({
+    appIndex: appIndex,
+    ppmConfig: ppmConfig,
+    ppmStorage: ppmStorage
   })
 }

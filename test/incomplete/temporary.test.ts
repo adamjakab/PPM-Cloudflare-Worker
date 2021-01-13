@@ -1,10 +1,7 @@
-import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
-import { setupTestEnvironment } from '../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 import { getKVStoreDataStructure, getRandomKVStoreData } from '../helper/test.helper'
 import * as _ from 'lodash'
 import { createRoute as createTypedRoute } from 'typed-routes'
-
-declare let self: CloudflareWorkerGlobalScope
 
 /**
  * This is just a temporary test file (can be eliminated)
@@ -14,14 +11,10 @@ declare let self: CloudflareWorkerGlobalScope
 describe('Temporary Test', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment(true).then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should create random KV data', () => {

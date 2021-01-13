@@ -1,4 +1,4 @@
-import { setupTestEnvironment } from '../../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../../helper/test.app.setup'
 
 /**
  * @group unit/repository
@@ -7,14 +7,10 @@ import { setupTestEnvironment } from '../../helper/test.app.setup'
 describe('Repository', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should not be possible to instantiate', () => {
@@ -23,6 +19,7 @@ describe('Repository', () => {
     }).toThrow(/Repository class cannot be instantiated/)
   })
 
+  // @todo: re-enable tests here
   /*
   it("should not be empty after add", () => {
     const repo = new Repository();

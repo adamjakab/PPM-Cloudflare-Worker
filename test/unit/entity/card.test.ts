@@ -1,5 +1,4 @@
-import { v4 as generateUUIDv4 } from 'uuid'
-import { setupTestEnvironment } from '../../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../../helper/test.app.setup'
 import * as _ from 'lodash'
 
 /**
@@ -9,14 +8,10 @@ import * as _ from 'lodash'
 describe('Card(Entity)', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
   beforeEach(() => {
-    return new Promise<void>((resolve, reject) => {
-      setupTestEnvironment().then((envData) => {
-        appIndex = envData.appIndex
-        ppmConfig = envData.ppmConfig
-        ppmStorage = envData.ppmStorage
-        resolve()
-      })
-    })
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should be instance of Entity', () => {

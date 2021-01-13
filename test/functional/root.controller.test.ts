@@ -1,6 +1,6 @@
 import { CloudflareWorkerGlobalScope } from 'types-cloudflare-worker'
 import { makeCloudflareWorkerRequest } from 'cloudflare-worker-mock'
-import { setupTestEnvironment } from '../helper/test.app.setup'
+import { bootstrapApplicationForTest } from '../helper/test.app.setup'
 
 declare let self: CloudflareWorkerGlobalScope
 
@@ -9,8 +9,12 @@ declare let self: CloudflareWorkerGlobalScope
  * @group _incomplete
  */
 describe('Root path', () => {
-  beforeAll(() => {
-    return setupTestEnvironment()
+  let appIndex: any, ppmConfig: any, ppmStorage: any
+  beforeEach(() => {
+    const envData = bootstrapApplicationForTest()
+    appIndex = envData.appIndex
+    ppmConfig = envData.ppmConfig
+    ppmStorage = envData.ppmStorage
   })
 
   it('should provide app info', async () => {
