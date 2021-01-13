@@ -73,8 +73,27 @@ function getRandomDate (from: Date, to: Date) {
   return new Date(fromTime + Math.random() * (toTime - fromTime))
 }
 
+function getRandomString (length = 8) {
+  let s = ''
+  const randomChar = () => {
+    const n = Math.floor(Math.random() * 62)
+    if (n < 10) {
+      return n
+    } // 1-10
+    if (n < 36) {
+      return String.fromCharCode(n + 55)
+    } // A-Z
+    return String.fromCharCode(n + 61) // a-z
+  }
+  while (length--) {
+    s += randomChar()
+  }
+  return s
+}
+
 // Export
 export {
   getTestEntity,
-  getRandomKVStoreData, getKVStoreDataStructure, addRandomIdToItem
+  getRandomKVStoreData, getKVStoreDataStructure, addRandomIdToItem,
+  getRandomDate, getRandomString
 }

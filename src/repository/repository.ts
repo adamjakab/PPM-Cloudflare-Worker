@@ -33,8 +33,6 @@ export class Repository {
 
   /**
    * Persists the entity in the store
-   *
-   * @param entity
    */
   public async persist (entity: Entity) {
     return await app.entityManager.store(entity.getEntityData())
@@ -42,8 +40,6 @@ export class Repository {
 
   /**
    * Deletes the entity from the store and returns true if successful / false if failed
-   *
-   * @param entity
    */
   public async remove (entity: Entity) {
     return await app.entityManager.delete(entity.id.toString())
