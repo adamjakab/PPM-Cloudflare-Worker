@@ -25,9 +25,6 @@ export function bootstrapApplicationForTest (): {appIndex:any, ppmConfig:any, pp
   jest.resetModules()
   const appIndex = jest.requireActual('../../src/index')
 
-  // const cfg = appIndex.app.appConfig
-  // console.log('Config: ', cfg.getAppConfig())
-
   return ({
     appIndex: appIndex,
     ppmConfig: ppmConfig,

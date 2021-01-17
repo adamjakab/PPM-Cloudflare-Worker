@@ -2,8 +2,6 @@ import { _, Globals, Platform } from '../index'
 
 const defaultApplicationConfig = {
   log_to_console: false,
-  cache_config: false,
-  storage_to_use: 'kvstore',
   shared_key: ''
 }
 
@@ -36,10 +34,6 @@ export class AppConfiguration {
 
   private get isKVStorageMerged (): boolean {
     return this._isKVStorageMerged
-  }
-
-  private set isKVStorageMerged (value: boolean) {
-    this._isKVStorageMerged = value
   }
 
   /**
@@ -77,8 +71,8 @@ export class AppConfiguration {
             _.set(this.applicationConfig, key, val)
           }
         })
-        this.isKVStorageMerged = true
-        Platform.log('Application Config: ', this.getAppConfig())
+        this._isKVStorageMerged = true
+        Platform.log('Application Config: ' + JSON.stringify(this.getAppConfig()))
         resolve()
       }).catch(e => {
         reject(e)

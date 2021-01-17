@@ -19,10 +19,10 @@ export const createGlobalPpmConfigKV = (cfg:any = {}): PpmConfig => {
 class PpmConfig {
   private _timesCalledGet: number
   private _timesCalledPut: number
-  private config: any = {}
+  private _config: any = {}
 
   public constructor (cfg:any = {}) {
-    _.extend(this.config, cfg)
+    _.extend(this._config, cfg)
     this._timesCalledGet = 0
     this._timesCalledPut = 0
   }
@@ -32,7 +32,7 @@ class PpmConfig {
     _type?: 'text' | 'json' | 'arrayBuffer' | 'stream'
   ): Promise<string | any | ArrayBuffer | ReadableStream> {
     this._timesCalledGet++
-    return Promise.resolve(_.get(this.config, _key, null))
+    return Promise.resolve(_.get(this._config, _key, null))
   }
 
   public put (
@@ -40,7 +40,7 @@ class PpmConfig {
     _value: string | ReadableStream | ArrayBuffer | FormData,
     _options?: CloudflareWorkerKVOptions
   ): Promise<void> {
-    _.set(this.config, _key, _value)
+    _.set(this._config, _key, _value)
     this._timesCalledPut++
     return Promise.resolve()
   }
@@ -51,5 +51,9 @@ class PpmConfig {
 
   public get timesCalledPut (): number {
     return this._timesCalledPut
+  }
+
+  public get config (): any {
+    return this._config
   }
 }

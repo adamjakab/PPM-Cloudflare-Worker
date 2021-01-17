@@ -22,8 +22,6 @@
   },
   "ppm-config": {
     "log_to_console": false,
-    "cache_config": false,
-    "storage_to_use": "memory",
     "shared_key": "008C5926CA861023C1D2A36653FD88E2"
   },
   "keywords": [

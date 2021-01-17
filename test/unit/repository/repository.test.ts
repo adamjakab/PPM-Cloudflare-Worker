@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 
 /**
  * @group unit/repository
- * @group incomplete
+ * @group _incomplete
  */
 describe('Repository', () => {
   let appIndex: any, ppmConfig: any, ppmStorage: any
