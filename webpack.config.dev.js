@@ -21,7 +21,7 @@ module.exports = {
   },
   output: {
     filename: 'worker.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'worker-dev')
   },
-  devtool: 'inline-source-map'
+  devtool: 'source-map'
 }

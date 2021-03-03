@@ -22,7 +22,7 @@ module.exports = {
   },
   output: {
     filename: 'worker.js',
-    path: path.resolve(__dirname, 'worker')
+    path: path.resolve(__dirname, 'worker-prod')
   },
   optimization: {
     minimize: true,
